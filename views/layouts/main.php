@@ -72,7 +72,7 @@ AppAsset::register($this);
         ]);
       }
   
-      if(Yii::$app->user->identity->isAdmin){
+      if(isset(Yii::$app->user->identity) and Yii::$app->user->identity->isAdmin){
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
