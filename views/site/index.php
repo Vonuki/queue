@@ -16,16 +16,7 @@ $this->title = 'My Yii Application';
 
     <div class="body-content">
 
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Electronic Queue Service on-line</h2>
-
-                <p>Possible to manage queues</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            
-        </div>
+       ..in develope..
 
     </div>
 </div>
