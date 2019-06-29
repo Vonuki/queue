@@ -12,7 +12,11 @@ use Yii;
  * @property int $idPerson
  * @property int $Status
  *
+<<<<<<< HEAD
  * @property User $person
+=======
+ * @property Person $person
+>>>>>>> bcf9dc12a6a3418919718089d3a1ed68fc089dcf
  * @property Queue[] $queues
  */
 class Owners extends \yii\db\ActiveRecord
@@ -34,7 +38,11 @@ class Owners extends \yii\db\ActiveRecord
             [['Description', 'idPerson'], 'required'],
             [['idPerson', 'Status'], 'integer'],
             [['Description'], 'string', 'max' => 50],
+<<<<<<< HEAD
             [['idPerson'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['idPerson' => 'id']],
+=======
+            [['idPerson'], 'exist', 'skipOnError' => true, 'targetClass' => Person::className(), 'targetAttribute' => ['idPerson' => 'idPerson']],
+>>>>>>> bcf9dc12a6a3418919718089d3a1ed68fc089dcf
         ];
     }
 
@@ -56,7 +64,11 @@ class Owners extends \yii\db\ActiveRecord
      */
     public function getPerson()
     {
+<<<<<<< HEAD
         return $this->hasOne(User::className(), ['id' => 'idPerson']);
+=======
+        return $this->hasOne(Person::className(), ['idPerson' => 'idPerson']);
+>>>>>>> bcf9dc12a6a3418919718089d3a1ed68fc089dcf
     }
 
     /**

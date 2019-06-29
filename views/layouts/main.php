@@ -72,7 +72,11 @@ AppAsset::register($this);
         ]);
       }
   
+<<<<<<< HEAD
       if(Yii::$app->user->identity->isAdmin){
+=======
+      if(isset(Yii::$app->user->identity) and Yii::$app->user->identity->isAdmin){
+>>>>>>> bcf9dc12a6a3418919718089d3a1ed68fc089dcf
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
@@ -101,7 +105,11 @@ AppAsset::register($this);
 </div>
   
   <div>
+<<<<<<< HEAD
     <?php echo '<br> <br>'.var_dump(Yii::$app->user->getIdentity()->isAdmin);?>
+=======
+    <?php echo '<br> <br>'.var_dump( $_SERVER['REMOTE_ADDR']);?>
+>>>>>>> bcf9dc12a6a3418919718089d3a1ed68fc089dcf
   </div>
 
 <footer class="footer">
