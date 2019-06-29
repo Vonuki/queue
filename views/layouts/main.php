@@ -101,7 +101,7 @@ AppAsset::register($this);
 </div>
   
   <div>
-    <?php echo '<br> <br>'.var_dump(Yii::$app->user->getIdentity()->isAdmin);?>
+    <?php echo '<br> <br>'.var_dump( $_SERVER['REMOTE_ADDR']);?>
   </div>
 
 <footer class="footer">
