@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=meshdomr.mysql;dbname=meshdomr_queue',
-    'username' => 'meshdomr_queue',
-    'password' => 'WUac+Nh3',
+    'dsn' => 'mysql:host=localhost;dbname=meshdomr_queue',
+    'username' => 'root',
+    'password' => '',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
