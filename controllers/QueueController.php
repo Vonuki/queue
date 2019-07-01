@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\Owner;
 
 /**
  * QueueController implements the CRUD actions for Queue model.
@@ -65,6 +66,40 @@ class QueueController extends Controller
     public function actionCreate()
     {
         $model = new Queue();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->idQueue]);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
+  
+    /**
+     * Creates a new Queue model for person
+     * hidden creation Owner model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreateBu()
+    {
+        
+        $current_user = Yii::$app->user->identity->id;
+        $owner = Owner::findOne($current_user);  
+        if (is_null($owner)) {
+          $owner = new Owner();
+          $owner -> idPerson = $current_user;
+          $owner -> Description = "User Queue";
+          $owner -> save();
+        }
+        
+        $model = new Queue();
+        $model->idOwner = $owner;
+        $model->FirstItem = 0;
+        $model->QueueShare = 0; 
+        $model->QueueLen = 0;
+        $model->Status = 0;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idQueue]);

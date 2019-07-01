@@ -10,6 +10,8 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
+use app\models\Owner;
+
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -101,6 +103,16 @@ AppAsset::register($this);
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>
+</div>
+  
+<div>
+  <?php 
+    $current_user = Yii::$app->user->identity->id;
+    var_dump($current_user);
+    $owners = Owner::findOne($current_user);
+    var_dump($owners);
+  
+  ?>
 </div>
   
 <footer class="footer">
