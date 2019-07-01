@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: meshdomr.mysql
--- Generation Time: Jun 29, 2019 at 05:44 PM
+-- Generation Time: Jul 01, 2019 at 08:18 PM
 -- Server version: 5.6.41-84.1
 -- PHP Version: 5.6.6
 
@@ -23,13 +23,13 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Clients`
+-- Table structure for table `Client`
 --
--- Creation: Jun 29, 2019 at 01:25 PM
+-- Creation: Jul 01, 2019 at 05:16 PM
 --
 
-DROP TABLE IF EXISTS `Clients`;
-CREATE TABLE IF NOT EXISTS `Clients` (
+DROP TABLE IF EXISTS `Client`;
+CREATE TABLE IF NOT EXISTS `Client` (
   `idClient` int(11) NOT NULL,
   `Description` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `idPerson` int(11) NOT NULL,
@@ -39,13 +39,13 @@ CREATE TABLE IF NOT EXISTS `Clients` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Items`
+-- Table structure for table `Item`
 --
--- Creation: Jun 24, 2019 at 08:27 PM
+-- Creation: Jul 01, 2019 at 05:17 PM
 --
 
-DROP TABLE IF EXISTS `Items`;
-CREATE TABLE IF NOT EXISTS `Items` (
+DROP TABLE IF EXISTS `Item`;
+CREATE TABLE IF NOT EXISTS `Item` (
   `idItem` int(11) NOT NULL,
   `idQueue` int(11) NOT NULL,
   `idClient` int(11) NOT NULL,
@@ -92,13 +92,13 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Owners`
+-- Table structure for table `Owner`
 --
--- Creation: Jun 29, 2019 at 01:25 PM
+-- Creation: Jul 01, 2019 at 05:16 PM
 --
 
-DROP TABLE IF EXISTS `Owners`;
-CREATE TABLE IF NOT EXISTS `Owners` (
+DROP TABLE IF EXISTS `Owner`;
+CREATE TABLE IF NOT EXISTS `Owner` (
   `idOwner` int(11) NOT NULL,
   `Description` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `idPerson` int(11) NOT NULL,
@@ -136,13 +136,13 @@ INSERT INTO `profile` (`user_id`, `name`, `public_email`, `gravatar_email`, `gra
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Queues`
+-- Table structure for table `Queue`
 --
--- Creation: Jun 25, 2019 at 01:32 PM
+-- Creation: Jul 01, 2019 at 05:17 PM
 --
 
-DROP TABLE IF EXISTS `Queues`;
-CREATE TABLE IF NOT EXISTS `Queues` (
+DROP TABLE IF EXISTS `Queue`;
+CREATE TABLE IF NOT EXISTS `Queue` (
   `idQueue` int(11) NOT NULL,
   `Description` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `QueueShare` int(11) NOT NULL,
@@ -219,22 +219,22 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `email`, `password_hash`, `auth_key`, `confirmed_at`, `unconfirmed_email`, `blocked_at`, `registration_ip`, `created_at`, `updated_at`, `flags`, `last_login_at`) VALUES
-(1, 'admin', 'vonuki@gmail.com', '$2y$10$IqXVr2tNWdNi5dOHVW1YAeFvmY1FBaYs46z6Fgkmnw10DaZDt3oLG', '8iPrHS5L-Dh0Ve0sTf30u8DpDtP1ifPi', 1561662050, NULL, NULL, '194.246.46.15', 1561641238, 1561641238, 0, 1561753050);
+(1, 'admin', 'vonuki@gmail.com', '$2y$10$IqXVr2tNWdNi5dOHVW1YAeFvmY1FBaYs46z6Fgkmnw10DaZDt3oLG', '8iPrHS5L-Dh0Ve0sTf30u8DpDtP1ifPi', 1561662050, NULL, NULL, '194.246.46.15', 1561641238, 1561641238, 0, 1561988262);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `Clients`
+-- Indexes for table `Client`
 --
-ALTER TABLE `Clients`
+ALTER TABLE `Client`
   ADD PRIMARY KEY (`idClient`), ADD KEY `idPerson` (`idPerson`);
 
 --
--- Indexes for table `Items`
+-- Indexes for table `Item`
 --
-ALTER TABLE `Items`
+ALTER TABLE `Item`
   ADD PRIMARY KEY (`idItem`), ADD KEY `idQueue` (`idQueue`), ADD KEY `idClient` (`idClient`);
 
 --
@@ -244,9 +244,9 @@ ALTER TABLE `migration`
   ADD PRIMARY KEY (`version`);
 
 --
--- Indexes for table `Owners`
+-- Indexes for table `Owner`
 --
-ALTER TABLE `Owners`
+ALTER TABLE `Owner`
   ADD PRIMARY KEY (`idOwner`), ADD KEY `idPerson` (`idPerson`);
 
 --
@@ -256,9 +256,9 @@ ALTER TABLE `profile`
   ADD PRIMARY KEY (`user_id`);
 
 --
--- Indexes for table `Queues`
+-- Indexes for table `Queue`
 --
-ALTER TABLE `Queues`
+ALTER TABLE `Queue`
   ADD PRIMARY KEY (`idQueue`), ADD KEY `idOwner` (`idOwner`);
 
 --
@@ -284,24 +284,24 @@ ALTER TABLE `user`
 --
 
 --
--- AUTO_INCREMENT for table `Clients`
+-- AUTO_INCREMENT for table `Client`
 --
-ALTER TABLE `Clients`
+ALTER TABLE `Client`
   MODIFY `idClient` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `Items`
+-- AUTO_INCREMENT for table `Item`
 --
-ALTER TABLE `Items`
+ALTER TABLE `Item`
   MODIFY `idItem` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `Owners`
+-- AUTO_INCREMENT for table `Owner`
 --
-ALTER TABLE `Owners`
+ALTER TABLE `Owner`
   MODIFY `idOwner` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `Queues`
+-- AUTO_INCREMENT for table `Queue`
 --
-ALTER TABLE `Queues`
+ALTER TABLE `Queue`
   MODIFY `idQueue` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `social_account`
@@ -318,23 +318,23 @@ ALTER TABLE `user`
 --
 
 --
--- Constraints for table `Clients`
+-- Constraints for table `Client`
 --
-ALTER TABLE `Clients`
-ADD CONSTRAINT `Clients_ibfk_1` FOREIGN KEY (`idPerson`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Client`
+ADD CONSTRAINT `Client_ibfk_1` FOREIGN KEY (`idPerson`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `Items`
+-- Constraints for table `Item`
 --
-ALTER TABLE `Items`
-ADD CONSTRAINT `Items_ibfk_1` FOREIGN KEY (`idClient`) REFERENCES `Clients` (`idClient`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `Items_ibfk_2` FOREIGN KEY (`idQueue`) REFERENCES `Queues` (`idQueue`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Item`
+ADD CONSTRAINT `Item_ibfk_1` FOREIGN KEY (`idClient`) REFERENCES `Client` (`idClient`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `Item_ibfk_2` FOREIGN KEY (`idQueue`) REFERENCES `Queue` (`idQueue`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `Owners`
+-- Constraints for table `Owner`
 --
-ALTER TABLE `Owners`
-ADD CONSTRAINT `Owners_ibfk_1` FOREIGN KEY (`idPerson`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Owner`
+ADD CONSTRAINT `Owner_ibfk_1` FOREIGN KEY (`idPerson`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `profile`
@@ -343,10 +343,10 @@ ALTER TABLE `profile`
 ADD CONSTRAINT `fk_user_profile` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `Queues`
+-- Constraints for table `Queue`
 --
-ALTER TABLE `Queues`
-ADD CONSTRAINT `Queues_ibfk_1` FOREIGN KEY (`idOwner`) REFERENCES `Owners` (`idOwner`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Queue`
+ADD CONSTRAINT `Queue_ibfk_1` FOREIGN KEY (`idOwner`) REFERENCES `Owner` (`idOwner`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `social_account`
