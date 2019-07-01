@@ -79,9 +79,12 @@ AppAsset::register($this);
                 ['label' => 'Models', 
                   'options'=>['class'=>'dropdown'],
                   'items' => [
-                    ['label' => 'Gii Code', 'url' => ['/gii']],
-                    ['label' => 'Users', 'url' => ['/user/admin/index']],
-                    ['label' => 'Queues', 'url' => ['services/valuation-services']],
+                    ['label' => 'Gii Code', 'url' => ['gii']],
+                    ['label' => 'Users', 'url' => ['user/admin/index']],
+                    ['label' => 'Owners', 'url' => ['owner/index']],
+                    ['label' => 'Clients', 'url' => ['client/index']],
+                    ['label' => 'Queues', 'url' => ['queue/index']],
+                    ['label' => 'Items', 'url' => ['item/index']],
                   ]
                 ]
             ],

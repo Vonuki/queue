@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+use dektrium\user\models\User;
 
 use Yii;
 
