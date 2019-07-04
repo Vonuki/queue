@@ -81,7 +81,7 @@ AppAsset::register($this);
                 ['label' => 'Models', 
                   'options'=>['class'=>'dropdown'],
                   'items' => [
-                    ['label' => 'Gii Code', 'url' => ['gii']],
+                    ['label' => 'Gii Code', 'url' => ['/gii']],
                     ['label' => 'Users', 'url' => ['user/admin/index']],
                     ['label' => 'Owners', 'url' => ['owner/index']],
                     ['label' => 'Clients', 'url' => ['client/index']],

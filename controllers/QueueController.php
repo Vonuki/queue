@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Owner;
 use yii\filters\AccessControl;
+use dektrium\user\filters\AccessRule;
 /**
  * QueueController implements the CRUD actions for Queue model.
  */
@@ -29,11 +30,20 @@ class QueueController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::className(),
-                'rules' => [
+              /*  'rules' => [
                     [ 
                       'allow' => true, 
                       'actions' => ['index', 'view', 'create', 'update', 'create-bu', 'delete'], 
                       'roles' => ['@']
+                    ],
+                ], */
+                'ruleConfig' => [
+                    'class' => AccessRule::className(),
+                ],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['admin']
                     ],
                 ],
             ],
