@@ -107,10 +107,12 @@ AppAsset::register($this);
   
 <div>
   <?php 
-    $current_user = Yii::$app->user->identity->id;
-    var_dump($current_user);
-    $owners = Owner::findOne($current_user);
-    var_dump($owners);
+    if(isset(Yii::$app->user->identity)){
+      $current_user = Yii::$app->user->identity->id;
+      var_dump($current_user);
+      $owners = Owner::findOne(['idPerson' => $current_user, 'Status' => 0]);
+      var_dump($owners);
+    }
   
   ?>
 </div>

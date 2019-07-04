@@ -9,7 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Owner;
-
+use yii\filters\AccessControl;
 /**
  * QueueController implements the CRUD actions for Queue model.
  */
@@ -25,6 +25,16 @@ class QueueController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [ 
+                      'allow' => true, 
+                      'actions' => ['index', 'view', 'create', 'update', 'create-bu', 'delete'], 
+                      'roles' => ['@']
+                    ],
                 ],
             ],
         ];
@@ -83,29 +93,28 @@ class QueueController extends Controller
      * @return mixed
      */
     public function actionCreateBu()
-    {
-        
+    { 
         $current_user = Yii::$app->user->identity->id;
-        $owner = Owner::findOne($current_user);  
+        $owner = Owner::findOne(['idPerson' => $current_user, 'Status' => 0]);
         if (is_null($owner)) {
           $owner = new Owner();
           $owner -> idPerson = $current_user;
-          $owner -> Description = "User Queue";
+          $owner -> Description = Yii::$app->user->identity->username."_queues";
           $owner -> save();
         }
-        
+      
         $model = new Queue();
-        $model->idOwner = $owner;
-        $model->FirstItem = 0;
-        $model->QueueShare = 0; 
-        $model->QueueLen = 0;
-        $model->Status = 0;
+        $model->idOwner = $owner->idOwner;
+        $model->FirstItem = 0; //first item number
+        $model->QueueShare = 0; //private queue
+        $model->QueueLen = 0; //curretn lentgh of queue
+        $model->Status = 0; //status 
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idQueue]);
         }
 
-        return $this->render('create', [
+        return $this->render('create_bu', [
             'model' => $model,
         ]);
     }

@@ -11,22 +11,19 @@ use yii\widgets\ActiveForm;
 <div class="queue-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
+ 
     <?= $form->field($model, 'Description')->textInput(['maxlength' => true]) ?>
+  
+    <?= $form->field($model, 'QueueShare')->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'QueueShare')->textInput() ?>
+    <?= $form->field($model, 'idOwner')->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'idOwner')->textInput() ?>
+    <?= $form->field($model, 'FirstItem')->hiddenInput()->label(false) ?>
 
-    <?= //$form->field($model, 'FirstItem')->textInput() 
-    ?>
+    <?= $form->field($model, 'QueueLen')->hiddenInput()->label(false)  ?>
 
-    <?= //$form->field($model, 'QueueLen')->textInput() 
-    ?>
-
-    <?= //$form->field($model, 'Status')->textInput() 
-    ?>
-
+    <?= $form->field($model, 'Status')->hiddenInput()->label(false)  ?>
+  
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
