@@ -41,6 +41,11 @@ class QueueController extends Controller
                     'class' => AccessRule::className(),
                 ],
                 'rules' => [
+                    [ 
+                      'allow' => true, 
+                      'actions' => ['create-bu','index'], 
+                      'roles' => ['@']
+                    ],
                     [
                         'allow' => true,
                         'roles' => ['admin']
@@ -56,15 +61,24 @@ class QueueController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Queue::find(),
-        ]);
-
+        //проверка на владельца очереди
+        if (Yii::$app->user->identity->isAdmin){
+          $dataProvider = new ActiveDataProvider([
+            'query' => Queue::find(),       
+          ]);
+        }
+        else{
+          $owner_temp = Owner::findByUser(Yii::$app->user->identity->id);   
+          $dataProvider = new ActiveDataProvider([
+            'query' => Queue::find()->where(['idOwner' => $owner_temp->idOwner]),       
+          ]);
+        }
+      
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
     }
-
+  
     /**
      * Displays a single Queue model.
      * @param integer $id
@@ -97,7 +111,7 @@ class QueueController extends Controller
     }
   
     /**
-     * Creates a new Queue model for person
+     * Creates a new Queue model for person by user
      * hidden creation Owner model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed

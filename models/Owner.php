@@ -67,4 +67,12 @@ class Owner extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Queue::className(), ['idOwner' => 'idOwner']);
     }
+  
+    public function findByUser($idUser)
+    {
+        if (($model = Owner::findOne(['idPerson' => $idUser])) !== null) {
+            return $model;
+        }
+        throw new NotFoundHttpException('No Owner Exist by erquested user.');
+    }
 }
