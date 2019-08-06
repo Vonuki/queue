@@ -30,20 +30,13 @@ class QueueController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::className(),
-              /*  'rules' => [
-                    [ 
-                      'allow' => true, 
-                      'actions' => ['index', 'view', 'create', 'update', 'create-bu', 'delete'], 
-                      'roles' => ['@']
-                    ],
-                ], */
                 'ruleConfig' => [
                     'class' => AccessRule::className(),
                 ],
                 'rules' => [
                     [ 
                       'allow' => true, 
-                      'actions' => ['create-bu','index'], 
+                      'actions' => ['create-bu','index-bu', 'view-bu', 'update-bu'], 
                       'roles' => ['@']
                     ],
                     [
@@ -56,25 +49,32 @@ class QueueController extends Controller
     }
 
     /**
-     * Lists all Queue models.
+     * Lists all Queue models owned by user ( or all for Admins).
      * @return mixed
      */
     public function actionIndex()
     {
-        //проверка на владельца очереди
-        if (Yii::$app->user->identity->isAdmin){
-          $dataProvider = new ActiveDataProvider([
-            'query' => Queue::find(),       
-          ]);
-        }
-        else{
-          $owner_temp = Owner::findByUser(Yii::$app->user->identity->id);   
-          $dataProvider = new ActiveDataProvider([
-            'query' => Queue::find()->where(['idOwner' => $owner_temp->idOwner]),       
-          ]);
-        }
-      
+        $dataProvider = new ActiveDataProvider([
+          'query' => Queue::find(),       
+        ]);
+        
         return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+  
+    /**
+     * Lists all Queue models owned by user.
+     * @return mixed
+     */
+    public function actionIndexBu()
+    {   
+        $owner_temp = Owner::findByUser(Yii::$app->user->identity->id);   
+        $dataProvider = new ActiveDataProvider([
+          'query' => Queue::find()->where(['idOwner' => $owner_temp->idOwner]),       
+        ]);
+      
+        return $this->render('index_bu', [
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -90,6 +90,27 @@ class QueueController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+    }
+  
+    /**
+     * Displays a single Queue model if it owned by user.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionViewBu($id)
+    {
+        $owner_temp = Owner::findByUser(Yii::$app->user->identity->id);   
+        $queue_model = $this->findModel($id);
+        if ($queue_model->idOwner == $owner_temp->idOwner){
+          return $this->render('view_bu', [
+            'model' => $queue_model,
+          ]);  
+        }
+        else{
+          throw new NotFoundHttpException('The requested page does not exist.');
+        }
+        
     }
 
     /**
@@ -123,7 +144,7 @@ class QueueController extends Controller
         if (is_null($owner)) {
           $owner = new Owner();
           $owner -> idPerson = $current_user;
-          $owner -> Description = Yii::$app->user->identity->username."_queues";
+          $owner -> Description = "my_queue".Yii::$app->user->identity->id;
           $owner -> save();
         }
       

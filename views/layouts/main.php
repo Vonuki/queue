@@ -72,6 +72,20 @@ AppAsset::register($this);
                  ]
             ],
         ]);
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav navbar-right'],
+            'items' => [
+                ['label' => 'Actions', 
+                  'options'=>['class'=>'dropdown'],
+                  'items' => [
+                    ['label' => 'Owner info', 'url' => ['owner/index']],
+                    ['label' => 'Clients', 'url' => ['client/index']],
+                    ['label' => 'My Queues', 'url' => ['queue/index-bu']],
+                    ['label' => 'Items', 'url' => ['item/index']],
+                  ]
+                ]
+            ],
+        ]);
       }
   
       if(isset(Yii::$app->user->identity) and Yii::$app->user->identity->isAdmin){
@@ -108,9 +122,9 @@ AppAsset::register($this);
 <div>
   <?php 
     if(isset(Yii::$app->user->identity)){
-      $current_user = Yii::$app->user->identity->id;
-      var_dump($current_user);
-      $owners = Owner::findOne(['idPerson' => $current_user, 'Status' => 0]);
+      $current_user_id = Yii::$app->user->identity->id;
+      var_dump($current_user_id);
+      $owners = Owner::findOne(['idPerson' => $current_user_id, 'Status' => 0]);
       var_dump($owners);
     }
   
