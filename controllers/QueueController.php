@@ -55,13 +55,9 @@ class QueueController extends Controller
     public function actionIndex()
     {
         if(Yii::$app->user->identity->isAdmin){
-            $dataProvider = new ActiveDataProvider([
-              'query' => Queue::find(),       
-            ]);
+            $dataProvider = new ActiveDataProvider(['query' => Queue::find(),]);
 
-            return $this->render('index', [
-                'dataProvider' => $dataProvider,
-            ]);
+            return $this->render('index', ['dataProvider' => $dataProvider,]);
         }
         else{
             $owner_temp = Owner::getUserOwner();   
@@ -83,20 +79,13 @@ class QueueController extends Controller
      */
     public function actionView($id)
     {
-        $owner_temp = Owner::getUserOwner();   
-        $queue_model = $this->findModel($id);
-        if ($queue_model->idOwner == $owner_temp->idOwner){
-          return $this->render('view_bu', [
-            'model' => $queue_model,
-          ]);  
-        }
-        elseif(Yii::$app->user->identity->isAdmin){
-          return $this->render('view', ['model' => $queue_models]);
+        $model = $this->findAvailableModel($id);
+        if(Yii::$app->user->identity->isAdmin){
+          return $this->render('view', ['model' => $model]);
         }
         else{
-          throw new NotFoundHttpException('The requested page does not exist.');
-        }
-        
+          return $this->render('view_bu', ['model' => $model,]);  
+        }        
     }
 
     /**
@@ -144,23 +133,17 @@ class QueueController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-        $owner_model = Owner::getUserOwner();
-        if ($model->idOwner == $owner_model->idOwner or Yii::$app->user->identity->isAdmin){
-          if ($model->load(Yii::$app->request->post()) && $model->save()) {
-              return $this->redirect(['view', 'id' => $model->idQueue]);
-          }
+        $model = $this->findAvailableModel($id);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->idQueue]);
+        }
 
-          if(Yii::$app->user->identity->isAdmin){
-              return $this->render('update', ['model' => $model,]);   
-          }
-          else{
-              return $this->render('update_bu', ['model' => $model,]); 
-          }
+        if(Yii::$app->user->identity->isAdmin){
+            return $this->render('update', ['model' => $model,]);   
         }
         else{
-          throw new NotFoundHttpException('The requested page does not exist.');
-        }     
+            return $this->render('update_bu', ['model' => $model,]); 
+        }
     }
 
     /**
@@ -172,8 +155,8 @@ class QueueController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        
+        $this->findAvailableModel($id)->delete();
         return $this->redirect(['index']);
     }
 
@@ -190,6 +173,17 @@ class QueueController extends Controller
             return $model;
         }
 
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+  
+    protected function findAvailableModel($id) {
+        
+        $model = $this->findModel($id);
+        $owner_model = Owner::getUserOwner();
+        if ($model->idOwner == $owner_model->idOwner or Yii::$app->user->identity->isAdmin){
+            return $model;
+        }
+      
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }
