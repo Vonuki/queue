@@ -36,7 +36,7 @@ class QueueController extends Controller
                 'rules' => [
                     [ 
                       'allow' => true, 
-                      'actions' => ['create-bu','index', 'view', 'update-bu'], 
+                      'actions' => ['create','index', 'view', 'update', 'delete'], 
                       'roles' => ['@']
                     ],
                     [
@@ -100,54 +100,39 @@ class QueueController extends Controller
     }
 
     /**
-     * Creates a new Queue model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Queue();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idQueue]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
-  
-    /**
-     * Creates a new Queue model for person by user
+     * Creates a new Queue model for person by user or Admin
      * hidden creation Owner model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreateBu()
+    public function actionCreate()
     { 
-        $current_user = Yii::$app->user->identity->id;
-        $owner = Owner::findOne(['idPerson' => $current_user, 'Status' => 0]);
-        if (is_null($owner)) {
-          $owner = new Owner();
-          $owner -> idPerson = $current_user;
-          $owner -> Description = "my_queue".Yii::$app->user->identity->id;
-          $owner -> save();
-        }
-      
         $model = new Queue();
-        $model->idOwner = $owner->idOwner;
-        $model->FirstItem = 0; //first item number
-        $model->QueueShare = 0; //private queue
-        $model->QueueLen = 0; //curretn lentgh of queue
-        $model->Status = 0; //status 
+      
+        if(Yii::$app->user->identity->isAdmin){}
+        else{
+          $owner = Owner::getUserOwner();
+          $model->idOwner = $owner->idOwner;
+          $model->FirstItem = 0; //first item number
+          $model->QueueShare = 0; //private queue
+          $model->QueueLen = 0; //curretn lentgh of queue
+          $model->Status = 0; //status 
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idQueue]);
         }
-
-        return $this->render('create_bu', [
-            'model' => $model,
-        ]);
+        
+        if(Yii::$app->user->identity->isAdmin){
+            return $this->render('create', [
+              'model' => $model,
+            ]);
+        }
+        else {
+            return $this->render('create_bu', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
@@ -160,14 +145,22 @@ class QueueController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $owner_model = Owner::getUserOwner();
+        if ($model->idOwner == $owner_model->idOwner or Yii::$app->user->identity->isAdmin){
+          if ($model->load(Yii::$app->request->post()) && $model->save()) {
+              return $this->redirect(['view', 'id' => $model->idQueue]);
+          }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idQueue]);
+          if(Yii::$app->user->identity->isAdmin){
+              return $this->render('update', ['model' => $model,]);   
+          }
+          else{
+              return $this->render('update_bu', ['model' => $model,]); 
+          }
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        else{
+          throw new NotFoundHttpException('The requested page does not exist.');
+        }     
     }
 
     /**

@@ -80,7 +80,7 @@ AppAsset::register($this);
                   'items' => [
                     ['label' => 'Owner info', 'url' => ['owner/index']],
                     ['label' => 'Clients', 'url' => ['client/index']],
-                    ['label' => 'My Queues', 'url' => ['queue/index-bu']],
+                    ['label' => 'My Queues', 'url' => ['queue/index']],
                     ['label' => 'Items', 'url' => ['item/index']],
                   ]
                 ]
@@ -97,10 +97,6 @@ AppAsset::register($this);
                   'items' => [
                     ['label' => 'Gii Code', 'url' => ['/gii']],
                     ['label' => 'Users', 'url' => ['user/admin/index']],
-                    ['label' => 'Owners', 'url' => ['owner/index']],
-                    ['label' => 'Clients', 'url' => ['client/index']],
-                    ['label' => 'Queues', 'url' => ['queue/index']],
-                    ['label' => 'Items', 'url' => ['item/index']],
                   ]
                 ]
             ],

@@ -70,10 +70,16 @@ class Owner extends \yii\db\ActiveRecord
   
     public function findByUser($idUser)
     {
-        if (($model = self::findOne(['idPerson' => $idUser])) !== null) {
+        if (($model = self::findOne(['idPerson' => $idUser, 'Status' => 0])) !== null) {
             return $model;
         }
-        throw new NotFoundHttpException('No Owner Exist by requested user.');
+        else{
+          $owner = new Owner();
+          $owner -> idPerson = $idUser;
+          $owner -> Description = "my_queue_".$idUser;
+          $owner -> save();
+          return $owner;
+        }
     }
     
     public function getUserOwner()
