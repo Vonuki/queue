@@ -36,7 +36,7 @@ class QueueController extends Controller
                 'rules' => [
                     [ 
                       'allow' => true, 
-                      'actions' => ['create-bu','index-bu', 'view-bu', 'update-bu'], 
+                      'actions' => ['create-bu','index', 'view', 'update-bu'], 
                       'roles' => ['@']
                     ],
                     [
@@ -54,58 +54,44 @@ class QueueController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-          'query' => Queue::find(),       
-        ]);
-        
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
+        if(Yii::$app->user->identity->isAdmin){
+            $dataProvider = new ActiveDataProvider([
+              'query' => Queue::find(),       
+            ]);
+
+            return $this->render('index', [
+                'dataProvider' => $dataProvider,
+            ]);
+        }
+        else{
+            $owner_temp = Owner::getUserOwner();   
+            $dataProvider = new ActiveDataProvider([
+              'query' => Queue::find()->where(['idOwner' => $owner_temp->idOwner]),       
+            ]);
+
+            return $this->render('index_bu', [
+                'dataProvider' => $dataProvider,
+            ]);
+        }
     }
-  
+    
     /**
-     * Lists all Queue models owned by user.
-     * @return mixed
-     */
-    public function actionIndexBu()
-    {   
-        $owner_temp = Owner::findByUser(Yii::$app->user->identity->id);   
-        $dataProvider = new ActiveDataProvider([
-          'query' => Queue::find()->where(['idOwner' => $owner_temp->idOwner]),       
-        ]);
-      
-        return $this->render('index_bu', [
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-  
-    /**
-     * Displays a single Queue model.
+     * Displays a single Queue model if it owned by user or for Admin.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-  
-    /**
-     * Displays a single Queue model if it owned by user.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionViewBu($id)
-    {
-        $owner_temp = Owner::findByUser(Yii::$app->user->identity->id);   
+        $owner_temp = Owner::getUserOwner();   
         $queue_model = $this->findModel($id);
         if ($queue_model->idOwner == $owner_temp->idOwner){
           return $this->render('view_bu', [
             'model' => $queue_model,
           ]);  
+        }
+        elseif(Yii::$app->user->identity->isAdmin){
+          return $this->render('view', ['model' => $queue_models]);
         }
         else{
           throw new NotFoundHttpException('The requested page does not exist.');

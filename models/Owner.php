@@ -70,9 +70,23 @@ class Owner extends \yii\db\ActiveRecord
   
     public function findByUser($idUser)
     {
-        if (($model = Owner::findOne(['idPerson' => $idUser])) !== null) {
+        if (($model = self::findOne(['idPerson' => $idUser])) !== null) {
             return $model;
         }
-        throw new NotFoundHttpException('No Owner Exist by erquested user.');
+        throw new NotFoundHttpException('No Owner Exist by requested user.');
     }
+    
+    public function getUserOwner()
+    {
+        $session = Yii::$app->session;  
+        if (isset($session['user_owner'])){
+          $model = $session['user_owner']; 
+        }
+        else{
+          $model =  self::findByUser(Yii::$app->user->identity->id);
+          $session['user_owner'] = $model;
+        }
+        return $model;
+    }
+  
 }
