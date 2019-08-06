@@ -115,18 +115,6 @@ AppAsset::register($this);
     </div>
 </div>
   
-<div>
-  <?php 
-    if(isset(Yii::$app->user->identity)){
-      $current_user_id = Yii::$app->user->identity->id;
-      var_dump($current_user_id);
-      $owners = Owner::findOne(['idPerson' => $current_user_id, 'Status' => 0]);
-      var_dump($owners);
-    }
-  
-  ?>
-</div>
-  
 <footer class="footer">
     <div class="container">
         <p class="pull-left">&copy; EasyQueue <?= date('Y') ?></p>

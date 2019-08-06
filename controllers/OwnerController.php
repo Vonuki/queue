@@ -8,6 +8,8 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use dektrium\user\filters\AccessRule;
 
 /**
  * OwnerController implements the CRUD actions for Owner model.
@@ -26,6 +28,23 @@ class OwnerController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => AccessRule::className(),
+                ],
+                'rules' => [
+                    [ 
+                      'allow' => true, 
+                      'actions' => ['index', 'view', 'update'], 
+                      'roles' => ['@']
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['admin']
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -34,14 +53,22 @@ class OwnerController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Owner::find(),
-        ]);
+    {    
+        if(Yii::$app->user->identity->isAdmin){
+            $dataProvider = new ActiveDataProvider(['query' => Owner::find(),]);
 
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', ['dataProvider' => $dataProvider,]);
+        }
+        else{
+            $dataProvider = new ActiveDataProvider([
+              'query' => Owner::find()->where(['idPerson' => Yii::$app->user->identity->id]),       
+            ]);
+
+            return $this->render('index_bu', [
+                'dataProvider' => $dataProvider,
+            ]);
+        }
+      
     }
 
     /**
@@ -52,9 +79,13 @@ class OwnerController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = $this->findAvailableModel($id);
+        if(Yii::$app->user->identity->isAdmin){
+          return $this->render('view', ['model' => $model]);
+        }
+        else{
+          return $this->render('view_bu', ['model' => $model,]);  
+        }  
     }
 
     /**
@@ -83,16 +114,18 @@ class OwnerController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
+    { 
+        $model = $this->findAvailableModel($id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idOwner]);
+            return $this->redirect(['view', 'id' => $model->idQueue]);
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        if(Yii::$app->user->identity->isAdmin){
+            return $this->render('update', ['model' => $model,]);   
+        }
+        else{
+            return $this->render('update_bu', ['model' => $model,]); 
+        }
     }
 
     /**
@@ -122,6 +155,17 @@ class OwnerController extends Controller
             return $model;
         }
 
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+  
+    protected function findAvailableModel($id) {
+        
+        $model = $this->findModel($id);
+        $owner_model = Owner::getUserOwner();
+        if ($model->idOwner == $owner_model->idOwner or Yii::$app->user->identity->isAdmin){
+            return $model;
+        }
+      
         throw new NotFoundHttpException('The requested page does not exist.');
     }
  
