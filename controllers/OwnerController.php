@@ -13,6 +13,10 @@ use dektrium\user\filters\AccessRule;
 
 /**
  * OwnerController implements the CRUD actions for Owner model.
+ *  
+ * Status:
+ * 0 - Active
+ * 1 - Archived
  */
 class OwnerController extends Controller
 {
@@ -117,7 +121,7 @@ class OwnerController extends Controller
     { 
         $model = $this->findAvailableModel($id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idQueue]);
+            return $this->redirect(['view', 'id' => $model->idOwner]);
         }
 
         if(Yii::$app->user->identity->isAdmin){
@@ -127,6 +131,23 @@ class OwnerController extends Controller
             return $this->render('update_bu', ['model' => $model,]); 
         }
     }
+  
+    /**
+     * Archived an existing Owner model.(Status => 1)
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionArchive($id)
+    { 
+        $model = $this->findAvailableModel($id);
+        $model->Status = 1;
+        $model->save();
+        return $this->redirect(['index']);
+    }
+  
+    
 
     /**
      * Deletes an existing Owner model.

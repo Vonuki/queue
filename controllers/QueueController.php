@@ -56,7 +56,6 @@ class QueueController extends Controller
     {
         if(Yii::$app->user->identity->isAdmin){
             $dataProvider = new ActiveDataProvider(['query' => Queue::find(),]);
-
             return $this->render('index', ['dataProvider' => $dataProvider,]);
         }
         else{
@@ -64,7 +63,6 @@ class QueueController extends Controller
             $dataProvider = new ActiveDataProvider([
               'query' => Queue::find()->where(['idOwner' => $owner_temp->idOwner]),       
             ]);
-
             return $this->render('index_bu', [
                 'dataProvider' => $dataProvider,
             ]);
@@ -176,6 +174,9 @@ class QueueController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
   
+    /**
+    * Find Queue Model if user is owner or Admin
+    */
     protected function findAvailableModel($id) {
         
         $model = $this->findModel($id);

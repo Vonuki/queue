@@ -82,6 +82,9 @@ class Owner extends \yii\db\ActiveRecord
         }
     }
     
+    /** 
+    * Return Owner Model for loged in user ( from session or from DB)
+    */
     public function getUserOwner()
     {
         $session = Yii::$app->session;  
