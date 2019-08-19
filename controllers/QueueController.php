@@ -104,6 +104,8 @@ class QueueController extends Controller
           $model->QueueShare = 0; //private queue
           $model->QueueLen = 0; //curretn lentgh of queue
           $model->Status = 0; //status 
+          $model->AvgTime = 0;//Average time in minutes
+          $model->AutoTake = 1; // if new item will take aotomaticaly
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

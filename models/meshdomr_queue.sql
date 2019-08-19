@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 
+-- version 4.5.4.1deb2ubuntu2.1
 -- http://www.phpmyadmin.net
 --
--- Host: meshdomr.mysql
--- Generation Time: Jul 01, 2019 at 08:18 PM
--- Server version: 5.6.41-84.1
--- PHP Version: 5.6.6
+-- Host: localhost
+-- Generation Time: Aug 19, 2019 at 01:53 AM
+-- Server version: 5.7.23-0ubuntu0.16.04.1
+-- PHP Version: 7.2.11-2+ubuntu16.04.1+deb.sury.org+1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `meshdomr_queue`
@@ -25,11 +25,8 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `Client`
 --
--- Creation: Jul 01, 2019 at 05:16 PM
---
 
-DROP TABLE IF EXISTS `Client`;
-CREATE TABLE IF NOT EXISTS `Client` (
+CREATE TABLE `Client` (
   `idClient` int(11) NOT NULL,
   `Description` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `idPerson` int(11) NOT NULL,
@@ -41,11 +38,8 @@ CREATE TABLE IF NOT EXISTS `Client` (
 --
 -- Table structure for table `Item`
 --
--- Creation: Jul 01, 2019 at 05:17 PM
---
 
-DROP TABLE IF EXISTS `Item`;
-CREATE TABLE IF NOT EXISTS `Item` (
+CREATE TABLE `Item` (
   `idItem` int(11) NOT NULL,
   `idQueue` int(11) NOT NULL,
   `idClient` int(11) NOT NULL,
@@ -61,11 +55,8 @@ CREATE TABLE IF NOT EXISTS `Item` (
 --
 -- Table structure for table `migration`
 --
--- Creation: Jun 25, 2019 at 08:52 PM
---
 
-DROP TABLE IF EXISTS `migration`;
-CREATE TABLE IF NOT EXISTS `migration` (
+CREATE TABLE `migration` (
   `version` varchar(180) COLLATE utf8_unicode_ci NOT NULL,
   `apply_time` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -94,27 +85,29 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 --
 -- Table structure for table `Owner`
 --
--- Creation: Jul 01, 2019 at 05:16 PM
---
 
-DROP TABLE IF EXISTS `Owner`;
-CREATE TABLE IF NOT EXISTS `Owner` (
+CREATE TABLE `Owner` (
   `idOwner` int(11) NOT NULL,
   `Description` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `idPerson` int(11) NOT NULL,
   `Status` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `Owner`
+--
+
+INSERT INTO `Owner` (`idOwner`, `Description`, `idPerson`, `Status`) VALUES
+(1, 'Admin Company', 1, 0),
+(4, 'vonukiy_queues', 2, 0);
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `profile`
 --
--- Creation: Jun 25, 2019 at 08:52 PM
---
 
-DROP TABLE IF EXISTS `profile`;
-CREATE TABLE IF NOT EXISTS `profile` (
+CREATE TABLE `profile` (
   `user_id` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `public_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -131,37 +124,42 @@ CREATE TABLE IF NOT EXISTS `profile` (
 --
 
 INSERT INTO `profile` (`user_id`, `name`, `public_email`, `gravatar_email`, `gravatar_id`, `location`, `website`, `bio`, `timezone`) VALUES
-(1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `Queue`
 --
--- Creation: Jul 01, 2019 at 05:17 PM
---
 
-DROP TABLE IF EXISTS `Queue`;
-CREATE TABLE IF NOT EXISTS `Queue` (
+CREATE TABLE `Queue` (
   `idQueue` int(11) NOT NULL,
   `Description` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `QueueShare` int(11) NOT NULL,
   `idOwner` int(11) NOT NULL,
   `FirstItem` int(11) NOT NULL,
   `QueueLen` int(11) NOT NULL,
-  `Status` int(11) NOT NULL DEFAULT '0'
+  `Status` int(11) NOT NULL DEFAULT '0',
+  `AvgMin` int(11) DEFAULT NULL,
+  `AutoTake` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `Queue`
+--
+
+INSERT INTO `Queue` (`idQueue`, `Description`, `QueueShare`, `idOwner`, `FirstItem`, `QueueLen`, `Status`, `AvgMin`, `AutoTake`) VALUES
+(1, 'Admin  Queue 01', 0, 1, 0, 0, 0, NULL, NULL),
+(3, 'Some Queue', 0, 4, 0, 0, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `social_account`
 --
--- Creation: Jun 25, 2019 at 08:52 PM
---
 
-DROP TABLE IF EXISTS `social_account`;
-CREATE TABLE IF NOT EXISTS `social_account` (
+CREATE TABLE `social_account` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `provider` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -178,11 +176,8 @@ CREATE TABLE IF NOT EXISTS `social_account` (
 --
 -- Table structure for table `token`
 --
--- Creation: Jun 25, 2019 at 08:52 PM
---
 
-DROP TABLE IF EXISTS `token`;
-CREATE TABLE IF NOT EXISTS `token` (
+CREATE TABLE `token` (
   `user_id` int(11) NOT NULL,
   `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` int(11) NOT NULL,
@@ -194,11 +189,8 @@ CREATE TABLE IF NOT EXISTS `token` (
 --
 -- Table structure for table `user`
 --
--- Creation: Jun 25, 2019 at 08:52 PM
---
 
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE IF NOT EXISTS `user` (
+CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -212,14 +204,15 @@ CREATE TABLE IF NOT EXISTS `user` (
   `updated_at` int(11) NOT NULL,
   `flags` int(11) NOT NULL DEFAULT '0',
   `last_login_at` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `username`, `email`, `password_hash`, `auth_key`, `confirmed_at`, `unconfirmed_email`, `blocked_at`, `registration_ip`, `created_at`, `updated_at`, `flags`, `last_login_at`) VALUES
-(1, 'admin', 'vonuki@gmail.com', '$2y$10$IqXVr2tNWdNi5dOHVW1YAeFvmY1FBaYs46z6Fgkmnw10DaZDt3oLG', '8iPrHS5L-Dh0Ve0sTf30u8DpDtP1ifPi', 1561662050, NULL, NULL, '194.246.46.15', 1561641238, 1561641238, 0, 1561988262);
+(1, 'admin', 'vonuki@gmail.com', '$2y$10$IqXVr2tNWdNi5dOHVW1YAeFvmY1FBaYs46z6Fgkmnw10DaZDt3oLG', '8iPrHS5L-Dh0Ve0sTf30u8DpDtP1ifPi', 1561662050, NULL, NULL, '194.246.46.15', 1561641238, 1561641238, 0, 1566193055),
+(2, 'vonukiy', 'vonuki@yandex.ru', '$2y$10$d2ka55Oabh0zt8UGdRlQdu5qFrKLVAbksYL82nIXEn3FDW16ut0qi', 'Cn0RgoQMi77shFtVubf96mRUeViJA6E7', 1562269978, NULL, NULL, '10.1.0.8', 1562269869, 1562269869, 0, 1565969526);
 
 --
 -- Indexes for dumped tables
@@ -229,13 +222,16 @@ INSERT INTO `user` (`id`, `username`, `email`, `password_hash`, `auth_key`, `con
 -- Indexes for table `Client`
 --
 ALTER TABLE `Client`
-  ADD PRIMARY KEY (`idClient`), ADD KEY `idPerson` (`idPerson`);
+  ADD PRIMARY KEY (`idClient`),
+  ADD KEY `idPerson` (`idPerson`);
 
 --
 -- Indexes for table `Item`
 --
 ALTER TABLE `Item`
-  ADD PRIMARY KEY (`idItem`), ADD KEY `idQueue` (`idQueue`), ADD KEY `idClient` (`idClient`);
+  ADD PRIMARY KEY (`idItem`),
+  ADD KEY `idQueue` (`idQueue`),
+  ADD KEY `idClient` (`idClient`);
 
 --
 -- Indexes for table `migration`
@@ -247,7 +243,8 @@ ALTER TABLE `migration`
 -- Indexes for table `Owner`
 --
 ALTER TABLE `Owner`
-  ADD PRIMARY KEY (`idOwner`), ADD KEY `idPerson` (`idPerson`);
+  ADD PRIMARY KEY (`idOwner`),
+  ADD KEY `idPerson` (`idPerson`);
 
 --
 -- Indexes for table `profile`
@@ -259,13 +256,17 @@ ALTER TABLE `profile`
 -- Indexes for table `Queue`
 --
 ALTER TABLE `Queue`
-  ADD PRIMARY KEY (`idQueue`), ADD KEY `idOwner` (`idOwner`);
+  ADD PRIMARY KEY (`idQueue`),
+  ADD KEY `idOwner` (`idOwner`);
 
 --
 -- Indexes for table `social_account`
 --
 ALTER TABLE `social_account`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `account_unique` (`provider`,`client_id`), ADD UNIQUE KEY `account_unique_code` (`code`), ADD KEY `fk_user_account` (`user_id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `account_unique` (`provider`,`client_id`),
+  ADD UNIQUE KEY `account_unique_code` (`code`),
+  ADD KEY `fk_user_account` (`user_id`);
 
 --
 -- Indexes for table `token`
@@ -277,7 +278,9 @@ ALTER TABLE `token`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `user_unique_username` (`username`), ADD UNIQUE KEY `user_unique_email` (`email`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_unique_username` (`username`),
+  ADD UNIQUE KEY `user_unique_email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -297,12 +300,12 @@ ALTER TABLE `Item`
 -- AUTO_INCREMENT for table `Owner`
 --
 ALTER TABLE `Owner`
-  MODIFY `idOwner` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idOwner` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `Queue`
 --
 ALTER TABLE `Queue`
-  MODIFY `idQueue` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idQueue` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `social_account`
 --
@@ -312,7 +315,7 @@ ALTER TABLE `social_account`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Constraints for dumped tables
 --
@@ -321,44 +324,44 @@ ALTER TABLE `user`
 -- Constraints for table `Client`
 --
 ALTER TABLE `Client`
-ADD CONSTRAINT `Client_ibfk_1` FOREIGN KEY (`idPerson`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `Client_ibfk_1` FOREIGN KEY (`idPerson`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `Item`
 --
 ALTER TABLE `Item`
-ADD CONSTRAINT `Item_ibfk_1` FOREIGN KEY (`idClient`) REFERENCES `Client` (`idClient`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `Item_ibfk_2` FOREIGN KEY (`idQueue`) REFERENCES `Queue` (`idQueue`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `Item_ibfk_1` FOREIGN KEY (`idClient`) REFERENCES `Client` (`idClient`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Item_ibfk_2` FOREIGN KEY (`idQueue`) REFERENCES `Queue` (`idQueue`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `Owner`
 --
 ALTER TABLE `Owner`
-ADD CONSTRAINT `Owner_ibfk_1` FOREIGN KEY (`idPerson`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `Owner_ibfk_1` FOREIGN KEY (`idPerson`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `profile`
 --
 ALTER TABLE `profile`
-ADD CONSTRAINT `fk_user_profile` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_user_profile` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `Queue`
 --
 ALTER TABLE `Queue`
-ADD CONSTRAINT `Queue_ibfk_1` FOREIGN KEY (`idOwner`) REFERENCES `Owner` (`idOwner`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `Queue_ibfk_1` FOREIGN KEY (`idOwner`) REFERENCES `Owner` (`idOwner`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `social_account`
 --
 ALTER TABLE `social_account`
-ADD CONSTRAINT `fk_user_account` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_user_account` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `token`
 --
 ALTER TABLE `token`
-ADD CONSTRAINT `fk_user_token` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_user_token` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

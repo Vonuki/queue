@@ -14,6 +14,8 @@ use Yii;
  * @property int $FirstItem
  * @property int $QueueLen
  * @property int $Status
+ * @property int $AvgMin
+ * @property int $AutoTake
  *
  * @property Item[] $items
  * @property Owner $owner
@@ -35,7 +37,7 @@ class Queue extends \yii\db\ActiveRecord
     {
         return [
             [['Description', 'QueueShare', 'idOwner', 'FirstItem', 'QueueLen'], 'required'],
-            [['QueueShare', 'idOwner', 'FirstItem', 'QueueLen', 'Status'], 'integer'],
+            [['QueueShare', 'idOwner', 'FirstItem', 'QueueLen', 'Status', 'AvgMin', 'AutoTake'], 'integer'],
             [['Description'], 'string', 'max' => 50],
             [['idOwner'], 'exist', 'skipOnError' => true, 'targetClass' => Owner::className(), 'targetAttribute' => ['idOwner' => 'idOwner']],
         ];
@@ -54,6 +56,8 @@ class Queue extends \yii\db\ActiveRecord
             'FirstItem' => 'First Item',
             'QueueLen' => 'Queue Len',
             'Status' => 'Status',
+            'AvgMin' => 'Avg Min',
+            'AutoTake' => 'Auto Take',
         ];
     }
 

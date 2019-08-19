@@ -23,6 +23,10 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'QueueLen')->textInput() ?>
 
     <?= $form->field($model, 'Status')->textInput() ?>
+  
+    <?= $form->field($model, 'AvgMin')->textInput() ?>
+  
+    <?= $form->field($model, 'AutoTake')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

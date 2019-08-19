@@ -36,6 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'FirstItem',
             'QueueLen',
             'Status',
+            'AvgMin',
+            'AutoTake',
         ],
     ]) ?>
 

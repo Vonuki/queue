@@ -24,6 +24,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Status')->hiddenInput()->label(false)  ?>
   
+    <?= $form->field($model, 'AvgMin')->textInput() ?>
+  
+    <?= $form->field($model, 'AutoTake')->textInput() ?>
+  
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
