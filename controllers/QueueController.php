@@ -36,7 +36,7 @@ class QueueController extends Controller
                 'rules' => [
                     [ 
                       'allow' => true, 
-                      'actions' => ['create','index', 'view', 'update', 'delete'], 
+                      'actions' => ['create','index', 'view', 'update', 'archive', ], 
                       'roles' => ['@']
                     ],
                     [
@@ -104,7 +104,7 @@ class QueueController extends Controller
           $model->QueueShare = 0; //private queue
           $model->QueueLen = 0; //curretn lentgh of queue
           $model->Status = 0; //status 
-          $model->AvgTime = 0;//Average time in minutes
+          $model->AvgMin = 0;//Average time in minutes
           $model->AutoTake = 1; // if new item will take aotomaticaly
         }
 
@@ -145,6 +145,30 @@ class QueueController extends Controller
             return $this->render('update_bu', ['model' => $model,]); 
         }
     }
+  
+    /**
+    * Set status for model Queue
+    */
+    public function StatusChange($id, $Status){
+        $model = $this->findAvailableModel($id);
+        $model->Status = $Status;
+        if($model->save()){
+          Yii::$app->session->setFlash('success', 'Queue Status changed');
+        }
+        else{
+          Yii::$app->session->setFlash('error', 'Action not performed');
+        }
+        return $this->actionIndex();
+    }
+  
+    public function actionArchive($id){
+        return $this->StatusChange($id, 1);
+    }
+    
+    public function actionPause($id){
+        $this->StatusChange($id, 2);
+    }
+  
 
     /**
      * Deletes an existing Queue model.

@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
  
     <?= $form->field($model, 'Description')->textInput(['maxlength' => true]) ?>
   
-    <?= $form->field($model, 'QueueShare')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'QueueShare')->textInput() ?>
 
     <?= $form->field($model, 'idOwner')->hiddenInput()->label(false) ?>
 
@@ -24,7 +24,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Status')->hiddenInput()->label(false)  ?>
   
-    <?= $form->field($model, 'AvgMin')->textInput() ?>
+    <?= $form->field($model, 'AvgMin')->hiddenInput()->label(false) ?>
   
     <?= $form->field($model, 'AutoTake')->textInput() ?>
   

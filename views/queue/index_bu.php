@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Queue', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
+ 
     <?php Pjax::begin(); ?>
 
     <?= GridView::widget([
@@ -24,7 +24,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'Description',
-            ['class' => 'yii\grid\ActionColumn'],
+            'Status',
+            ['class' => 'yii\grid\ActionColumn',
+             'template' => '{view} {update} {archive}',
+             'buttons' => [
+                'archive' => function ($url,$model,$key) {
+                    return Html::a('Archive', $url);
+                },
+            ],
+            ],
         ],
     ]); ?>
 
