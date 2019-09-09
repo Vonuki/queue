@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
+    <p> <?=Yii::t('common', 'Archive')  ?>
         <?= Html::a('Update', ['update', 'id' => $model->idQueue], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Archive', ['archive', 'id' => $model->idQueue], [
             'class' => 'btn btn-danger',

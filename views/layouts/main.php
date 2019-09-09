@@ -118,8 +118,8 @@ AppAsset::register($this);
   
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; EasyQueue <?= date('Y') ?></p>
-
+<!--         <p class="pull-left">&copy; EasyQueue <?= date('Y') ?></p> -->
+        <p class="pull-left">&copy; My Company <?= date('Y') ?> | <?= $this->render('select-language') ?></p>
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
 </footer>
