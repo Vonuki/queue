@@ -56,17 +56,14 @@ class QueueController extends Controller
     {
         if(Yii::$app->user->identity->isAdmin){
             $dataProvider = new ActiveDataProvider(['query' => Queue::find(),]);
-            return $this->render('index', ['dataProvider' => $dataProvider,]);
         }
         else{
             $owner_temp = Owner::getUserOwner();   
             $dataProvider = new ActiveDataProvider([
               'query' => Queue::find()->where(['idOwner' => $owner_temp->idOwner]),       
             ]);
-            return $this->render('index_bu', [
-                'dataProvider' => $dataProvider,
-            ]);
         }
+        return $this->render('index', ['dataProvider' => $dataProvider,]);
     }
     
     /**
@@ -107,16 +104,7 @@ class QueueController extends Controller
             return $this->redirect(['view', 'id' => $model->idQueue]);
         }
         
-        if(Yii::$app->user->identity->isAdmin){
-            return $this->render('create', [
-              'model' => $model,
-            ]);
-        }
-        else {
-            return $this->render('create_bu', [
-                'model' => $model,
-            ]);
-        }
+        return $this->render('create', ['model' => $model,]);
     }
 
     /**
@@ -130,19 +118,13 @@ class QueueController extends Controller
     {
         $model = $this->findAvailableModel($id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idQueue]);
+            return $this->redirect(['index', 'id' => $model->idQueue]);
         }
-
-        if(Yii::$app->user->identity->isAdmin){
-            return $this->render('update', ['model' => $model,]);   
-        }
-        else{
-            return $this->render('update_bu', ['model' => $model,]); 
-        }
+        return $this->render('update', ['model' => $model,]);   
     }
   
     /**
-    * Set status for model Queue
+    * Set status for model Queue - and direct actions
     */
     public function StatusChange($id, $Status){
         $model = $this->findAvailableModel($id);
@@ -155,13 +137,14 @@ class QueueController extends Controller
         }
         return $this->actionIndex();
     }
-  
     public function actionArchive($id){
         return $this->StatusChange($id, 1);
     }
-    
     public function actionPause($id){
         $this->StatusChange($id, 2);
+    }
+    public function actionActivate($id){
+        $this->StatusChange($id, 0);
     }
   
 

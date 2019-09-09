@@ -6,7 +6,7 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Queues';
+$this->title = Yii::t('lg_queue', 'Queues');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="queue-index">
@@ -18,20 +18,29 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php Pjax::begin(); ?>
-
+    <?php 
+          if (Yii::$app->user->identity->isAdmin) {$actions_string = '{view} {update} {archive} {delete}'; }
+          else{ $actions_string = '{view} {update} {archive}'; }
+    ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
             'idQueue',
             'Description',
             'QueueShare',
+            //[ 'attribute' => 'QueueShare', 'value' => function ($model, $key, $index, $column) { return $model->getQueueShareTxt(); },],
             'idOwner',
             'FirstItem',
-            //'QueueLen',
-            //'Status',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            'QueueLen',
+            'Status',
+            //[ 'attribute' => 'Status', 'value' => function ($model, $key, $index, $column) { return $model->getStatusTxt(); },],
+            ['class' => 'yii\grid\ActionColumn',
+             'template' => $actions_string,
+             'buttons' => [
+                'archive' => function ($url,$model,$key) { return Html::a('Archive', $url); },
+              ],
+            ],
         ],
     ]); ?>
 

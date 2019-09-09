@@ -24,6 +24,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a(Yii::t('lg_common', 'Pause'), ['pause', 'id' => $model->idQueue], [
+            'class' => 'btn btn-danger',
+            'data' => [ 'method' => 'post',],
+        ]) ?>
+        <?= Html::a(Yii::t('lg_common', 'Activate'), ['activate', 'id' => $model->idQueue], [
+            'class' => 'btn btn-danger',
+            'data' => [ 'method' => 'post',],
+        ]) ?>
         <?php 
           if(Yii::$app->user->identity->isAdmin){
             echo Html::a(Yii::t('lg_common', 'Delete'), ['delete', 'id' => $model->idQueue], [
@@ -42,15 +50,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'idQueue',
             'Description',
-            'QueueShare',
+            ['attribute' => 'QueueShare', 'format' => 'raw', 'value' => $model->getQueueShareTxt(), ],
             'idOwner',
             'FirstItem',
             'QueueLen',
-            [
-              'attribute' => 'Status',
-              'format' => 'raw',
-              'value' => $model->getStatusTxt(),
-            ],
+            ['attribute' => 'Status', 'format' => 'raw', 'value' => $model->getStatusTxt(), ],
             'AvgMin',
             'AutoTake',
         ],

@@ -22,6 +22,9 @@ use Yii;
  */
 class Queue extends \yii\db\ActiveRecord
 {
+    public $QueueShareLabels = array(0 => "Private / by link", 1 => "Visible for all");  
+    public $StatusLabels = array(0 => "Active", 1 => "Archived", 2 => "On Pause");  
+  
     /**
      * {@inheritdoc}
      */
@@ -82,21 +85,14 @@ class Queue extends \yii\db\ActiveRecord
      */
     public function getStatusTxt()
     {
-        $status = "";
-        switch ($this->Status) {
-          case 0:
-            $status = Yii::t('lg_queue', 'Active');
-            break;
-          case 1:
-            $status = Yii::t('lg_queue', 'Archived');
-            break;
-          case 2:
-            $status = Yii::t('lg_queue', 'On Pause');
-            break;
-         default:
-            $status =  Yii::t('lg_queue', 'Null');
-            break;
-        }  
-        return $status;
+        return $this->StatusLabels[$this->QueueShare];
+    }
+  
+    /**
+     * @return Text value for Share of Queue
+     */
+    public function getQueueShareTxt()
+    {
+        return $this->QueueShareLabels[$this->QueueShare];
     }
 }
