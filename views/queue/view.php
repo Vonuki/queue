@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Queue */
 
 $this->title = $model->idQueue;
-$this->params['breadcrumbs'][] = ['label' => 'Queues', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('lg_queue', 'Queues'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -16,14 +16,25 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->idQueue], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->idQueue], [
+        <?= Html::a(Yii::t('lg_common', 'Update'), ['update', 'id' => $model->idQueue], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('lg_common', 'Archive'), ['archive', 'id' => $model->idQueue], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Are you sure you want to archive this item?',
                 'method' => 'post',
             ],
         ]) ?>
+        <?php 
+          if(Yii::$app->user->identity->isAdmin){
+            echo Html::a(Yii::t('lg_common', 'Delete'), ['delete', 'id' => $model->idQueue], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                  'confirm' => 'Are you sure you want to delete this item?',
+                  'method' => 'post',
+                ],
+            ]);
+          }
+        ?>
     </p>
 
     <?= DetailView::widget([
@@ -35,7 +46,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'idOwner',
             'FirstItem',
             'QueueLen',
-            'Status',
+            [
+              'attribute' => 'Status',
+              'format' => 'raw',
+              'value' => $model->getStatusTxt(),
+            ],
             'AvgMin',
             'AutoTake',
         ],

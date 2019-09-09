@@ -49,15 +49,15 @@ class Queue extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idQueue' => 'Id Queue',
-            'Description' => 'Description',
-            'QueueShare' => 'Queue Share',
-            'idOwner' => 'Id Owner',
-            'FirstItem' => 'First Item',
-            'QueueLen' => 'Queue Len',
-            'Status' => 'Status',
-            'AvgMin' => 'Avg Min',
-            'AutoTake' => 'Auto Take',
+            'idQueue' => Yii::t('lg_queue', 'ID Queue'),
+            'Description' => Yii::t('lg_queue', 'Description'),
+            'QueueShare' => Yii::t('lg_queue', 'Queue Share'),
+            'idOwner' => Yii::t('lg_queue', 'Id Owner'),
+            'FirstItem' => Yii::t('lg_queue', 'First Item'),
+            'QueueLen' => Yii::t('lg_queue', 'Queue Lenght'),
+            'Status' => Yii::t('lg_queue', 'Status'),
+            'AvgMin' => Yii::t('lg_queue', 'Average tact time (min.)'),
+            'AutoTake' => Yii::t('lg_queue', 'Auto take next Item'),
         ];
     }
 
@@ -75,5 +75,28 @@ class Queue extends \yii\db\ActiveRecord
     public function getOwner()
     {
         return $this->hasOne(Owner::className(), ['idOwner' => 'idOwner']);
+    }
+  
+    /**
+     * @return Text value for Status of Queue
+     */
+    public function getStatusTxt()
+    {
+        $status = "";
+        switch ($this->Status) {
+          case 0:
+            $status = Yii::t('lg_queue', 'Active');
+            break;
+          case 1:
+            $status = Yii::t('lg_queue', 'Archived');
+            break;
+          case 2:
+            $status = Yii::t('lg_queue', 'On Pause');
+            break;
+         default:
+            $status =  Yii::t('lg_queue', 'Null');
+            break;
+        }  
+        return $status;
     }
 }

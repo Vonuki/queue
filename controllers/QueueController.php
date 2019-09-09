@@ -78,12 +78,7 @@ class QueueController extends Controller
     public function actionView($id)
     {
         $model = $this->findAvailableModel($id);
-        if(Yii::$app->user->identity->isAdmin){
-          return $this->render('view', ['model' => $model]);
-        }
-        else{
-          return $this->render('view_bu', ['model' => $model,]);  
-        }        
+        return $this->render('view', ['model' => $model,]);        
     }
 
     /**
