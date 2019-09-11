@@ -54,7 +54,7 @@ class Queue extends \yii\db\ActiveRecord
         return [
             'idQueue' => Yii::t('lg_queue', 'ID Queue'),
             'Description' => Yii::t('lg_queue', 'Description'),
-            'QueueShare' => Yii::t('lg_queue', 'Queue Share'),
+            'QueueShare' => Yii::t('lg_queue', 'Private | Public'),
             'idOwner' => Yii::t('lg_queue', 'Id Owner'),
             'FirstItem' => Yii::t('lg_queue', 'First Item'),
             'QueueLen' => Yii::t('lg_queue', 'Queue Lenght'),
@@ -85,7 +85,7 @@ class Queue extends \yii\db\ActiveRecord
      */
     public function getStatusTxt()
     {
-        return $this->StatusLabels[$this->QueueShare];
+        return $this->StatusLabels[$this->Status];
     }
   
     /**

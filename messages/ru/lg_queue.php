@@ -2,7 +2,7 @@
 
 return [
   'Queues' => 'Очереди',
-  'ID Queue' => 'ID Очереди',  
+  'ID Queue' => 'ID Очереди', 
 ];
 
 ?>

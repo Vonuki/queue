@@ -4,11 +4,12 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Queue;
+use app\models\Item;
+use app\models\Owner;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\Owner;
 use yii\filters\AccessControl;
 use dektrium\user\filters\AccessRule;
 /**
@@ -75,7 +76,10 @@ class QueueController extends Controller
     public function actionView($id)
     {
         $model = $this->findAvailableModel($id);
-        return $this->render('view', ['model' => $model,]);        
+        $ItemsProvider = new ActiveDataProvider([
+            'query' => Item::find()->where(['idQueue' => $model->idQueue]),
+        ]);
+        return $this->render('view', ['model' => $model,'ItemsProvider' => $ItemsProvider]);        
     }
 
     /**

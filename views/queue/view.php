@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Queue */
@@ -13,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="queue-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($this->title) ?></h3>
 
     <p>
         <?= Html::a(Yii::t('lg_common', 'Update'), ['update', 'id' => $model->idQueue], ['class' => 'btn btn-primary']) ?>
@@ -59,5 +60,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'AutoTake',
         ],
     ]) ?>
+  
+     <h3><?= Html::encode(Yii::t('lg_item', 'Items in queue')) ?></h3>
+  
+    <?= GridView::widget([
+        'dataProvider' => $ItemsProvider,
+        'columns' => [
+            'idItem',
+            'idQueue',
+            'idClient',
+            ['class' => 'yii\grid\ActionColumn',]
+        ],
+    ]); ?>
+
+  
+    
 
 </div>
