@@ -4,10 +4,13 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Item;
+use app\models\Owner;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use dektrium\user\filters\AccessRule;
 
 /**
  * ItemController implements the CRUD actions for Item model.
@@ -26,6 +29,23 @@ class ItemController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => AccessRule::className(),
+                ],
+                'rules' => [
+                    [ 
+                      'allow' => true, 
+                      'actions' => ['create','index', 'view', 'update', 'cancel', ], 
+                      'roles' => ['@']
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['admin']
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -35,10 +55,14 @@ class ItemController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Item::find(),
-        ]);
-
+        if(Yii::$app->user->identity->isAdmin){
+            $dataProvider = new ActiveDataProvider(['query' => Item::find(),]);
+        }
+        else{
+            $owner = Owner::getUserOwner();   
+            $dataProvider = new ActiveDataProvider(['query' => $owner->getItems(),]);
+        }
+      
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
@@ -52,8 +76,9 @@ class ItemController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findAvailableModel($id);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
@@ -66,13 +91,23 @@ class ItemController extends Controller
     {
         $model = new Item();
 
+        if(Yii::$app->user->identity->isAdmin){}
+        else{
+          $owner = Owner::getUserOwner();
+          $model->idClient = $owner->idOwner;
+          $model->idQueue = 0;
+          $model->Status = 0; //status 
+          $model->CreateDate =  date("Y-m-d H:i",time());
+          $model->StatusDate = date("Y-m-d H:i",time());
+          $model->RestTime = 0; 
+          $model->Position = 0;
+        }   
+      
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idItem]);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->render('create', ['model' => $model,]);
     }
 
     /**
@@ -84,15 +119,13 @@ class ItemController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findAvailableModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idItem]);
+            return $this->redirect(['index', 'id' => $model->idItem]);
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->render('update', ['model' => $model,]);
     }
 
     /**
@@ -104,9 +137,27 @@ class ItemController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $this->findAvailableModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+  
+    /**
+    * Set status for model Queue - and direct actions
+    */
+    public function StatusChange($id, $Status){
+        $model = $this->findAvailableModel($id);
+        $model->Status = $Status;
+        if($model->save()){
+          Yii::$app->session->setFlash('success', 'Queue Status changed');
+        }
+        else{
+          Yii::$app->session->setFlash('error', 'Action not performed');
+        }
+        return $this->actionIndex();
+    }
+    public function actionCancel($id){
+        return $this->StatusChange($id, 1);
     }
 
     /**
@@ -122,6 +173,20 @@ class ItemController extends Controller
             return $model;
         }
 
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+  
+    /**
+    * Find Model if user is owner or Admin
+    */
+    protected function findAvailableModel($id) {
+        
+        $model = $this->findModel($id);
+        $owner = Owner::getUserOwner();
+        if ($model->idClient == $owner->idOwner or Yii::$app->user->identity->isAdmin){
+            return $model;
+        }
+      
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

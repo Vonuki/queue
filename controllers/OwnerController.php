@@ -60,18 +60,14 @@ class OwnerController extends Controller
     {    
         if(Yii::$app->user->identity->isAdmin){
             $dataProvider = new ActiveDataProvider(['query' => Owner::find(),]);
-
-            return $this->render('index', ['dataProvider' => $dataProvider,]);
         }
         else{
             $dataProvider = new ActiveDataProvider([
               'query' => Owner::find()->where(['idPerson' => Yii::$app->user->identity->id]),       
             ]);
-
-            return $this->render('index_bu', [
-                'dataProvider' => $dataProvider,
-            ]);
         }
+        
+        return $this->render('index', ['dataProvider' => $dataProvider,]);
       
     }
 
@@ -84,12 +80,7 @@ class OwnerController extends Controller
     public function actionView($id)
     {
         $model = $this->findAvailableModel($id);
-        if(Yii::$app->user->identity->isAdmin){
-          return $this->render('view', ['model' => $model]);
-        }
-        else{
-          return $this->render('view_bu', ['model' => $model,]);  
-        }  
+        return $this->render('view', ['model' => $model]);  
     }
 
     /**
@@ -124,12 +115,7 @@ class OwnerController extends Controller
             return $this->redirect(['view', 'id' => $model->idOwner]);
         }
 
-        if(Yii::$app->user->identity->isAdmin){
-            return $this->render('update', ['model' => $model,]);   
-        }
-        else{
-            return $this->render('update_bu', ['model' => $model,]); 
-        }
+        return $this->render('update', ['model' => $model,]);
     }
   
     /**

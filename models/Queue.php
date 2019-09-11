@@ -52,15 +52,15 @@ class Queue extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idQueue' => Yii::t('lg_queue', 'ID Queue'),
-            'Description' => Yii::t('lg_queue', 'Description'),
-            'QueueShare' => Yii::t('lg_queue', 'Private | Public'),
-            'idOwner' => Yii::t('lg_queue', 'Id Owner'),
-            'FirstItem' => Yii::t('lg_queue', 'First Item'),
-            'QueueLen' => Yii::t('lg_queue', 'Queue Lenght'),
-            'Status' => Yii::t('lg_queue', 'Status'),
-            'AvgMin' => Yii::t('lg_queue', 'Average tact time (min.)'),
-            'AutoTake' => Yii::t('lg_queue', 'Auto take next Item'),
+            'idQueue' => Yii::t('lg_common', 'ID Queue'),
+            'Description' => Yii::t('lg_common', 'Description'),
+            'QueueShare' => Yii::t('lg_common', 'Private | Public'),
+            'idOwner' => Yii::t('lg_common', 'Id Owner'),
+            'FirstItem' => Yii::t('lg_common', 'First Item'),
+            'QueueLen' => Yii::t('lg_common', 'Queue Lenght'),
+            'Status' => Yii::t('lg_common', 'Status'),
+            'AvgMin' => Yii::t('lg_common', 'Average tact time (min.)'),
+            'AutoTake' => Yii::t('lg_common', 'Auto take next Item'),
         ];
     }
 

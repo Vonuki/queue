@@ -12,24 +12,35 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="owner-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Owner', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    
+    <?php if(Yii::$app->user->identity->isAdmin){ ?>
+      <p>
+          <?= Html::a('Create Owner', ['create'], ['class' => 'btn btn-success']) ?>
+      </p>
+    <?php }?>
 
     <?php Pjax::begin(); ?>
+  
+     <?php 
+          if (Yii::$app->user->identity->isAdmin) {
+              $actions_string = '{view} {update} {delete}'; 
+          }
+          else{ 
+              $actions_string = '{view} {update}'; 
+          }
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
+        'columns' => [            
             'idOwner',
             'Description',
             'idPerson',
             'Status',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            
+            ['class' => 'yii\grid\ActionColumn',
+              'template' => $actions_string,
+            ],
         ],
     ]); ?>
 

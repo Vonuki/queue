@@ -6,7 +6,7 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('lg_queue', 'Queues');
+$this->title = Yii::t('lg_common', 'Queues');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="queue-index">

@@ -13,6 +13,7 @@ use Yii;
  * @property int $idPerson
  * @property int $Status
  *
+ * @property Item[] $items
  * @property User $person
  * @property Queue[] $queues
  */
@@ -45,11 +46,19 @@ class Owner extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idOwner' => 'Id Owner',
-            'Description' => 'Description',
-            'idPerson' => 'Id Person',
-            'Status' => 'Status',
+            'idOwner' => Yii::t('lg_common', 'Id Owner'),
+            'Description' => Yii::t('lg_common', 'Description'),
+            'idPerson' => Yii::t('lg_common', 'Id Person'),
+            'Status' => Yii::t('lg_common', 'Status'),
         ];
+    }
+  
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getItems()
+    {
+        return $this->hasMany(Item::className(), ['idClient' => 'idOwner']);
     }
 
     /**

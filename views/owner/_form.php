@@ -14,7 +14,14 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'idPerson')->textInput() ?>
+     <?php
+      if(Yii::$app->user->identity->isAdmin){
+        echo $form->field($model, 'idPerson')->textInput();
+      }
+      else {
+        echo $form->field($model, 'idPerson')->hiddenInput()->label(false);
+      }
+    ?>
 
     <?= $form->field($model, 'Status')->textInput() ?>
 

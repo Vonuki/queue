@@ -17,14 +17,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->idOwner], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Archive', ['archive', 'id' => $model->idOwner], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->idOwner], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php
+          if(Yii::$app->user->identity->isAdmin){
+            echo Html::a('Delete', ['delete', 'id' => $model->idOwner], [
+              'class' => 'btn btn-danger',
+              'data' => [
+                  'confirm' => 'Are you sure you want to delete this item?',
+                  'method' => 'post',
+              ],
+            ]);
+          }
+         ?>
     </p>
 
     <?= DetailView::widget([

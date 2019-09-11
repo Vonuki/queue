@@ -8,7 +8,7 @@ use yii\grid\GridView;
 /* @var $model app\models\Queue */
 
 $this->title = $model->idQueue;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('lg_queue', 'Queues'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('lg_common', 'Queues'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
   
-     <h3><?= Html::encode(Yii::t('lg_item', 'Items in queue')) ?></h3>
+     <h3><?= Html::encode(Yii::t('lg_common', 'Items in queue')) ?></h3>
   
     <?= GridView::widget([
         'dataProvider' => $ItemsProvider,

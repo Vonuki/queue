@@ -61,7 +61,8 @@ class QueueController extends Controller
         else{
             $owner_temp = Owner::getUserOwner();   
             $dataProvider = new ActiveDataProvider([
-              'query' => Queue::find()->where(['idOwner' => $owner_temp->idOwner]),       
+              //'query' => Queue::find()->where(['idOwner' => $owner_temp->idOwner]),       
+              'query' => $owner_temp->getQueues(),       
             ]);
         }
         return $this->render('index', ['dataProvider' => $dataProvider,]);
@@ -76,9 +77,7 @@ class QueueController extends Controller
     public function actionView($id)
     {
         $model = $this->findAvailableModel($id);
-        $ItemsProvider = new ActiveDataProvider([
-            'query' => $model->getItems(),
-        ]);
+        $ItemsProvider = new ActiveDataProvider(['query' => $model->getItems(),]);
         return $this->render('view', ['model' => $model,'ItemsProvider' => $ItemsProvider]);        
     }
 

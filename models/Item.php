@@ -49,14 +49,14 @@ class Item extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idItem' => Yii::t('lg_item', 'Id Item'),
-            'idQueue' => Yii::t('lg_item', 'Id Queue'),
-            'idClient' => Yii::t('lg_item', 'Id Client'),
-            'Status' => Yii::t('lg_item', 'Status'),
-            'CreateDate' => Yii::t('lg_item', 'Create Date'),
-            'StatusDate' => Yii::t('lg_item', 'Status Date'),
-            'RestTime' => Yii::t('lg_item', 'Rest Time'),
-            'Position' => Yii::t('lg_item', 'Position'),
+            'idItem' => Yii::t('lg_common', 'Id Item'),
+            'idQueue' => Yii::t('lg_common', 'Id Queue'),
+            'idClient' => Yii::t('lg_common', 'Id Client'),
+            'Status' => Yii::t('lg_common', 'Status'),
+            'CreateDate' => Yii::t('lg_common', 'Create Date'),
+            'StatusDate' => Yii::t('lg_common', 'Status Date'),
+            'RestTime' => Yii::t('lg_common', 'Rest Time'),
+            'Position' => Yii::t('lg_common', 'Position'),
         ];
     }
 

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\datetime\DateTimePicker
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Item */
@@ -17,10 +18,24 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'idClient')->textInput() ?>
 
     <?= $form->field($model, 'Status')->textInput() ?>
-
-    <?= $form->field($model, 'CreateDate')->textInput() ?>
-
-    <?= $form->field($model, 'StatusDate')->textInput() ?>
+  
+    <?= $form->field($model, 'CreateDate')->widget(DateTimePicker::classname(), [
+          'options' => ['placeholder' => 'Enter event time ...'],
+          'pluginOptions' => [
+            'autoclose' => true,
+            'todayHighlight' => true
+          ]
+        ]) 
+    ?>
+  
+     <?= $form->field($model, 'StatusDate')->widget(DateTimePicker::classname(), [
+          'options' => ['placeholder' => 'Enter event time ...'],
+          'pluginOptions' => [
+            'autoclose' => true,
+            'todayHighlight' => true
+          ]
+        ]) 
+    ?>
 
     <?= $form->field($model, 'RestTime')->textInput() ?>
 
