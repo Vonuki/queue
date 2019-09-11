@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 19, 2019 at 01:53 AM
+-- Generation Time: Sep 11, 2019 at 02:50 PM
 -- Server version: 5.7.23-0ubuntu0.16.04.1
 -- PHP Version: 7.2.11-2+ubuntu16.04.1+deb.sury.org+1
 
@@ -23,19 +23,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Client`
---
-
-CREATE TABLE `Client` (
-  `idClient` int(11) NOT NULL,
-  `Description` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `idPerson` int(11) NOT NULL,
-  `Status` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `Item`
 --
 
@@ -49,6 +36,13 @@ CREATE TABLE `Item` (
   `RestTime` time NOT NULL,
   `Position` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `Item`
+--
+
+INSERT INTO `Item` (`idItem`, `idQueue`, `idClient`, `Status`, `CreateDate`, `StatusDate`, `RestTime`, `Position`) VALUES
+(1, 1, 1, 0, '2019-01-01 05:00:00', '2019-01-01 05:00:00', '00:00:10', 1);
 
 -- --------------------------------------------------------
 
@@ -151,7 +145,9 @@ CREATE TABLE `Queue` (
 
 INSERT INTO `Queue` (`idQueue`, `Description`, `QueueShare`, `idOwner`, `FirstItem`, `QueueLen`, `Status`, `AvgMin`, `AutoTake`) VALUES
 (1, 'Admin  Queue 01', 0, 1, 0, 0, 0, NULL, NULL),
-(3, 'Some Queue', 0, 4, 0, 0, 0, NULL, NULL);
+(3, 'Some Queue', 0, 4, 0, 0, 0, 0, 0),
+(4, 'Queue 3', 0, 4, 0, 0, 2, 0, 1),
+(5, 'Queue for Jit Tracks', 0, 4, 0, 0, 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -211,19 +207,12 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `email`, `password_hash`, `auth_key`, `confirmed_at`, `unconfirmed_email`, `blocked_at`, `registration_ip`, `created_at`, `updated_at`, `flags`, `last_login_at`) VALUES
-(1, 'admin', 'vonuki@gmail.com', '$2y$10$IqXVr2tNWdNi5dOHVW1YAeFvmY1FBaYs46z6Fgkmnw10DaZDt3oLG', '8iPrHS5L-Dh0Ve0sTf30u8DpDtP1ifPi', 1561662050, NULL, NULL, '194.246.46.15', 1561641238, 1561641238, 0, 1566193055),
-(2, 'vonukiy', 'vonuki@yandex.ru', '$2y$10$d2ka55Oabh0zt8UGdRlQdu5qFrKLVAbksYL82nIXEn3FDW16ut0qi', 'Cn0RgoQMi77shFtVubf96mRUeViJA6E7', 1562269978, NULL, NULL, '10.1.0.8', 1562269869, 1562269869, 0, 1565969526);
+(1, 'admin', 'vonuki@gmail.com', '$2y$10$IqXVr2tNWdNi5dOHVW1YAeFvmY1FBaYs46z6Fgkmnw10DaZDt3oLG', '8iPrHS5L-Dh0Ve0sTf30u8DpDtP1ifPi', 1561662050, NULL, NULL, '194.246.46.15', 1561641238, 1561641238, 0, 1568224786),
+(2, 'vonukiy', 'vonuki@yandex.ru', '$2y$10$d2ka55Oabh0zt8UGdRlQdu5qFrKLVAbksYL82nIXEn3FDW16ut0qi', 'Cn0RgoQMi77shFtVubf96mRUeViJA6E7', 1562269978, NULL, NULL, '10.1.0.8', 1562269869, 1562269869, 0, 1568217925);
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `Client`
---
-ALTER TABLE `Client`
-  ADD PRIMARY KEY (`idClient`),
-  ADD KEY `idPerson` (`idPerson`);
 
 --
 -- Indexes for table `Item`
@@ -287,15 +276,10 @@ ALTER TABLE `user`
 --
 
 --
--- AUTO_INCREMENT for table `Client`
---
-ALTER TABLE `Client`
-  MODIFY `idClient` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT for table `Item`
 --
 ALTER TABLE `Item`
-  MODIFY `idItem` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idItem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `Owner`
 --
@@ -305,7 +289,7 @@ ALTER TABLE `Owner`
 -- AUTO_INCREMENT for table `Queue`
 --
 ALTER TABLE `Queue`
-  MODIFY `idQueue` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idQueue` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `social_account`
 --
@@ -321,16 +305,10 @@ ALTER TABLE `user`
 --
 
 --
--- Constraints for table `Client`
---
-ALTER TABLE `Client`
-  ADD CONSTRAINT `Client_ibfk_1` FOREIGN KEY (`idPerson`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `Item`
 --
 ALTER TABLE `Item`
-  ADD CONSTRAINT `Item_ibfk_1` FOREIGN KEY (`idClient`) REFERENCES `Client` (`idClient`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Item_ibfk_1` FOREIGN KEY (`idClient`) REFERENCES `Owner` (`idOwner`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `Item_ibfk_2` FOREIGN KEY (`idQueue`) REFERENCES `Queue` (`idQueue`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

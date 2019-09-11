@@ -77,7 +77,7 @@ class QueueController extends Controller
     {
         $model = $this->findAvailableModel($id);
         $ItemsProvider = new ActiveDataProvider([
-            'query' => Item::find()->where(['idQueue' => $model->idQueue]),
+            'query' => $model->getItems(),
         ]);
         return $this->render('view', ['model' => $model,'ItemsProvider' => $ItemsProvider]);        
     }

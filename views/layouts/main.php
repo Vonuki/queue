@@ -79,7 +79,6 @@ AppAsset::register($this);
                   'options'=>['class'=>'dropdown'],
                   'items' => [
                     ['label' => 'Owner info', 'url' => ['owner/index']],
-                    ['label' => 'Clients', 'url' => ['client/index']],
                     ['label' => 'My Queues', 'url' => ['queue/index']],
                     ['label' => 'Items', 'url' => ['item/index']],
                   ]

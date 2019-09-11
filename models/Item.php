@@ -16,7 +16,7 @@ use Yii;
  * @property string $RestTime
  * @property int $Position
  *
- * @property Client $client
+ * @property Owner $client
  * @property Queue $queue
  */
 class Item extends \yii\db\ActiveRecord
@@ -38,7 +38,7 @@ class Item extends \yii\db\ActiveRecord
             [['idQueue', 'idClient', 'Status', 'RestTime', 'Position'], 'required'],
             [['idQueue', 'idClient', 'Status', 'Position'], 'integer'],
             [['CreateDate', 'StatusDate', 'RestTime'], 'safe'],
-            [['idClient'], 'exist', 'skipOnError' => true, 'targetClass' => Client::className(), 'targetAttribute' => ['idClient' => 'idClient']],
+            [['idClient'], 'exist', 'skipOnError' => true, 'targetClass' => Owner::className(), 'targetAttribute' => ['idClient' => 'idOwner']],
             [['idQueue'], 'exist', 'skipOnError' => true, 'targetClass' => Queue::className(), 'targetAttribute' => ['idQueue' => 'idQueue']],
         ];
     }
@@ -49,14 +49,14 @@ class Item extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idItem' => 'Id Item',
-            'idQueue' => 'Id Queue',
-            'idClient' => 'Id Client',
-            'Status' => 'Status',
-            'CreateDate' => 'Create Date',
-            'StatusDate' => 'Status Date',
-            'RestTime' => 'Rest Time',
-            'Position' => 'Position',
+            'idItem' => Yii::t('lg_item', 'Id Item'),
+            'idQueue' => Yii::t('lg_item', 'Id Queue'),
+            'idClient' => Yii::t('lg_item', 'Id Client'),
+            'Status' => Yii::t('lg_item', 'Status'),
+            'CreateDate' => Yii::t('lg_item', 'Create Date'),
+            'StatusDate' => Yii::t('lg_item', 'Status Date'),
+            'RestTime' => Yii::t('lg_item', 'Rest Time'),
+            'Position' => Yii::t('lg_item', 'Position'),
         ];
     }
 
@@ -65,7 +65,7 @@ class Item extends \yii\db\ActiveRecord
      */
     public function getClient()
     {
-        return $this->hasOne(Client::className(), ['idClient' => 'idClient']);
+        return $this->hasOne(Owner::className(), ['idOwner' => 'idClient']);
     }
 
     /**
