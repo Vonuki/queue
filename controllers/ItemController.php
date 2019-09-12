@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Item;
+use app\models\VItem;
 use app\models\Owner;
 use app\models\Queue;
 use yii\data\ActiveDataProvider;
@@ -58,7 +59,7 @@ class ItemController extends Controller
     public function actionIndex()
     {
         if(Yii::$app->user->identity->isAdmin){
-            $dataProvider = new ActiveDataProvider(['query' => Item::find(),]);
+            $dataProvider = new ActiveDataProvider(['query' => VItem::find(),]);
         }
         else{
             $owner = Owner::getUserOwner();   
@@ -107,7 +108,14 @@ class ItemController extends Controller
           $model->Position = 0;
         }   
       
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) ) {
+            $queue = $model->getQueue()->One();
+            $queue->QueueLen = $queue->QueueLen + 1;
+            $model->Position =  $queue->QueueLen;
+          
+            $model->save();
+            $queue->save();
+            
             return $this->redirect(['view', 'id' => $model->idItem]);
         }
 
@@ -124,12 +132,14 @@ class ItemController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findAvailableModel($id);
+        $queues = Queue::findPublic();
+        $queuesMap = ArrayHelper::map($queues, 'idQueue', 'Description');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'id' => $model->idItem]);
         }
 
-        return $this->render('update', ['model' => $model,]);
+        return $this->render('update', ['model' => $model,'queues' => $queuesMap]);
     }
 
     /**
@@ -151,7 +161,7 @@ class ItemController extends Controller
     */
     public function StatusChange($id, $Status){
         $model = $this->findAvailableModel($id);
-        $model->Status = $Status;
+        $model->setStatus($Status);
         if($model->save()){
           Yii::$app->session->setFlash('success', 'Queue Status changed');
         }
@@ -161,7 +171,7 @@ class ItemController extends Controller
         return $this->actionIndex();
     }
     public function actionCancel($id){
-        return $this->StatusChange($id, 1);
+        return $this->StatusChange($id, 3);
     }
 
     /**

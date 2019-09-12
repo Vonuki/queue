@@ -58,7 +58,8 @@ class Owner extends \yii\db\ActiveRecord
      */
     public function getItems()
     {
-        return $this->hasMany(Item::className(), ['idClient' => 'idOwner']);
+        //using View for Items
+        return $this->hasMany(VItem::className(), ['idClient' => 'idOwner']);
     }
 
     /**
@@ -85,7 +86,7 @@ class Owner extends \yii\db\ActiveRecord
         else{
           $owner = new Owner();
           $owner -> idPerson = $idUser;
-          $owner -> Description = "my_queue_".$idUser;
+          $owner -> Description = "Owner|client ".$idUser;
           $owner -> save();
           return $owner;
         }

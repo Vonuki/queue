@@ -17,6 +17,8 @@ return [
   //Item
   'Item' => 'Элемент очереди',
   'ID Item' => 'ID элемента',
+  'Queue Description' => 'Очередь',
+  'Owner Description' => 'Владелец',
   
 ];
 

@@ -17,26 +17,44 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Item', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php Pjax::begin(); ?>
+    <?php 
+      Pjax::begin();
+      if (Yii::$app->user->identity->isAdmin) {
+          $actions_string = '{view} {update} {cancel} {delete}'; 
+      }
+      else{ 
+          $actions_string = '{cancel}'; 
+      }
+      
 
-    <?= GridView::widget([
+      echo GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'idItem',
-            'idQueue',
-            'idClient',
-            'Status',
+            'QueueDescription',
+             [ 'attribute' => 'OwnerDescription','visible' => \Yii::$app->user->identity->isAdmin,],
+             [ 'attribute' => 'Status', 'value' => function ($model, $key, $index, $column) { return $model->getStatusTxt();},],
             'CreateDate',
-            //'StatusDate',
-            //'RestTime',
-            //'Position',
+            'StatusDate',
+            'RestTime',
+            'Position',
+            ['class' => 'yii\grid\ActionColumn',
+              'template' => $actions_string,
+              'buttons' => [
+                'cancel' => function ($url, $model,$key) {
+                    if($model->Status>0){
+                      return '';
+                    }
+                    else{
+                      return Html::a('Cancel', $url, ['title' => Yii::t('lg_common', 'Cancel'),'data-pjax' => '0',]);
+                    }
+                },
+              ]
+            ],
+          ],
+       ]); 
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
-    <?php Pjax::end(); ?>
-
+    
+      Pjax::end(); 
+    ?>
 </div>

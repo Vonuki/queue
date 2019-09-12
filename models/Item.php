@@ -21,6 +21,13 @@ use Yii;
  */
 class Item extends \yii\db\ActiveRecord
 {
+   /**
+   * @return array Kye=>Value for Status options
+   */
+    public static function getStatusLabels(){
+      return array(0 => "In Queue", 1 => "Worked | Archived", 2 => "In work", 3 => "Canceled by User");  
+    }
+  
     /**
      * {@inheritdoc}
      */
@@ -49,9 +56,9 @@ class Item extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idItem' => Yii::t('lg_common', 'Id Item'),
-            'idQueue' => Yii::t('lg_common', 'Id Queue'),
-            'idClient' => Yii::t('lg_common', 'Id Client'),
+            'idItem' => Yii::t('lg_common', 'ID Item'),
+            'idQueue' => Yii::t('lg_common', 'ID Queue'),
+            'idClient' => Yii::t('lg_common', 'ID Client'),
             'Status' => Yii::t('lg_common', 'Status'),
             'CreateDate' => Yii::t('lg_common', 'Create Date'),
             'StatusDate' => Yii::t('lg_common', 'Status Date'),
@@ -75,4 +82,35 @@ class Item extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Queue::className(), ['idQueue' => 'idQueue']);
     }
+  
+    /**
+     * @return exemplar Status in text 
+     */
+    public function getStatusTxt()
+    {
+        return self::getStatusLabels()[$this->Status];
+    }
+    
+    /**
+     * @Seting status with position chenging
+     */
+    public function setStatus($Status)
+    {
+        $this->Status = $Status;
+        switch ($Status) {
+          case 0: //In Queue
+            break;
+          case 1: //Worked
+          case 3: //Canceld
+            $this->Position = -1;
+            break;
+          case 2: //In work
+            $this->Position = 0;
+            break;
+          default:
+            break;
+        }
+        $this->StatusDate = date("Y-m-d H:i",time());
+    }
+  
 }
