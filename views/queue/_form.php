@@ -14,8 +14,8 @@ use yii\widgets\ActiveForm;
 
     <?php
       echo $form->field($model, 'Description')->textInput(['maxlength' => true]);
-      echo $form->field($model, 'QueueShare')->dropDownList($model->QueueShareLabels);
-      echo $form->field($model, 'Status')->dropDownList($model->StatusLabels);
+      echo $form->field($model, 'QueueShare')->dropDownList($model->getShareLabels());
+      echo $form->field($model, 'Status')->dropDownList($model->getStatusLabels());
       
       if(Yii::$app->user->identity->isAdmin){
         echo $form->field($model, 'idOwner')->textInput();
@@ -23,12 +23,6 @@ use yii\widgets\ActiveForm;
         echo $form->field($model, 'QueueLen')->textInput();
         echo $form->field($model, 'AvgMin')->textInput();      
       } 
-      else{
-        echo $form->field($model, 'idOwner')->hiddenInput()->label(false);
-        echo $form->field($model, 'FirstItem')->hiddenInput()->label(false);
-        echo $form->field($model, 'QueueLen')->hiddenInput()->label(false);
-        echo $form->field($model, 'AvgMin')->hiddenInput()->label(false);
-      }
   
       echo $form->field($model, 'AutoTake')->textInput();
     ?>

@@ -22,9 +22,20 @@ use Yii;
  */
 class Queue extends \yii\db\ActiveRecord
 {
-    public $QueueShareLabels = array(0 => "Private / by link", 1 => "Visible for all");  
-    public $StatusLabels = array(0 => "Active", 1 => "Archived", 2 => "On Pause");  
-  
+    /**
+     * @return array Kye=>Value for Status options
+     */
+    public static function getStatusLabels(){
+      return array(0 => "Active", 1 => "Archived", 2 => "On Pause");  
+    }
+    
+    /**
+     * @return array Kye=>Value for QueueShare options
+     */
+    public static function getShareLabels(){
+      return array(0 => "Private / by link", 1 => "Visible for all");  
+    }
+ 
     /**
      * {@inheritdoc}
      */
@@ -71,7 +82,7 @@ class Queue extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Item::className(), ['idQueue' => 'idQueue']);
     }
-
+    
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -85,7 +96,7 @@ class Queue extends \yii\db\ActiveRecord
      */
     public function getStatusTxt()
     {
-        return $this->StatusLabels[$this->Status];
+        return self::getStatusLabels()[$this->Status];
     }
   
     /**
@@ -93,6 +104,15 @@ class Queue extends \yii\db\ActiveRecord
      */
     public function getQueueShareTxt()
     {
-        return $this->QueueShareLabels[$this->QueueShare];
+        return self::getShareLabels()[$this->QueueShare];
     }
+    
+    /**
+     * @return \yii\db\ActiveQuer for all Public Queues
+     */
+    public function findPublic()
+    {
+        return Queue::find()->where(['QueueShare' => 1 ])->orderBy('Description')->all();
+    }
+    
 }

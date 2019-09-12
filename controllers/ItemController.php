@@ -5,12 +5,14 @@ namespace app\controllers;
 use Yii;
 use app\models\Item;
 use app\models\Owner;
+use app\models\Queue;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use dektrium\user\filters\AccessRule;
+use yii\helpers\ArrayHelper;
 
 /**
  * ItemController implements the CRUD actions for Item model.
@@ -90,6 +92,8 @@ class ItemController extends Controller
     public function actionCreate()
     {
         $model = new Item();
+        $queues = Queue::findPublic();
+        $queuesMap = ArrayHelper::map($queues, 'idQueue', 'Description');
 
         if(Yii::$app->user->identity->isAdmin){}
         else{
@@ -107,7 +111,7 @@ class ItemController extends Controller
             return $this->redirect(['view', 'id' => $model->idItem]);
         }
 
-        return $this->render('create', ['model' => $model,]);
+        return $this->render('create', ['model' => $model, 'queues' => $queuesMap] );
     }
 
     /**

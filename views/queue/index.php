@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //['class' => 'yii\grid\SerialColumn'],
             'idQueue',
             'Description',
-            [ 'attribute' => 'Status', 'value' => function ($model, $key, $index, $column) { return $model->getQueueShareTxt();},],
+            [ 'attribute' => 'QueueShare', 'value' => function ($model, $key, $index, $column) { return $model->getQueueShareTxt();},],
             [ 'attribute' => 'idOwner','visible' => \Yii::$app->user->identity->isAdmin,],
             [ 'attribute' => 'FirstItem','visible' => \Yii::$app->user->identity->isAdmin,],
             'QueueLen',

@@ -26,18 +26,37 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'idItem',
-            'idQueue',
-            'idClient',
-            'Status',
-            'CreateDate',
-            'StatusDate',
-            'RestTime',
-            'Position',
-        ],
-    ]) ?>
+    <?php 
+      if(Yii::$app->user->identity->isAdmin){
+          echo DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'idItem',
+                'idQueue',
+                'idClient',
+                'Status',
+                'CreateDate',
+                'StatusDate',
+                'RestTime',
+                'Position',
+            ],
+          ]);
+      }
+      else{
+          echo DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'idItem',
+                'idQueue',
+                'idClient',
+                'Status',
+                'CreateDate',
+                'StatusDate',
+                'RestTime',
+                'Position',
+            ],
+          ]);
+      }
+     ?>
 
 </div>
