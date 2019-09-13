@@ -109,13 +109,22 @@ class ItemController extends Controller
         }   
       
         if ($model->load(Yii::$app->request->post()) ) {
-            $queue = $model->getQueue()->One();
-            $queue->QueueLen = $queue->QueueLen + 1;
-            $model->Position =  $queue->QueueLen;
-          
-            $model->save();
-            $queue->save();
-            
+            $transaction = Item::getDb()->beginTransaction(); 
+            try {
+                $queue = $model->getQueue()->One();
+                $queue->QueueLen = $queue->QueueLen + 1;
+                $model->Position =  $queue->QueueLen;
+                $model->RestTime = $queue->AvgMin * $model->Position;                
+                $model->save();
+                $queue->save();
+                $transaction->commit();
+            } catch(\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            } catch(\Throwable $e) {
+                $transaction->rollBack();
+                throw $e;
+            }           
             return $this->redirect(['view', 'id' => $model->idItem]);
         }
 

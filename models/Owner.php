@@ -75,7 +75,7 @@ class Owner extends \yii\db\ActiveRecord
      */
     public function getQueues()
     {
-        return $this->hasMany(Queue::className(), ['idOwner' => 'idOwner']);
+        return $this->hasMany(VQueue::className(), ['idOwner' => 'idOwner']);
     }
   
     public function findByUser($idUser)

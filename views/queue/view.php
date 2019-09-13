@@ -67,8 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $ItemsProvider,
         'columns' => [
             'idItem',
-            'idQueue',
-            'idClient',
+            'OwnerDescription', //'idClient',
             ['class' => 'yii\grid\ActionColumn',]
         ],
     ]); ?>

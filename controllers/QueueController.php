@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Queue;
+use app\models\VQueue;
 use app\models\Item;
 use app\models\Owner;
 use yii\data\ActiveDataProvider;
@@ -56,7 +57,7 @@ class QueueController extends Controller
     public function actionIndex()
     {
         if(Yii::$app->user->identity->isAdmin){
-            $dataProvider = new ActiveDataProvider(['query' => Queue::find(),]);
+            $dataProvider = new ActiveDataProvider(['query' => VQueue::find(),]);
         }
         else{
             $owner_temp = Owner::getUserOwner();   
