@@ -36,7 +36,12 @@ $this->params['breadcrumbs'][] = $this->title;
             [ 'attribute' => 'OwnerDescription','visible' => \Yii::$app->user->identity->isAdmin,],
             //[ 'attribute' => 'FirstItem','visible' => \Yii::$app->user->identity->isAdmin,],
             'QueueLen',
-            [ 'attribute' => 'Status', 'value' => function ($model, $key, $index, $column) { return $model->getStatusTxt();},],
+            [ 'attribute' => 'Status', 'format' => 'raw',
+              'value' => 
+                function ($model, $key, $index, $column) {
+                  return \yii\helpers\Html::tag('span',$model->getStatusText(),['class' => $model->getStatusLabel()] );
+                },
+            ],
             ['class' => 'yii\grid\ActionColumn',
              'template' => $actions_string,
              'buttons' => [

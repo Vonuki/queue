@@ -6,6 +6,7 @@ use Yii;
 use app\models\Queue;
 use app\models\VQueue;
 use app\models\Item;
+use app\models\VItem;
 use app\models\Owner;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -75,13 +76,35 @@ class QueueController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id, $all = false)
     {
         $model = $this->findAvailableModel($id);
-        $ItemsProvider = new ActiveDataProvider(['query' => $model->getItems(),]);
-        return $this->render('view', ['model' => $model,'ItemsProvider' => $ItemsProvider]);        
+        if($all){
+           $ItemsProvider = new ActiveDataProvider(['query' => $model->getItems(),]);
+        }
+        else {
+           $ItemsProvider = new ActiveDataProvider(['query' => $model->getItems()->where(['Status' => [0,2] ]),]);
+        }
+        
+        return $this->render('view', ['model' => $model,'ItemsProvider' => $ItemsProvider,]);        
     }
-
+  
+    /**
+    * Finish Item present in Work.
+    */
+    public function actionFinish($id, $all = false)
+    {
+        $model = $this->findAvailableModel($id);
+        if($all){
+           $ItemsProvider = new ActiveDataProvider(['query' => $model->getItems(),]);
+        }
+        else {
+           $ItemsProvider = new ActiveDataProvider(['query' => $model->getItems()->where(['Status' => [0,2] ]),]);
+        }
+        
+        return $this->render('view', ['model' => $model,'ItemsProvider' => $ItemsProvider,]);            
+    }
+  
     /**
      * Creates a new Queue model for person by user or Admin
      * hidden creation Owner model.

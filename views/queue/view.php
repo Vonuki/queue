@@ -3,11 +3,12 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Queue */
 
-$this->title = $model->idQueue;
+$this->title = $model->Description;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('lg_common', 'Queues'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -53,24 +54,60 @@ $this->params['breadcrumbs'][] = $this->title;
             'Description',
             ['attribute' => 'QueueShare', 'format' => 'raw', 'value' => $model->getQueueShareTxt(), ],
             'idOwner',
-            'FirstItem',
+            //'OwnerDescription',
+            //'FirstItem',
             'QueueLen',
-            ['attribute' => 'Status', 'format' => 'raw', 'value' => $model->getStatusTxt(), ],
+            ['attribute' => 'Status', 'format' => 'raw', 'value' => $model->getStatusText(), ],
             'AvgMin',
             'AutoTake',
         ],
     ]) ?>
   
-     <h3><?= Html::encode(Yii::t('lg_common', 'Items in queue')) ?></h3>
+    <h3><?= Html::encode(Yii::t('lg_common', 'Items in queue')) ?></h3>
+    
+    <?php Pjax::begin(); ?>
+  
+    <?=  Html::a(Yii::t('lg_common', 'All Items'), ['view', 'id' => $model->idQueue, 'all' => true], [
+                'class' => 'btn btn-info',
+            ]) ?>
+    <?=  Html::a(Yii::t('lg_common', 'Active Items'), ['view', 'id' => $model->idQueue,], [
+                'class' => 'btn btn-info',
+            ]) ?>
   
     <?= GridView::widget([
         'dataProvider' => $ItemsProvider,
+        'filterModel' => new \app\models\Item(),
         'columns' => [
             'idItem',
             'OwnerDescription', //'idClient',
-            ['class' => 'yii\grid\ActionColumn',]
+            'Position',         
+            [ 'attribute' => 'Status', 'format' => 'raw',
+              'filter' => [
+                    0 => 'No',
+                    1 => 'Yes',
+                ],
+             'value' => 
+                function ($model, $key, $index, $column) { 
+                  return \yii\helpers\Html::tag('span',$model->getStatusText(),['class' => $model->getStatusLabel()] );
+                }, 
+            ],
+            ['class' => 'yii\grid\ActionColumn',
+              'template' => '{handle} {finish}',
+              'buttons' => [
+                'handle' => function ($url, $model,$key) {
+                    if($model->Status == 0){ return Html::a(Yii::t('lg_common', 'Handle'), $url); }
+                    else { return '';}
+                },
+                'finish' => function ($url, $model,$key) {
+                   if($model->Status == 2){ return Html::a(Yii::t('lg_common', 'Finish'), $url);}
+                   else {return ''; }
+                },
+              ]
+            ],
         ],
     ]); ?>
+  
+    <?php Pjax::end(); ?>
 
   
     

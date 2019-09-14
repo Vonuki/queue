@@ -172,7 +172,7 @@ class ItemController extends Controller
         $model = $this->findAvailableModel($id);
         $model->setStatus($Status);
         if($model->save()){
-          Yii::$app->session->setFlash('success', 'Queue Status changed');
+          Yii::$app->session->setFlash('success', 'Item Status changed');
         }
         else{
           Yii::$app->session->setFlash('error', 'Action not performed');

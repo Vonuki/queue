@@ -24,9 +24,13 @@ class Item extends \yii\db\ActiveRecord
    /**
    * @return array Kye=>Value for Status options
    */
-    public static function getStatusLabels(){
+    public static function getStatusTexts(){
       return array(0 => "In Queue", 1 => "Worked | Archived", 2 => "In work", 3 => "Canceled by User");  
     }
+    public static function getStatusLabels(){
+      return array(0 => "label label-success", 1 => "label label-default", 2 => "label label-danger", 3 => "label label-default");  
+    }
+    
   
     /**
      * {@inheritdoc}
@@ -66,7 +70,7 @@ class Item extends \yii\db\ActiveRecord
             'Position' => Yii::t('lg_common', 'Position'),
         ];
     }
-
+  
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -86,7 +90,12 @@ class Item extends \yii\db\ActiveRecord
     /**
      * @return exemplar Status in text 
      */
-    public function getStatusTxt()
+    public function getStatusText()
+    {
+        return self::getStatusTexts()[$this->Status];
+    }
+  
+    public function getStatusLabel()
     {
         return self::getStatusLabels()[$this->Status];
     }

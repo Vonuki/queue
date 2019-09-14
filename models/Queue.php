@@ -25,8 +25,12 @@ class Queue extends \yii\db\ActiveRecord
     /**
      * @return array Kye=>Value for Status options
      */
-    public static function getStatusLabels(){
+    public static function getStatusTexts(){
       return array(0 => "Active", 1 => "Archived", 2 => "On Pause");  
+    }
+  
+    public static function getStatusLabels(){
+      return array(0 => "label label-success", 1 => "label label-default", 2 => "label label-danger");  
     }
     
     /**
@@ -74,7 +78,7 @@ class Queue extends \yii\db\ActiveRecord
             'AutoTake' => Yii::t('lg_common', 'Auto take next Item'),
         ];
     }
-
+  
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -94,7 +98,12 @@ class Queue extends \yii\db\ActiveRecord
     /**
      * @return Text value for Status of Queue
      */
-    public function getStatusTxt()
+    public function getStatusText()
+    {
+        return self::getStatusTexts()[$this->Status];
+    }
+  
+    public function getStatusLabel()
     {
         return self::getStatusLabels()[$this->Status];
     }

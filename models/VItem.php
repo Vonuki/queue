@@ -52,6 +52,7 @@ class VItem extends Item
             'OwnerDescription' => Yii::t('lg_common', 'Owner Description'),
         ];
     }
+  
 
    public static function primaryKey()
     {
