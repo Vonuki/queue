@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\NotFoundHttpException;
 
 /**
  * This is the model class for table "Item".
@@ -47,8 +48,8 @@ class Item extends \yii\db\ActiveRecord
     {
         return [
             [['idQueue', 'idClient', 'Status', 'RestTime', 'Position'], 'required'],
-            [['idQueue', 'idClient', 'Status', 'Position'], 'integer'],
-            [['CreateDate', 'StatusDate', 'RestTime'], 'safe'],
+            [['idQueue', 'idClient', 'Status', 'Position', 'RestTime'], 'integer'],
+            [['CreateDate', 'StatusDate'], 'safe'],
             [['idClient'], 'exist', 'skipOnError' => true, 'targetClass' => Owner::className(), 'targetAttribute' => ['idClient' => 'idOwner']],
             [['idQueue'], 'exist', 'skipOnError' => true, 'targetClass' => Queue::className(), 'targetAttribute' => ['idQueue' => 'idQueue']],
         ];
@@ -66,7 +67,7 @@ class Item extends \yii\db\ActiveRecord
             'Status' => Yii::t('lg_common', 'Status'),
             'CreateDate' => Yii::t('lg_common', 'Create Date'),
             'StatusDate' => Yii::t('lg_common', 'Status Date'),
-            'RestTime' => Yii::t('lg_common', 'Rest Time'),
+            'RestTime' => Yii::t('lg_common', 'Rest|Result Time'),
             'Position' => Yii::t('lg_common', 'Position'),
         ];
     }
@@ -104,34 +105,44 @@ class Item extends \yii\db\ActiveRecord
      * @Cancel Item
      */
     public function CancelSave(){
-      $this->Position = -1;
-      $this->Status = 3;
-      $this->StatusDate = date("Y-m-d H:i:s",time());
-      $sec = strtotime($this->StatusDate) - strtotime($this->CreateDate);
-      $this->RestTime = date("H:i:s",$sec);
-      return $this->save();
+      if($this->Status != 3){
+        $this->Position = -1;
+        $this->Status = 3;
+        $this->StatusDate = date("Y-m-d H:i:s",time());
+        $sec = strtotime($this->StatusDate) - strtotime($this->CreateDate);
+        $this->RestTime = $sec;
+        return $this->save();
+      }
+      else{
+         throw new NotFoundHttpException('Item already Canceled');
+      }
     }
   
      /**
      * @Finish Item
      */
     public function FinishSave(){
-      $this->Position = -1;
-      $this->Status = 2;
-      $this->StatusDate = date("Y-m-d H:i:s",time());
-      $sec = strtotime($this->StatusDate) - strtotime($this->CreateDate);
-      $this->RestTime = date("H:i:s",$sec);
-      return $this->save();
+      if($this->Status != 2){
+        $this->Position = -1;
+        $this->Status = 2;
+        $this->StatusDate = date("Y-m-d H:i:s",time());
+        $sec = strtotime($this->StatusDate) - strtotime($this->CreateDate);
+        $this->RestTime = $sec;
+        return $this->save();
+      }
+      else{
+         throw new NotFoundHttpException('Item already Finished');
+      }
     }
   
     /**
      * @Put Item in Position of Queue
      */
-    public function PutInPositionSave($AvgMin, $position = 0){
+    public function PutInPositionSave($takt, $position = 0){
       if($position>0){ $this->Position = $position; }
       else {$this->Position--;}
       $this->Status = $this->Status;
-      $this->RestTime = date("H:i:s",mktime(0, $AvgMin * $this->Position, 0, 0,0,0));
+      $this->RestTime = $takt * $this->Position;
       $this->StatusDate = date("Y-m-d H:i:s",time());
       return $this->save();
     }
@@ -140,11 +151,16 @@ class Item extends \yii\db\ActiveRecord
      * @Handle Item
      */
     public function HandleSave(){
-      $this->Position = 0;
-      $this->Status = 1;
-      $this->StatusDate = date("Y-m-d H:i:s",time());
-      $this->RestTime = 0;
-      return $this->save();
+      if($this->Status != 1){
+        $this->Position = 0;
+        $this->Status = 1;
+        $this->StatusDate = date("Y-m-d H:i:s",time());
+        $this->RestTime = 0;
+        return $this->save();
+      }
+      else{
+         throw new NotFoundHttpException('Item already Handled');
+      }
     }
   
     /**

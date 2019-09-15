@@ -21,7 +21,10 @@ use yii\widgets\ActiveForm;
         echo $form->field($model, 'idOwner')->textInput();
         echo $form->field($model, 'FirstItem')->textInput();
         echo $form->field($model, 'QueueLen')->textInput();
-        echo $form->field($model, 'AvgMin')->textInput();      
+        echo $form->field($model, 'Takt')->textInput();      
+        echo $form->field($model, 'Cycle')->textInput();     
+        echo $form->field($model, 'Finished')->textInput();     
+        
       } 
   
       echo $form->field($model, 'AutoTake')->textInput();

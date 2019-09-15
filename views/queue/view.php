@@ -59,8 +59,10 @@ $this->params['breadcrumbs'][] = $this->title;
             //'FirstItem',
             'QueueLen',
             ['attribute' => 'Status', 'format' => 'raw', 'value' => $model->getStatusText(), ],
-            'AvgMin',
+            ['attribute' => 'Takt', 'value' => date("H:i:s",$model->Takt), ],
             'AutoTake',
+            ['attribute' => 'Cycle', 'value' => date("H:i:s",$model->Cycle), ],
+            'Finished',
         ],
     ]) ?>
   
@@ -81,7 +83,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             'idItem',
             'OwnerDescription', //'idClient',
-            'Position',         
+            'Position',        
+            'CreateDate',
+            'StatusDate',
+            ['attribute' => 'RestTime', 'value' => function ($model, $key, $index, $column) { return date("H:i:s",$model->RestTime);}, ],
             [ 'attribute' => 'Status', 'format' => 'raw',
               'filter' => [
                     0 => 'No',
@@ -96,11 +101,11 @@ $this->params['breadcrumbs'][] = $this->title;
               'template' => '{handle} {finish}',
               'buttons' => [
                 'handle' => function ($url, $model,$key) {
-                    if($model->Status == 0){ return Html::a(Yii::t('lg_common', 'Handle'), Url::to(['queue/view', 'id' => $model->idQueue, 'handle' => $key]) ); }
+                    if($model->Status == 0){ return Html::a(Yii::t('lg_common', 'Handle'), Url::to(['queue/view', 'id' => $model->idQueue, 'handle' => $key]), ['data-pjax' => '0']  ); }
                     else { return '';}
                 },
                 'finish' => function ($url, $model,$key) {
-                   if($model->Status == 2){ return Html::a(Yii::t('lg_common', 'Finish'), Url::to(['queue/view', 'id' => $model->idQueue, 'finish' => $key]), ['data-pjax' => '0'] );}
+                   if($model->Status == 1){ return Html::a(Yii::t('lg_common', 'Finish'), Url::to(['queue/view', 'id' => $model->idQueue, 'finish' => $key]), ['data-pjax' => '0'] );}
                    else {return ''; }
                 },
               ]

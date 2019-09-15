@@ -82,15 +82,22 @@ class QueueController extends Controller
       
         //Finish item
         if($finish>0){
-          Yii::$app->session->setFlash('success', 'ToDo finish and handle');
+          $model->FinishItemSave($finish);
+          Yii::$app->session->setFlash('success', 'Finished');
+        }
+      
+        //Handle item
+        if($handle>0){
+          $model->HandleItemSave($handle);
+          Yii::$app->session->setFlash('success', 'Handled');
         }
         
         //Items for list
         if($all){
-           $ItemsProvider = new ActiveDataProvider(['query' => $model->getItems(),]);
+           $ItemsProvider = new ActiveDataProvider(['query' => $model->getVItems(),]);
         }
         else {
-           $ItemsProvider = new ActiveDataProvider(['query' => $model->getItems()->where(['Status' => [0,1] ]),]);
+           $ItemsProvider = new ActiveDataProvider(['query' => $model->getVItems()->where(['Status' => [0,1] ]),]);
         }
         
         return $this->render('view', ['model' => $model,'ItemsProvider' => $ItemsProvider,]);        
