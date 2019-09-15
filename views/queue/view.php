@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Queue */
@@ -95,11 +96,11 @@ $this->params['breadcrumbs'][] = $this->title;
               'template' => '{handle} {finish}',
               'buttons' => [
                 'handle' => function ($url, $model,$key) {
-                    if($model->Status == 0){ return Html::a(Yii::t('lg_common', 'Handle'), $url); }
+                    if($model->Status == 0){ return Html::a(Yii::t('lg_common', 'Handle'), Url::to(['queue/view', 'id' => $model->idQueue, 'handle' => $key]) ); }
                     else { return '';}
                 },
                 'finish' => function ($url, $model,$key) {
-                   if($model->Status == 2){ return Html::a(Yii::t('lg_common', 'Finish'), $url);}
+                   if($model->Status == 2){ return Html::a(Yii::t('lg_common', 'Finish'), Url::to(['queue/view', 'id' => $model->idQueue, 'finish' => $key]), ['data-pjax' => '0'] );}
                    else {return ''; }
                 },
               ]

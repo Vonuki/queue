@@ -123,5 +123,42 @@ class Queue extends \yii\db\ActiveRecord
     {
         return Queue::find()->where(['QueueShare' => 1 ])->orderBy('Description')->all();
     }
+  
+  
+    /**
+     * @Fill Queue for Owner
+     */
+    public function fillOwner($owner)
+    {
+        $this->idOwner = $owner->idOwner;
+        $this->FirstItem = 0; //first item number
+        $this->QueueShare = 0; //private queue
+        $this->QueueLen = 0; //curretn lentgh of queue
+        $this->Status = 0; //status 
+        $this->AvgMin = 0;//Average time in minutes
+        $this->AutoTake = 1; // if new item will take aotomaticaly
+        return $this;
+    }
+  
+    /**
+     * @add Item in queue
+     */
+    public function addItemSave($item)
+    {
+        $transaction = Queue::getDb()->beginTransaction(); 
+        try {
+            $this->QueueLen++;
+            $item->PutInPositionSave($this->AvgMin, $this->QueueLen);   // save inside
+            $this->save();
+            $transaction->commit();
+        } catch(\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        } catch(\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }   
+        return $this;
+    }
     
 }

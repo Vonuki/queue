@@ -96,35 +96,19 @@ class ItemController extends Controller
         $queues = Queue::findPublic();
         $queuesMap = ArrayHelper::map($queues, 'idQueue', 'Description');
 
+        //Fill for user or empty for Admin
         if(Yii::$app->user->identity->isAdmin){}
         else{
           $owner = Owner::getUserOwner();
-          $model->idClient = $owner->idOwner;
-          $model->idQueue = 0;
-          $model->Status = 0; //status 
-          $model->CreateDate =  date("Y-m-d H:i",time());
-          $model->StatusDate = date("Y-m-d H:i",time());
-          $model->RestTime = 0; 
-          $model->Position = 0;
+          $model->FillEmptyItem($owner->idOwner);
         }   
       
+        //Save on response
         if ($model->load(Yii::$app->request->post()) ) {
-            $transaction = Item::getDb()->beginTransaction(); 
-            try {
-                $queue = $model->getQueue()->One();
-                $queue->QueueLen = $queue->QueueLen + 1;
-                $model->Position =  $queue->QueueLen;
-                $model->RestTime = $queue->AvgMin * $model->Position;                
-                $model->save();
-                $queue->save();
-                $transaction->commit();
-            } catch(\Exception $e) {
-                $transaction->rollBack();
-                throw $e;
-            } catch(\Throwable $e) {
-                $transaction->rollBack();
-                throw $e;
-            }           
+          
+            $queue = $model->getQueue()->One();
+            $queue->addItemSave($model);
+          
             return $this->redirect(['view', 'id' => $model->idItem]);
         }
 
@@ -165,22 +149,15 @@ class ItemController extends Controller
         return $this->redirect(['index']);
     }
   
-    /**
-    * Set status for model Queue - and direct actions
-    */
-    public function StatusChange($id, $Status){
+    public function actionCancel($id){
         $model = $this->findAvailableModel($id);
-        $model->setStatus($Status);
-        if($model->save()){
+        if($model->CancelSave()){
           Yii::$app->session->setFlash('success', 'Item Status changed');
         }
         else{
           Yii::$app->session->setFlash('error', 'Action not performed');
         }
         return $this->actionIndex();
-    }
-    public function actionCancel($id){
-        return $this->StatusChange($id, 3);
     }
 
     /**

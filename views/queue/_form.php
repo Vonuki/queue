@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
     <?php
       echo $form->field($model, 'Description')->textInput(['maxlength' => true]);
       echo $form->field($model, 'QueueShare')->dropDownList($model->getShareLabels());
-      echo $form->field($model, 'Status')->dropDownList($model->getStatusLabels());
+      echo $form->field($model, 'Status')->dropDownList($model->getStatusTexts());
       
       if(Yii::$app->user->identity->isAdmin){
         echo $form->field($model, 'idOwner')->textInput();

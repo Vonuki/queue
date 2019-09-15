@@ -25,7 +25,7 @@ class Item extends \yii\db\ActiveRecord
    * @return array Kye=>Value for Status options
    */
     public static function getStatusTexts(){
-      return array(0 => "In Queue", 1 => "Worked | Archived", 2 => "In work", 3 => "Canceled by User");  
+      return array(0 => "In Queue", 1 => "Finished | Archived", 2 => "In work", 3 => "Canceled by User");  
     }
     public static function getStatusLabels(){
       return array(0 => "label label-success", 1 => "label label-default", 2 => "label label-danger", 3 => "label label-default");  
@@ -99,27 +99,66 @@ class Item extends \yii\db\ActiveRecord
     {
         return self::getStatusLabels()[$this->Status];
     }
-    
+      
     /**
-     * @Seting status with position chenging
+     * @Cancel Item
      */
-    public function setStatus($Status)
-    {
-        $this->Status = $Status;
-        switch ($Status) {
-          case 0: //In Queue
-            break;
-          case 1: //Worked
-          case 3: //Canceld
-            $this->Position = -1;
-            break;
-          case 2: //In work
-            $this->Position = 0;
-            break;
-          default:
-            break;
-        }
-        $this->StatusDate = date("Y-m-d H:i",time());
+    public function CancelSave(){
+      $this->Position = -1;
+      $this->Status = 3;
+      $this->StatusDate = date("Y-m-d H:i:s",time());
+      $sec = strtotime($this->StatusDate) - strtotime($this->CreateDate);
+      $this->RestTime = date("H:i:s",$sec);
+      return $this->save();
     }
   
+     /**
+     * @Finish Item
+     */
+    public function FinishSave(){
+      $this->Position = -1;
+      $this->Status = 1;
+      $this->StatusDate = date("Y-m-d H:i:s",time());
+      $sec = strtotime($this->StatusDate) - strtotime($this->CreateDate);
+      $this->RestTime = date("H:i:s",$sec);
+      return $this->save();
+    }
+  
+    /**
+     * @Put Item in Position of Queue
+     */
+    public function PutInPositionSave($AvgMin, $position = 0){
+      if($position>0){ $this->Position = $position; }
+      else {$this->Position--;}
+      $this->Status = $this->Status;
+      $this->RestTime = date("H:i:s",mktime(0, $AvgMin * $this->Position, 0, 0,0,0));
+      $this->StatusDate = date("Y-m-d H:i:s",time());
+      return $this->save();
+    }
+  
+    /**
+     * @Handle Item
+     */
+    public function HandleSave(){
+      $this->Position = 0;
+      $this->Status = 2;
+      $this->StatusDate = date("Y-m-d H:i:s",time());
+      $this->RestTime = 0;
+      return $this->save();
+    }
+  
+    /**
+     * @Create Empty Item for create form
+     */
+    public function FillEmptyItem($idOwner){
+      $this->idClient = $idOwner;
+      $this->idQueue = 0;
+      $this->Status = 0; //status 
+      $this->CreateDate =  date("Y-m-d H:i:s",time());
+      $this->StatusDate = date("Y-m-d H:i:s",time());
+      $this->RestTime = 0; 
+      $this->Position = 0;
+      return $this;
+    }
+    
 }

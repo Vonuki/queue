@@ -76,9 +76,16 @@ class QueueController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id, $all = false)
+    public function actionView($id, $all = false, $finish = 0, $handle = 0)
     {
         $model = $this->findAvailableModel($id);
+      
+        //Finish item
+        if($finish>0){
+          Yii::$app->session->setFlash('success', 'ToDo finish and handle');
+        }
+        
+        //Items for list
         if($all){
            $ItemsProvider = new ActiveDataProvider(['query' => $model->getItems(),]);
         }
@@ -87,22 +94,6 @@ class QueueController extends Controller
         }
         
         return $this->render('view', ['model' => $model,'ItemsProvider' => $ItemsProvider,]);        
-    }
-  
-    /**
-    * Finish Item present in Work.
-    */
-    public function actionFinish($id, $all = false)
-    {
-        $model = $this->findAvailableModel($id);
-        if($all){
-           $ItemsProvider = new ActiveDataProvider(['query' => $model->getItems(),]);
-        }
-        else {
-           $ItemsProvider = new ActiveDataProvider(['query' => $model->getItems()->where(['Status' => [0,2] ]),]);
-        }
-        
-        return $this->render('view', ['model' => $model,'ItemsProvider' => $ItemsProvider,]);            
     }
   
     /**
@@ -118,13 +109,7 @@ class QueueController extends Controller
         if(Yii::$app->user->identity->isAdmin){}
         else{
           $owner = Owner::getUserOwner();
-          $model->idOwner = $owner->idOwner;
-          $model->FirstItem = 0; //first item number
-          $model->QueueShare = 0; //private queue
-          $model->QueueLen = 0; //curretn lentgh of queue
-          $model->Status = 0; //status 
-          $model->AvgMin = 0;//Average time in minutes
-          $model->AutoTake = 1; // if new item will take aotomaticaly
+          $model->fillOwner($owner);
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
