@@ -25,10 +25,10 @@ class Item extends \yii\db\ActiveRecord
    * @return array Kye=>Value for Status options
    */
     public static function getStatusTexts(){
-      return array(0 => "In Queue", 1 => "Finished | Archived", 2 => "In work", 3 => "Canceled by User");  
+      return array(0 => "In Queue", 1 =>"In work",  2 => "Finished | Archived", 3 => "Canceled by User");  
     }
     public static function getStatusLabels(){
-      return array(0 => "label label-success", 1 => "label label-default", 2 => "label label-danger", 3 => "label label-default");  
+      return array(0 => "label label-success", 1 => "label label-danger", 2 => "label label-default", 3 => "label label-default");  
     }
     
   
@@ -117,7 +117,7 @@ class Item extends \yii\db\ActiveRecord
      */
     public function FinishSave(){
       $this->Position = -1;
-      $this->Status = 1;
+      $this->Status = 2;
       $this->StatusDate = date("Y-m-d H:i:s",time());
       $sec = strtotime($this->StatusDate) - strtotime($this->CreateDate);
       $this->RestTime = date("H:i:s",$sec);
@@ -141,7 +141,7 @@ class Item extends \yii\db\ActiveRecord
      */
     public function HandleSave(){
       $this->Position = 0;
-      $this->Status = 2;
+      $this->Status = 1;
       $this->StatusDate = date("Y-m-d H:i:s",time());
       $this->RestTime = 0;
       return $this->save();

@@ -90,7 +90,7 @@ class QueueController extends Controller
            $ItemsProvider = new ActiveDataProvider(['query' => $model->getItems(),]);
         }
         else {
-           $ItemsProvider = new ActiveDataProvider(['query' => $model->getItems()->where(['Status' => [0,2] ]),]);
+           $ItemsProvider = new ActiveDataProvider(['query' => $model->getItems()->where(['Status' => [0,1] ]),]);
         }
         
         return $this->render('view', ['model' => $model,'ItemsProvider' => $ItemsProvider,]);        
