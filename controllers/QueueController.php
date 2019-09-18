@@ -76,20 +76,38 @@ class QueueController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id, $all = false, $finish = 0, $handle = 0)
+    public function actionView($id, $all = false)
     {
         $model = $this->findAvailableModel($id);
       
         //Finish item
-        if($finish>0){
-          $model->FinishItemSave($finish);
-          Yii::$app->session->setFlash('success', 'Finished');
+        $finish = Yii::$app->request->post('finish', null);
+        if(isset($finish)){
+          try{
+            $model->FinishItemSave($finish);  
+            Yii::$app->session->setFlash('success', 'Finished');             
+          }
+          catch(\ErrorException $e) {
+            Yii::$app->session->setFlash('error', 'Finish Error: '.$e->getMessage());  
+          } catch(\Throwable $e) {
+              throw $e;
+          }
+          return $this->redirect(['view', 'id' => $model->idQueue]);
         }
       
         //Handle item
-        if($handle>0){
-          $model->HandleItemSave($handle);
-          Yii::$app->session->setFlash('success', 'Handled');
+        $handle = Yii::$app->request->post('handle', null);
+        if(isset($handle)){
+          try{
+            $model->HandleItemSave($handle);  
+            Yii::$app->session->setFlash('success', 'Handled');              
+          }
+          catch(\ErrorException $e) {
+            Yii::$app->session->setFlash('error', 'Handled Error: '.$e->getMessage());  
+          } catch(\Throwable $e) {
+              throw $e;
+          } 
+          return $this->redirect(['view', 'id' => $model->idQueue]);
         }
         
         //Items for list
@@ -99,7 +117,6 @@ class QueueController extends Controller
         else {
            $ItemsProvider = new ActiveDataProvider(['query' => $model->getVItems()->where(['Status' => [0,1] ]),]);
         }
-        
         return $this->render('view', ['model' => $model,'ItemsProvider' => $ItemsProvider,]);        
     }
   

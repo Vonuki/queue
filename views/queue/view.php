@@ -101,11 +101,23 @@ $this->params['breadcrumbs'][] = $this->title;
               'template' => '{handle} {finish}',
               'buttons' => [
                 'handle' => function ($url, $model,$key) {
-                    if($model->Status == 0){ return Html::a(Yii::t('lg_common', 'Handle'), Url::to(['queue/view', 'id' => $model->idQueue, 'handle' => $key]), ['data-pjax' => '0']  ); }
+                    if($model->Status == 0){ 
+                      return Html::a(Yii::t('lg_common', 'Handle'), 
+                                     Url::to(['queue/view', 'id' => $model->idQueue]), 
+                                     ['data-method' => 'POST',
+                                      'data-pjax' => '0',
+                                      'data-params' => ['handle' => $key,]
+                                     ]); }
                     else { return '';}
                 },
                 'finish' => function ($url, $model,$key) {
-                   if($model->Status == 1){ return Html::a(Yii::t('lg_common', 'Finish'), Url::to(['queue/view', 'id' => $model->idQueue, 'finish' => $key]), ['data-pjax' => '0'] );}
+                   if($model->Status == 1){ 
+                      return Html::a(Yii::t('lg_common', 'Finish'), 
+                                     Url::to(['queue/view', 'id' => $model->idQueue ]), 
+                                     ['data-method' => 'POST', 
+                                      'data-pjax' => '0', 
+                                      'data-params' => ['finish' => $key,] 
+                                     ]);}
                    else {return ''; }
                 },
               ]

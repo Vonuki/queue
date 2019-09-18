@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
+use yii\base\ErrorException;
 
 /**
  * This is the model class for table "Queue".
@@ -181,9 +182,9 @@ class Queue extends \yii\db\ActiveRecord
      * @Finish Item
      */
     public function FinishItemSave($idItem)
-    {
+    {      
         $item = Item::findOne($idItem);
-        
+
         //Takt = time from handle to now
         $item_takt = time() - strtotime($item->StatusDate);
         $item->FinishSave();
@@ -197,13 +198,16 @@ class Queue extends \yii\db\ActiveRecord
         
         $this->Finished++;
       
-        $this->save();
+        if ($this->save()){ }
+        else{
+            throw new ErrorException('Item not save');
+        }
       
         if($this->AutoTake && $this->Status==0){
           $this->AutoHandleSave();
         }
       
-        return $this;
+        return true;
     }
   
      /**
@@ -216,7 +220,7 @@ class Queue extends \yii\db\ActiveRecord
           $this->HandleItemSave($item->idItem);    
         }
         else {
-          throw new NotFoundHttpException('Item Finished but No more Items for AutoTake');
+          throw new ErrorException('Item Finished but No more Items for AutoTake');
         }
     }
     
@@ -225,6 +229,12 @@ class Queue extends \yii\db\ActiveRecord
      */
     public function HandleItemSave($idItem)
     {
+        $item = Item::findOne(['idQueue' => $this->idQueue, 'Status' => 1]);
+        if(isset($item)){
+          throw new ErrorException('Another Item already "in work"');
+          return false;
+        }
+      
         $transaction = Queue::getDb()->beginTransaction(); 
         try {
           $item = Item::findOne($idItem);
@@ -248,7 +258,7 @@ class Queue extends \yii\db\ActiveRecord
             $transaction->rollBack();
             throw $e;
         }  
-        return $this;
+        return true;
     }
   
   
