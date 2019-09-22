@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+<html lang="en">
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>EasyQueue</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -63,7 +64,8 @@
             }
         </style>
     </head>
-    <body>
+  
+  <body>
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
@@ -78,16 +80,15 @@
                     @endauth
                 </div>
             @endif
+          
+            <div class="container">
+              <nav class="navbar navbar-default">
+                <!-- Содержимое Navbar -->
+              </nav>
+            </div>
 
             <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="{{ url('/queues') }}">Queues</a>
-                </div>
+                @yield('content')
             </div>
         </div>
     </body>

@@ -11,8 +11,13 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
-Route::get('/', 'QueueController@index');
+// Route::get('/', 'QueueController@index');
+
+Route::get('/queues', 'QueueController@index');
+Route::get('/queue/{queue}', 'QueueController@edit');
+Route::post('/queue ', 'QueueController@save');
+Route::delete('/queues/{queue}', 'QueueController@destroy');
