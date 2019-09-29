@@ -58,7 +58,7 @@ class QueueController extends Controller
     public function actionIndex()
     {
         if(Yii::$app->user->identity->isAdmin){
-            $dataProvider = new ActiveDataProvider(['query' => VQueue::find(),]);
+            $dataProvider = new ActiveDataProvider(['query' => Queue::find()->with('owner'),]);
         }
         else{
             $owner_temp = Owner::getUserOwner();   

@@ -59,7 +59,7 @@ class ItemController extends Controller
     public function actionIndex()
     {
         if(Yii::$app->user->identity->isAdmin){
-            $dataProvider = new ActiveDataProvider(['query' => VItem::find(),]);
+            $dataProvider = new ActiveDataProvider(['query' => Item::find()->with('client','queue'),]);
         }
         else{
             $owner = Owner::getUserOwner();   

@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => new \app\models\Item(),
         'columns' => [
             'idItem',
-            'OwnerDescription', //'idClient',
+            ['attribute' => 'client.Description', 'label' => 'Owner Description',], //'idClient',
             'Position',        
             'CreateDate',
             'StatusDate',

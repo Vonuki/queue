@@ -91,7 +91,7 @@ class Queue extends \yii\db\ActiveRecord
      */
     public function getVItems()
     {
-        return $this->hasMany(VItem::className(), ['idQueue' => 'idQueue']);
+        return $this->hasMany(Item::className(), ['idQueue' => 'idQueue'])->with('client');
     }
   
     /**

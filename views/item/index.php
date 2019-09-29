@@ -31,8 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' => [
             'idItem',
-            'QueueDescription',
-            ['attribute' => 'OwnerDescription','visible' => \Yii::$app->user->identity->isAdmin,],
+            'queue.Description',
+            ['attribute' => 'client.Description', 'label' => 'Owner Description', 'visible' => \Yii::$app->user->identity->isAdmin,],
             ['attribute' => 'Status', 'format' => 'raw',
               'value' => 
                 function ($model, $key, $index, $column) { 
