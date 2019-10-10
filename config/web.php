@@ -18,6 +18,9 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'Pfxtnysq1',
+            'parsers' => [
+              'application/json' => 'yii\web\JsonParser',
+            ],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -32,12 +35,14 @@ $config = [
       
         'urlManager' => [
             'enablePrettyUrl' => true,
+            //'enableStrictParsing' => true,   // Chek should work for REST but make compliceted normal links ( for example HOME link)
             'showScriptName' => false,
             'class' => 'codemix\localeurls\UrlManager',
             'languages' => ['ru', 'en'],
             'enableDefaultLanguageUrlCode' => true,
             'rules' => [
                 'page/<view:[a-zA-Z0-9-]+>' => 'site/page',
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'ownerrest'],
             ],
         ],
               
