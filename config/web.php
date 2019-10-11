@@ -25,10 +25,7 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        /*'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ],*/
+      
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -42,7 +39,7 @@ $config = [
             'enableDefaultLanguageUrlCode' => true,
             'rules' => [
                 'page/<view:[a-zA-Z0-9-]+>' => 'site/page',
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'ownerr'],
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/owner'],
             ],
         ],
               
@@ -77,14 +74,6 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
-        */
     ],
     'params' => $params,
     
@@ -99,7 +88,12 @@ $config = [
                 'reconfirmationSubject' => 'Email change subject',
                 'recoverySubject'       => 'Recovery subject',
           ],
-        ],
+       ],
+        
+      'v1' => [
+        'basePath' => '@app/modules/api/v1',
+        'class' => 'app\modules\api\v1\Module',
+      ],
     ],
 ];
 
