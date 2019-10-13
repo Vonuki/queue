@@ -78,9 +78,9 @@ AppAsset::register($this);
                 ['label' => 'Actions', 
                   'options'=>['class'=>'dropdown'],
                   'items' => [
-                    ['label' => 'Owner info', 'url' => ['owner/index']],
-                    ['label' => 'My Queues', 'url' => ['queue/index']],
-                    ['label' => 'Items', 'url' => ['item/index']],
+                    ['label' => 'Owner info', 'url' => ['/owner/index']],
+                    ['label' => 'My Queues', 'url' => ['/queue/index']],
+                    ['label' => 'Items', 'url' => ['/item/index']],
                   ]
                 ]
             ],
@@ -95,7 +95,7 @@ AppAsset::register($this);
                   'options'=>['class'=>'dropdown'],
                   'items' => [
                     ['label' => 'Gii Code', 'url' => ['/gii']],
-                    ['label' => 'Users', 'url' => ['user/admin/index']],
+                    ['label' => 'Users', 'url' => ['/user/admin/index']],
                   ]
                 ]
             ],
