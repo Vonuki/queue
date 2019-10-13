@@ -39,7 +39,7 @@ $config = [
             'enableDefaultLanguageUrlCode' => true,
             'rules' => [
                 'page/<view:[a-zA-Z0-9-]+>' => 'site/page',
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/owner'],
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['v1/owner', 'v1/queue'] ],
             ],
         ],
               
