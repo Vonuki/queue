@@ -94,6 +94,12 @@ $config = [
         'basePath' => '@app/modules/api/v1',
         'class' => 'app\modules\api\v1\Module',
       ],
+      
+      'admin' => [
+        'basePath' => '@app/modules/admin',
+        'class' => 'app\modules\admin\Module',
+      ],
+      
     ],
 ];
 
