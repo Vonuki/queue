@@ -165,7 +165,7 @@ class Queue extends \yii\db\ActiveRecord
         $transaction = Queue::getDb()->beginTransaction(); 
         try {
             $this->QueueLen++;
-            $item->PutInPositionSave($this->Takt, $this->QueueLen);   // save inside
+            $item->PutInPositionSave($this->Takt, $this->QueueLen);// save inside
             $this->save();
             $transaction->commit();
         } catch(\Exception $e) {

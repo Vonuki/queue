@@ -22,7 +22,8 @@ use kartik\select2\Select2;
         'pluginOptions' => [
             'allowClear' => true
         ],
-]);
+       ]);
+      echo $form->field($model, 'Comment')->textArea();
     ?>
   
     <?php 

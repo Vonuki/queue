@@ -101,6 +101,7 @@ class ItemController extends Controller
         else{
           $owner = Owner::getUserOwner();
           $model->FillEmptyItem($owner->idOwner);
+
         }   
       
         //Save on response

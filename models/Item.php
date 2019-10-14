@@ -49,7 +49,7 @@ class Item extends \yii\db\ActiveRecord
         return [
             [['idQueue', 'idClient', 'Status', 'RestTime', 'Position'], 'required'],
             [['idQueue', 'idClient', 'Status', 'Position', 'RestTime'], 'integer'],
-            [['CreateDate', 'StatusDate'], 'safe'],
+            [['CreateDate', 'StatusDate','Comment'], 'safe'],
             [['idClient'], 'exist', 'skipOnError' => true, 'targetClass' => Owner::className(), 'targetAttribute' => ['idClient' => 'idOwner']],
             [['idQueue'], 'exist', 'skipOnError' => true, 'targetClass' => Queue::className(), 'targetAttribute' => ['idQueue' => 'idQueue']],
         ];
@@ -69,6 +69,7 @@ class Item extends \yii\db\ActiveRecord
             'StatusDate' => Yii::t('lg_common', 'Status Date'),
             'RestTime' => Yii::t('lg_common', 'Rest|Result Time'),
             'Position' => Yii::t('lg_common', 'Position'),
+            'Comment' => Yii::t('lg_common', 'Comment'),
         ];
     }
   
@@ -144,6 +145,12 @@ class Item extends \yii\db\ActiveRecord
       $this->Status = $this->Status;
       $this->RestTime = $takt * $this->Position;
       $this->StatusDate = date("Y-m-d H:i:s",time());
+      return $this->save();
+    }
+    
+    public function AddComment($idOwner){
+      $this->idClient = $idOwner;
+      //$this->Comment = $text;
       return $this->save();
     }
   
