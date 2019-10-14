@@ -1,5 +1,5 @@
 <p align="center">
-    <h1 align="center">Using Yii 2 Basic Project Template</h1>
+    <h1 align="center">Using Yii 2 Basic Project Что нибудь</h1>
     <br>
 </p>
 
