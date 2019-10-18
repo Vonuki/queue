@@ -26,6 +26,10 @@ $config = [
             ],
         ],
         'db' => $db,
+        
+//         'authManager' => [
+//             'class' => 'dektrium\rbac\components\DbManager',
+//         ],
     ],
     'params' => $params,
     /*
@@ -35,6 +39,11 @@ $config = [
         ],
     ],
     */
+   
+   'modules' => [
+      'rbac' => 'dektrium\rbac\RbacConsoleModule',
+    ],
+   
 ];
 
 if (YII_ENV_DEV) {
