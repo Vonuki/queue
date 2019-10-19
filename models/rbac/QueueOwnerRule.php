@@ -3,9 +3,10 @@
 namespace app\models\rbac;
 
 use yii\rbac\Rule;
+use app\models\Owner;
 
 /**
- * Проверяем authorID на соответствие с пользователем, переданным через параметры
+ * Проверяем Owner текущего пользователя  на соответствие с Owner очереди, переданной через параметры
  */
 class QueueOwnerRule extends Rule
 {
@@ -19,7 +20,7 @@ class QueueOwnerRule extends Rule
      */
     public function execute($user, $item, $params)
     {
-        $owner_model = Owner::finedByUser($user); //Owner::getUserOwner();
+        $owner_model = Owner::findByUser($user); //Owner::getUserOwner();
         return isset($params['queue']) ? $params['queue']->idOwner == $owner_model->idOwner : false;
     }
 }
