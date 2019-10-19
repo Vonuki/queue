@@ -43,6 +43,10 @@ return [
     'charset' => 'utf8',
 ];
 ```
+For dectrium/rbac apllay migration:
+```php
+$ php yii migrate/up --migrationPath=@yii/rbac/migrations
+```
 
 **NOTES:**
 - Yii won't create the database for you, this has to be done manually before you can access it.
