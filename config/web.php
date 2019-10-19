@@ -29,7 +29,7 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-      
+            
         'urlManager' => [
             'enablePrettyUrl' => true,
             //'enableStrictParsing' => true,   // Chek should work for REST but make compliceted normal links ( for example HOME link)
@@ -74,6 +74,10 @@ $config = [
             ],
         ],
         'db' => $db,
+      
+//         'authManager' => [
+//             'class' => 'dektrium\rbac\components\DbManager',
+//         ],
     ],
     'params' => $params,
     
@@ -89,6 +93,9 @@ $config = [
                 'recoverySubject'       => 'Recovery subject',
           ],
        ],
+
+       'rbac' => 'dektrium\rbac\RbacWebModule',
+  
         
       'v1' => [
         'basePath' => '@app/modules/api/v1',
