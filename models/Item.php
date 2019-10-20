@@ -22,6 +22,8 @@ use yii\web\NotFoundHttpException;
  */
 class Item extends \yii\db\ActiveRecord
 {
+    const EVENT_UPDATE_ITEM = 'update-item';
+    const EVENT_HANDLE_ITEM = 'handle-item';
    /**
    * @return array Kye=>Value for Status options
    */
@@ -148,11 +150,6 @@ class Item extends \yii\db\ActiveRecord
       return $this->save();
     }
     
-    public function AddComment($idOwner){
-      $this->idClient = $idOwner;
-      //$this->Comment = $text;
-      return $this->save();
-    }
   
     /**
      * @Handle Item
@@ -163,6 +160,7 @@ class Item extends \yii\db\ActiveRecord
         $this->Status = 1;
         $this->StatusDate = date("Y-m-d H:i:s",time());
         $this->RestTime = 0;
+        $this->trigger(Item::EVENT_HANDLE_ITEM); 
         return $this->save();
       }
       else{
@@ -183,5 +181,39 @@ class Item extends \yii\db\ActiveRecord
       $this->Position = 0;
       return $this;
     }
-    
+    public function sendMailUpdate($event){
+       echo 'mail sent to admin';
+        // you code 
+       Yii::$app->mailer->compose()
+    ->setFrom('robot@easymatic.su')
+    ->setTo(Yii::$app->user->identity->email)// надо как-то узнать email owner
+    ->setSubject('Тема сообщения')
+    ->setTextBody('Текст сообщения')
+    ->setHtmlBody('<b> Обновленно </b>')
+    ->send();
+    }
+
+// one more hanlder.
+
+    public function sendMailHandle($event){
+      echo 'notification created';
+        Yii::$app->mailer->compose()
+    ->setFrom('robot@easymatic.su')
+    ->setTo(Yii::$app->user->identity->email)// надо как-то узнать email owner
+    ->setSubject('Тема сообщения')
+    ->setTextBody('Текст сообщения')
+    ->setHtmlBody('<b>  Обработанно </b>')
+    ->send();
+    }
+  // this should be inside User.php class.
+public function init(){
+
+  $this->on(self::EVENT_UPDATE_ITEM, [$this, 'sendMailUpdate']);
+  $this->on(self::EVENT_HANDLE_ITEM, [$this, 'sendMailHandle']);
+
+  // first parameter is the name of the event and second is the handler. 
+  // For handlers I use methods sendMail and notification
+  // from $this class.
+  parent::init(); // DON'T Forget to call the parent method.
+}
 }
