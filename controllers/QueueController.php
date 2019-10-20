@@ -40,7 +40,7 @@ class QueueController extends Controller
                     [ 
                       'allow' => true, 
                       'actions' => ['create','index', 'view', 'update', 'archive', ], 
-                      'roles' => ['@']
+                      'roles' => ['genuser'] //or using: @ - for all users
                     ],
                     [
                         'allow' => true,
@@ -152,9 +152,14 @@ class QueueController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findAvailableModel($id);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'id' => $model->idQueue]);
+        $model = $this->findModel($id);
+        if(Yii::$app->user->can('updateQueue', ['queue' => $model])){
+          if ($model->load(Yii::$app->request->post()) && $model->save()) {
+              return $this->redirect(['index', 'id' => $model->idQueue]);
+          }
+        }
+        else{
+           throw new NotFoundHttpException('No permision');
         }
         return $this->render('update', ['model' => $model,]);   
     }

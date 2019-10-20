@@ -60,6 +60,25 @@ class OwnerController extends Controller
     {    
         if(Yii::$app->user->identity->isAdmin){
             $dataProvider = new ActiveDataProvider(['query' => Owner::find(),]);
+          
+            $auth = Yii::$app->authManager;
+
+            // добавляем разрешение "createPost"
+            $createPost = $auth->createPermission('createPost');
+            $createPost->description = 'Create a post';
+            $auth->add($createPost);
+
+            // добавляем разрешение "updatePost"
+            $updatePost = $auth->createPermission('updatePost');
+            $updatePost->description = 'Update post';
+            $auth->add($updatePost);
+
+            // добавляем роль "author" и даём роли разрешение "createPost"
+            $author = $auth->createRole('author');
+            $auth->add($author);
+            $auth->addChild($author, $createPost);
+
+          
         }
         else{
             $dataProvider = new ActiveDataProvider([

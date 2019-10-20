@@ -189,10 +189,10 @@ class Queue extends \yii\db\ActiveRecord
         $item_takt = time() - strtotime($item->StatusDate);
         $item->FinishSave();
         
-        //Avg Cycle
+        //Avg Cycle (sec)
         $this->Cycle = intdiv( ($this->Finished*$this->Cycle + $item->RestTime), ($this->Finished+1) );
       
-        //Avg Takt
+        //Avg Takt (sec)
         
         $this->Takt = intdiv( ($this->Finished*$this->Takt + $item_takt), ($this->Finished+1) );
         

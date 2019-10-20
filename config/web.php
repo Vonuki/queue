@@ -18,26 +18,28 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'Pfxtnysq1',
+            'parsers' => [
+              'application/json' => 'yii\web\JsonParser',
+            ],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        /*'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ],*/
+      
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-      
+            
         'urlManager' => [
             'enablePrettyUrl' => true,
+            //'enableStrictParsing' => true,   // Chek should work for REST but make compliceted normal links ( for example HOME link)
             'showScriptName' => false,
             'class' => 'codemix\localeurls\UrlManager',
             'languages' => ['ru', 'en'],
             'enableDefaultLanguageUrlCode' => true,
             'rules' => [
                 'page/<view:[a-zA-Z0-9-]+>' => 'site/page',
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['v1/owner', 'v1/queue'] ],
             ],
         ],
               
@@ -72,14 +74,10 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
-        */
+      
+//         'authManager' => [
+//             'class' => 'dektrium\rbac\components\DbManager',
+//         ],
     ],
     'params' => $params,
     
@@ -94,7 +92,21 @@ $config = [
                 'reconfirmationSubject' => 'Email change subject',
                 'recoverySubject'       => 'Recovery subject',
           ],
-        ],
+       ],
+
+       'rbac' => 'dektrium\rbac\RbacWebModule',
+  
+        
+      'v1' => [
+        'basePath' => '@app/modules/api/v1',
+        'class' => 'app\modules\api\v1\Module',
+      ],
+      
+      'admin' => [
+        'basePath' => '@app/modules/admin',
+        'class' => 'app\modules\admin\Module',
+      ],
+      
     ],
 ];
 

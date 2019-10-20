@@ -1,3 +1,5 @@
+// yii migrations
+
 <p align="center">
     <h1 align="center">Easyqueu project (yii2 basic)</h1>
     <br>
