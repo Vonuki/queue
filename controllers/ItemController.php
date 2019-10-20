@@ -80,9 +80,7 @@ class ItemController extends Controller
     public function actionView($id)
     {
         $model = $this->findAvailableModel($id);
-        return $this->render('view', [
-            'model' => $model,
-        ]);
+        return $this->render('view', ['model' => $model,]);
     }
 
     /**

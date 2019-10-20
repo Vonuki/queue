@@ -16,6 +16,7 @@ use yii\web\NotFoundHttpException;
  * @property string $StatusDate
  * @property string $RestTime
  * @property int $Position
+ * @property string $Comment
  *
  * @property Owner $client
  * @property Queue $queue

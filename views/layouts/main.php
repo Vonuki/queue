@@ -62,7 +62,7 @@ AppAsset::register($this);
                 ['label' => 'User Menu',
                   'options'=>['class'=>'dropdown'],
                   'items' => [
-                    ['label' => 'Profile', 'url' => ['/user/settings/profile']],
+                    ['label' => Yii::t('lg_common', 'Profile'), 'url' => ['/user/settings/profile']],
                     '<li>'
                       . Html::beginForm(['/user/security/logout'], 'post')
                       . Html::submitButton('Logout (' . Yii::$app->user->identity->username . ')',['class' => 'btn btn-default logout'])
@@ -78,9 +78,9 @@ AppAsset::register($this);
                 ['label' => 'Actions', 
                   'options'=>['class'=>'dropdown'],
                   'items' => [
-                    ['label' => 'Owner info', 'url' => ['/owner/index']],
-                    ['label' => 'My Queues', 'url' => ['/queue/index']],
-                    ['label' => 'Items', 'url' => ['/item/index']],
+                    ['label' => Yii::t('lg_common', 'Owner info'), 'url' => ['/owner/index']],
+                    ['label' => Yii::t('lg_common', 'Queues'), 'url' => ['/queue/index']],
+                    ['label' => Yii::t('lg_common', 'Items'), 'url' => ['/item/index']],
                   ]
                 ]
             ],

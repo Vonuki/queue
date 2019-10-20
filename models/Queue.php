@@ -132,11 +132,11 @@ class Queue extends \yii\db\ActiveRecord
     }
     
     /**
-     * @return \yii\db\ActiveQuer for all Public Queues
+     * @return \yii\db\ActiveQuer for all Public Queues and not Archived
      */
     public function findPublic()
     {
-        return Queue::find()->where(['QueueShare' => 1 ])->orderBy('Description')->all();
+        return Queue::find()->where(['QueueShare' => 1])->where(['not like','Status',1])->orderBy('Description')->all();
     }
   
   

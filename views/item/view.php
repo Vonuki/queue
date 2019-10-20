@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'StatusDate',
                 'RestTime',
                 'Position',
-                'Commment'
+                'Comment'
             ],
           ]);
       }
