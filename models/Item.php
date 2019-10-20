@@ -181,29 +181,32 @@ class Item extends \yii\db\ActiveRecord
       $this->Position = 0;
       return $this;
     }
+  
+
+  
     public function sendMailUpdate($event){
-       echo 'mail sent to admin';
-        // you code 
-       Yii::$app->mailer->compose()
-    ->setFrom('robot@easymatic.su')
-    ->setTo(Yii::$app->user->identity->email)// надо как-то узнать email owner
-    ->setSubject('Тема сообщения')
-    ->setTextBody('Текст сообщения')
-    ->setHtmlBody('<b> Обновленно </b>')
-    ->send();
+      
+      //$data = Owner::getPerson();
+      Yii::$app->mailer->compose()
+      ->setFrom('robot@easymatic.su')
+      ->setTo(Yii::$app->user->identity->email)// надо как-то узнать email owner
+      ->setSubject('Тема сообщения')
+      ->setTextBody('Текст сообщения')
+      ->setHtmlBody("<b> Обновленно очередь номер {$this->idItem} </b>")
+      ->send();
     }
 
 // one more hanlder.
 
     public function sendMailHandle($event){
-      echo 'notification created';
-        Yii::$app->mailer->compose()
-    ->setFrom('robot@easymatic.su')
-    ->setTo(Yii::$app->user->identity->email)// надо как-то узнать email owner
-    ->setSubject('Тема сообщения')
-    ->setTextBody('Текст сообщения')
-    ->setHtmlBody('<b>  Обработанно </b>')
-    ->send();
+      
+       Yii::$app->mailer->compose()
+        ->setFrom('robot@easymatic.su')
+        ->setTo(Yii::$app->user->identity->email)// надо как-то узнать email owner
+        ->setSubject('Тема сообщения')
+        ->setTextBody('Текст сообщения')
+        ->setHtmlBody('<b>  Обработанно </b>')
+        ->send();
     }
   // this should be inside User.php class.
 public function init(){
