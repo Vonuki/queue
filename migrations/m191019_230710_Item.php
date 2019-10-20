@@ -25,6 +25,7 @@ class m191019_230710_Item extends Migration
             'StatusDate'=> $this->timestamp()->notNull()->defaultExpression("CURRENT_TIMESTAMP"),
             'RestTime'=> $this->integer(11)->null()->defaultValue(null),
             'Position'=> $this->integer(11)->notNull(),
+            'Comment'=> $this->string(500)->notNull()->defaultValue(''''),
         ], $tableOptions);
 
         $this->createIndex('idQueue','{{%Item}}',['idQueue'],false);
