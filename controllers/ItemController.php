@@ -130,7 +130,7 @@ class ItemController extends Controller
         $queuesMap = ArrayHelper::map($queues, 'idQueue', 'Description');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $model->trigger(Item::EVENT_UPDATE_ITEM); 
+           // $model->trigger(Item::EVENT_UPDATE_ITEM); 
             return $this->redirect(['index', 'id' => $model->idItem]);
         }
 
