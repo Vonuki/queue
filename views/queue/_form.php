@@ -27,7 +27,7 @@ use yii\widgets\ActiveForm;
         
       } 
   
-      echo $form->field($model, 'AutoTake')->textInput();
+      echo $form->field($model, 'AutoTake')->dropDownList($model->getAutoTakeTexts());
     ?>
 
     <div class="form-group">

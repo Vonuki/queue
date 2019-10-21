@@ -45,10 +45,9 @@ class VQueue extends Queue
      */
     public function attributeLabels()
     {
-        return [
-            parent::attributeLabels(),
-            'OwnerDescription' => Yii::t('lg_common', 'Owner Description'),
-        ];
+        $labels = parent::attributeLabels();
+        $labels_new = array ('OwnerDescription' => Yii::t('lg_common', 'Owner Description'));
+        return $labels + $labels_new;
     }
   
     public static function primaryKey()

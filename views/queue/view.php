@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('lg_common', 'Archive'), ['archive', 'id' => $model->idQueue], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to archive this item?',
+                'confirm' => Yii::t('lg_common', 'Are you sure you want to archive this item? - All active Items will be canceled'),
                 'method' => 'post',
             ],
         ]) ?>
@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             echo Html::a(Yii::t('lg_common', 'Delete'), ['delete', 'id' => $model->idQueue], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                  'confirm' => 'Are you sure you want to delete this item?',
+                  'confirm' => Yii::t('lg_common', 'Are you sure you want to delete this item? - This is can not be undone'),
                   'method' => 'post',
                 ],
             ]);
@@ -51,16 +51,24 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'idQueue',
+            //'idQueue',
             'Description',
             ['attribute' => 'QueueShare', 'format' => 'raw', 'value' => $model->getQueueShareTxt(), ],
-            'idOwner',
-            //'OwnerDescription',
+            //'idOwner',
+            'OwnerDescription',
             //'FirstItem',
+            ['attribute' => 'Status', 'format' => 'raw', 
+             'value' => function ($model, $column) {
+                          return \yii\helpers\Html::tag('span',$model->getStatusText(),['class' => $model->getStatusLabel()] );
+                        },
+            ],
+            ['attribute' => 'AutoTake', 'format' => 'raw',
+             'value' => function ($model, $column) {
+                          return $model->getAutoTakeTxt();
+                        },
+            ],
             'QueueLen',
-            ['attribute' => 'Status', 'format' => 'raw', 'value' => $model->getStatusText(), ],
             ['attribute' => 'Takt', 'value' => date("H:i:s",$model->Takt), ],
-            'AutoTake',
             ['attribute' => 'Cycle', 'value' => date("H:i:s",$model->Cycle), ],
             'Finished',
         ],

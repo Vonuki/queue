@@ -75,7 +75,7 @@ AppAsset::register($this);
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
-                ['label' => 'Actions', 
+                ['label' => Yii::t('lg_common', 'Manage'), 
                   'options'=>['class'=>'dropdown'],
                   'items' => [
                     ['label' => Yii::t('lg_common', 'Owner info'), 'url' => ['/owner/index']],

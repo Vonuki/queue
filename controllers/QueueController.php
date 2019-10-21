@@ -63,8 +63,8 @@ class QueueController extends Controller
         else{
             $owner_temp = Owner::getUserOwner();   
             $dataProvider = new ActiveDataProvider([
-              //'query' => Queue::find()->where(['idOwner' => $owner_temp->idOwner]),       
-              'query' => $owner_temp->getQueues(),       
+              'query' => $owner_temp->getQueues(),  
+              // or like this //'query' => Queue::find()->where(['idOwner' => $owner_temp->idOwner]),       
             ]);
         }
         return $this->render('index', ['dataProvider' => $dataProvider,]);
@@ -78,36 +78,40 @@ class QueueController extends Controller
      */
     public function actionView($id, $all = false)
     {
-        $model = $this->findAvailableModel($id);
-      
-        //Finish item
-        $finish = Yii::$app->request->post('finish', null);
-        if(isset($finish)){
-          try{
-            $model->FinishItemSave($finish);  
-            Yii::$app->session->setFlash('success', 'Finished');             
+        $model = $this->findModel($id);
+        if(Yii::$app->user->can('manageQueue', ['queue' => $model])){
+          //Finish item
+          $finish = Yii::$app->request->post('finish', null);
+          if(isset($finish)){
+            try{
+              $model->FinishItemSave($finish);  
+              Yii::$app->session->setFlash('success', Yii::t('lg_common', 'Item finished'));             
+            }
+            catch(\ErrorException $e) {
+              Yii::$app->session->setFlash('error', 'Finish Error: '.$e->getMessage());  
+            } catch(\Throwable $e) {
+                throw $e;
+            }
+            return $this->redirect(['view', 'id' => $model->idQueue]);
           }
-          catch(\ErrorException $e) {
-            Yii::$app->session->setFlash('error', 'Finish Error: '.$e->getMessage());  
-          } catch(\Throwable $e) {
-              throw $e;
-          }
-          return $this->redirect(['view', 'id' => $model->idQueue]);
+
+          //Handle item
+          $handle = Yii::$app->request->post('handle', null);
+          if(isset($handle)){
+            try{
+              $model->HandleItemSave($handle);  
+              Yii::$app->session->setFlash('success', Yii::t('lg_common', 'Item is being handled '));              
+            }
+            catch(\ErrorException $e) {
+              Yii::$app->session->setFlash('error', 'Handled Error: '.$e->getMessage());  
+            } catch(\Throwable $e) {
+                throw $e;
+            } 
+            return $this->redirect(['view', 'id' => $model->idQueue]);
+          }  
         }
-      
-        //Handle item
-        $handle = Yii::$app->request->post('handle', null);
-        if(isset($handle)){
-          try{
-            $model->HandleItemSave($handle);  
-            Yii::$app->session->setFlash('success', 'Handled');              
-          }
-          catch(\ErrorException $e) {
-            Yii::$app->session->setFlash('error', 'Handled Error: '.$e->getMessage());  
-          } catch(\Throwable $e) {
-              throw $e;
-          } 
-          return $this->redirect(['view', 'id' => $model->idQueue]);
+        else{
+           throw new NotFoundHttpException( Yii::t('lg_common', 'No permissions for operation') );
         }
         
         //Items for list
@@ -117,6 +121,7 @@ class QueueController extends Controller
         else {
            $ItemsProvider = new ActiveDataProvider(['query' => $model->getVItems()->where(['Status' => [0,1] ]),]);
         }
+        $model = $this->findVModel($id);
         return $this->render('view', ['model' => $model,'ItemsProvider' => $ItemsProvider,]);        
     }
   
@@ -129,12 +134,7 @@ class QueueController extends Controller
     public function actionCreate()
     { 
         $model = new Queue();
-      
-        if(Yii::$app->user->identity->isAdmin){}
-        else{
-          $owner = Owner::getUserOwner();
-          $model->fillOwner($owner);
-        }
+        $model->initQueue();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idQueue]);
@@ -153,13 +153,13 @@ class QueueController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        if(Yii::$app->user->can('updateQueue', ['queue' => $model])){
+        if(Yii::$app->user->can('manageQueue', ['queue' => $model])){
           if ($model->load(Yii::$app->request->post()) && $model->save()) {
-              return $this->redirect(['index', 'id' => $model->idQueue]);
+              return $this->redirect(['index']);
           }
         }
         else{
-           throw new NotFoundHttpException('No permision');
+           throw new NotFoundHttpException( Yii::t('lg_common', 'No permissions for operation') );
         }
         return $this->render('update', ['model' => $model,]);   
     }
@@ -168,24 +168,30 @@ class QueueController extends Controller
     * Set status for model Queue - and direct actions
     */
     public function StatusChange($id, $Status){
-        $model = $this->findAvailableModel($id);
-        $model->Status = $Status;
-        if($model->save()){
-          Yii::$app->session->setFlash('success', 'Queue Status changed');
+      
+        $model = $this->findModel($id);
+        if(Yii::$app->user->can('manageQueue', ['queue' => $model])){
+          $model->Status = $Status;
+          if($model->save()){
+            Yii::$app->session->setFlash('success', Yii::t('lg_common', 'Queue Status changed'));
+          }
+          else{
+            Yii::$app->session->setFlash('error', Yii::t('lg_common', 'Action not performed'));
+          } 
         }
         else{
-          Yii::$app->session->setFlash('error', 'Action not performed');
-        }
-        return $this->actionIndex();
+           throw new NotFoundHttpException( Yii::t('lg_common', 'No permissions for operation') );
+        }       
+        return $this->redirect(['view', 'id' => $id]);
     }
     public function actionArchive($id){
         return $this->StatusChange($id, 1);
     }
     public function actionPause($id){
-        $this->StatusChange($id, 2);
+        return $this->StatusChange($id, 2);
     }
     public function actionActivate($id){
-        $this->StatusChange($id, 0);
+        return $this->StatusChange($id, 0);
     }
   
 
@@ -198,8 +204,13 @@ class QueueController extends Controller
      */
     public function actionDelete($id)
     {
-        
-        $this->findAvailableModel($id)->delete();
+        $model = $this->findModel($id);
+        if(Yii::$app->user->can('grantQueue', ['queue' => $model])){
+          $model->delete();
+        }
+        else{
+          throw new NotFoundHttpException( Yii::t('lg_common', 'Operation was interupted') );
+        }
         return $this->redirect(['index']);
     }
 
@@ -216,20 +227,23 @@ class QueueController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException(Yii::t('lg_common', 'The rquested model does not exist'));
     }
   
     /**
-    * Find Queue Model if user is owner or Admin
-    */
-    protected function findAvailableModel($id) {
-        
-        $model = $this->findModel($id);
-        $owner_model = Owner::getUserOwner();
-        if ($model->idOwner == $owner_model->idOwner or Yii::$app->user->identity->isAdmin){
+     * Finds the Queue model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Queue the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findVModel($id)
+    {
+        if (($model = VQueue::findOne($id)) !== null) {
             return $model;
         }
-      
-        throw new NotFoundHttpException('The requested page does not exist.');
+
+        throw new NotFoundHttpException(Yii::t('lg_common', 'The rquested model does not exist'));
     }
+  
 }

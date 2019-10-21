@@ -31,7 +31,7 @@ class Queue extends \yii\db\ActiveRecord
      * @return array Kye=>Value for Status options
      */
     public static function getStatusTexts(){
-      return array(0 => "Active", 1 => "Archived", 2 => "On Pause");  
+      return array(0 => Yii::t('lg_common', 'Active'), 1 => Yii::t('lg_common', 'Archived'), 2 => Yii::t('lg_common', 'On Pause'));  
     }
   
     public static function getStatusLabels(){
@@ -42,7 +42,14 @@ class Queue extends \yii\db\ActiveRecord
      * @return array Kye=>Value for QueueShare options
      */
     public static function getShareLabels(){
-      return array(0 => "Private / by link", 1 => "Visible for all");  
+      return array(0 => Yii::t('lg_common', 'Private / by link'), 1 => Yii::t('lg_common', 'Visible for all'));  
+    }
+  
+     /**
+     * @return array Kye=>Value for AutoTake options
+     */
+    public static function getAutoTakeTexts(){
+      return array(0 => Yii::t('lg_common', 'Manual handling'), 1 => Yii::t('lg_common', 'Auto handling'));  
     }
  
     /**
@@ -80,7 +87,7 @@ class Queue extends \yii\db\ActiveRecord
             'QueueLen' => Yii::t('lg_common', 'Queue Lenght'),
             'Status' => Yii::t('lg_common', 'Status'),
             'Takt' => Yii::t('lg_common', 'Average tact time'),
-            'AutoTake' => Yii::t('lg_common', 'Auto take next Item'),
+            'AutoTake' => Yii::t('lg_common', 'Auto handle next Item by finishing'),
             'Cycle' => Yii::t('lg_common', 'Average cycle in queue'),
             'Finished' => Yii::t('lg_common', 'Total finished items'),
         ];
@@ -130,6 +137,15 @@ class Queue extends \yii\db\ActiveRecord
     {
         return self::getShareLabels()[$this->QueueShare];
     }
+  
+     /**
+     * @return Text value for Share of Queue
+     */
+    public function getAutoTakeTxt()
+    {
+        return self::getAutoTakeTexts()[$this->QueueShare];
+    }
+    
     
     /**
      * @return \yii\db\ActiveQuer for all Public Queues and not Archived
@@ -141,10 +157,12 @@ class Queue extends \yii\db\ActiveRecord
   
   
     /**
-     * @Fill Queue for Owner
+     * @Fill Queue with init values
      */
-    public function fillOwner($owner)
+    public function initQueue($owner = null)
     {
+        if(is_null($owner)){ $owner = Owner::getUserOwner(); }
+      
         $this->idOwner = $owner->idOwner;
         $this->FirstItem = 0; //first item number
         $this->QueueShare = 0; //private queue
