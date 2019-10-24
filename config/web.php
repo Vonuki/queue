@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
@@ -14,6 +14,7 @@ $config = [
     ],
     'sourceLanguage' => 'en',
     'language' => 'en',
+  
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -25,7 +26,7 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-      
+    
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -75,9 +76,6 @@ $config = [
         ],
         'db' => $db,
       
-//         'authManager' => [
-//             'class' => 'dektrium\rbac\components\DbManager',
-//         ],
     ],
     'params' => $params,
     
@@ -87,11 +85,15 @@ $config = [
           'admins' => ['admin'],
           'mailer' => [
                 'sender'                => 'robot@easymatic.su',
-                'welcomeSubject'        => 'Welcome subject',
-                'confirmationSubject'   => 'Confirmation subject',
-                'reconfirmationSubject' => 'Email change subject',
-                'recoverySubject'       => 'Recovery subject',
+                'welcomeSubject'        => 'Welcome to EasyQueue',
+                'confirmationSubject'   => 'Confirmation completed',
+                'reconfirmationSubject' => 'Email changed',
+                'recoverySubject'       => 'Recovery request',
           ],
+           'modelMap' => [
+                  'User' => 'app\models\UserDefault',
+
+            ],
        ],
 
        'rbac' => 'dektrium\rbac\RbacWebModule',
@@ -105,6 +107,7 @@ $config = [
       'admin' => [
         'basePath' => '@app/modules/admin',
         'class' => 'app\modules\admin\Module',
+        'on testEvent' => ['app\models\UserDefault', 'testHandler'],
       ],
       
     ],
