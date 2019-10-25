@@ -40,7 +40,7 @@ class QueueController extends Controller
                     [ 
                       'allow' => true, 
                       'actions' => ['create','index', 'view', 'update', 'archive','activate', 'pause' ], 
-                      'roles' => ['genuser'] //or using: @ - for all users
+                      'roles' => ['genuser'] //or using: '@' - for all users
                     ],
                     [
                         'allow' => true,

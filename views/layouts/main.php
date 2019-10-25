@@ -91,7 +91,7 @@ AppAsset::register($this);
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
-                ['label' => 'Models', 
+                ['label' => 'Administration', 
                   'options'=>['class'=>'dropdown'],
                   'items' => [
                     ['label' => 'Gii Code', 'url' => ['/gii']],

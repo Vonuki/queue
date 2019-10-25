@@ -86,7 +86,7 @@ class Queue extends \yii\db\ActiveRecord
             'FirstItem' => Yii::t('lg_common', 'First Item'),
             'QueueLen' => Yii::t('lg_common', 'Queue Lenght'),
             'Status' => Yii::t('lg_common', 'Status'),
-            'Takt' => Yii::t('lg_common', 'Average tact time'),
+            'Takt' => Yii::t('lg_common', 'Average handling time'),
             'AutoTake' => Yii::t('lg_common', 'Auto handle next Item by finishing'),
             'Cycle' => Yii::t('lg_common', 'Average cycle in queue'),
             'Finished' => Yii::t('lg_common', 'Total finished items'),
@@ -152,7 +152,7 @@ class Queue extends \yii\db\ActiveRecord
      */
     public function findPublic()
     {
-        return Queue::find()->where(['QueueShare' => 1])->where(['not like','Status',1])->orderBy('Description')->all();
+        return Queue::find()->where(['QueueShare' => 1])->andwhere(['not like','Status',1])->orderBy('Description')->all();
     }
   
   

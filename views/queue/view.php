@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
             ],
             'QueueLen',
-            ['attribute' => 'Takt', 'value' => date("H:i:s",$model->Takt), ],
+            ['attribute' => 'Takt', 'value' => date("d \d\a\y\s H:i:s",$model->Takt), ],
             ['attribute' => 'Cycle', 'value' => date("H:i:s",$model->Cycle), ],
             'Finished',
         ],

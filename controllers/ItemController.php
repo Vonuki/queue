@@ -40,12 +40,12 @@ class ItemController extends Controller
                 'rules' => [
                     [ 
                       'allow' => true, 
-                      'actions' => ['create','index', 'view', 'update', 'cancel', ], 
+                      'actions' => ['create','index', 'cancel', ], 
                       'roles' => ['@']
                     ],
                     [
                         'allow' => true,
-                        'roles' => ['admin']
+                        'roles' => ['admin',]
                     ],
                 ],
             ],
@@ -108,7 +108,7 @@ class ItemController extends Controller
             $queue = $model->getQueue()->One();
             $queue->addItemSave($model);
           
-            return $this->redirect(['view', 'id' => $model->idItem]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', ['model' => $model, 'queues' => $queuesMap] );
