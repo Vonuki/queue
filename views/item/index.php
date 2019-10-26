@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
           $actions_string = '{view} {update} {cancel} {delete}'; 
       }
       else{ 
-          $actions_string = '{cancel}'; 
+          $actions_string = '{update} {cancel}'; 
       }
       
 
@@ -48,6 +48,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn',
               'template' => $actions_string,
               'buttons' => [
+                'update' => function ($url, $model,$key) {
+                    if($model->Status>0){
+                      return '';
+                    }
+                    else{
+                      return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, ['title' => Yii::t('lg_common', 'Update'),'data-pjax' => '0',]);
+                    }
+                },
                 'cancel' => function ($url, $model,$key) {
                     if($model->Status>0){
                       return '';

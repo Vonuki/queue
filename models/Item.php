@@ -23,6 +23,7 @@ use yii\web\NotFoundHttpException;
  */
 class Item extends \yii\db\ActiveRecord
 {
+
    /**
    * @return array Kye=>Value for Status options
    */
@@ -72,6 +73,12 @@ class Item extends \yii\db\ActiveRecord
             'Position' => Yii::t('lg_common', 'Position'),
             'Comment' => Yii::t('lg_common', 'Comment'),
         ];
+    }
+  
+    // this should be inside User.php class.
+    public function init(){
+      $this->on(self::EVENT_AFTER_UPDATE, [$this, 'sendMailUpdate']);
+      parent::init(); 
     }
   
     /**
@@ -149,11 +156,6 @@ class Item extends \yii\db\ActiveRecord
       return $this->save();
     }
     
-    public function AddComment($idOwner){
-      $this->idClient = $idOwner;
-      //$this->Comment = $text;
-      return $this->save();
-    }
   
     /**
      * @Handle Item
@@ -184,5 +186,26 @@ class Item extends \yii\db\ActiveRecord
       $this->Position = 0;
       return $this;
     }
-    
+  
+    public function sendMailUpdate($event){
+     
+      $email = $this->getClient()->one()->getPerson()->one()->email;
+      
+      Yii::$app->mailer->compose()
+        ->setFrom('robot@easymatic.su')
+        ->setTo($email)
+        ->setSubject( Yii::t('lg_common', 'Item Updated'))
+        ->setTextBody(Yii::t('lg_common', 'Item Updated'))
+        ->setHtmlBody($this->ItemPrint())      
+        ->send();
+    }
+  
+   public function ItemPrint(){
+     return 
+       "Item Status: ".$this->getStatusText()."<br>".
+       "Position: ".$this->Position
+       ;
+     //return \Util::print_var($this->_attributes);
+   }
+  
 }

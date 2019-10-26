@@ -16,13 +16,15 @@ use kartik\select2\Select2;
     <?php $form = ActiveForm::begin(); ?>
 
     <?php
-      echo $form->field($model, 'idQueue')->widget(Select2::classname(), [
-        'data' => $queues,
-        'options' => ['placeholder' => Yii::t('lg_common', 'Select a Queue ...')],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-       ]);
+      if(Yii::$app->controller->action->id != "update"){ 
+        echo $form->field($model, 'idQueue')->widget(Select2::classname(), [
+          'data' => $queues,
+          'options' => ['placeholder' => Yii::t('lg_common', 'Select a Queue ...')],
+          'pluginOptions' => [
+              'allowClear' => true
+          ],
+         ]);
+      }
       echo $form->field($model, 'Comment')->textArea();
     ?>
   

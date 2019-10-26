@@ -40,7 +40,7 @@ class ItemController extends Controller
                 'rules' => [
                     [ 
                       'allow' => true, 
-                      'actions' => ['create','index', 'cancel', ], 
+                      'actions' => ['create','index', 'cancel', 'update', ], 
                       'roles' => ['@']
                     ],
                     [
@@ -80,7 +80,9 @@ class ItemController extends Controller
     public function actionView($id)
     {
         $model = $this->findAvailableModel($id);
+        echo "<br> <br> <br>". $model->ItemPrint();
         return $this->render('view', ['model' => $model,]);
+        
     }
 
     /**
@@ -128,6 +130,7 @@ class ItemController extends Controller
         $queuesMap = ArrayHelper::map($queues, 'idQueue', 'Description');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+           // $model->trigger(Item::EVENT_UPDATE_ITEM); 
             return $this->redirect(['index', 'id' => $model->idItem]);
         }
 
