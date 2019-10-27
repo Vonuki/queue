@@ -93,6 +93,12 @@ class Queue extends \yii\db\ActiveRecord
         ];
     }
   
+    // this should be inside User.php class.
+    public function init(){
+      $this->on(self::EVENT_AFTER_UPDATE, [$this, 'sendMailUpdate']);
+      parent::init(); 
+    }
+    
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -279,7 +285,36 @@ class Queue extends \yii\db\ActiveRecord
         return true;
     }
   
+    /* 
+    * @Send status update mail
+    */
+    public function sendMailUpdate($event){
+      $email = $this->getOwner()->one()->getPerson()->one()->email;
+      
+      Yii::$app->mailer->compose()
+        ->setFrom('robot@easymatic.su')
+        ->setTo($email)
+        ->setSubject( Yii::t('lg_common', 'Queue Updated'))
+        ->setTextBody($this->QueuePrint())
+        ->setHtmlBody($this->QueuePrint())      
+        ->send();
+    }
   
+    /** 
+    * @Print Queue status information
+    */
+    public function QueuePrint(){
+      return 
+        $this->attributeLabels()['idQueue'].": ".$this->idQueue."<br>".
+        $this->attributeLabels()['Description'].": ".$this->Description."<br>".
+        $this->attributeLabels()['Status'].": ".$this->getStatusText()."<br>".
+        $this->attributeLabels()['QueueLen'].": ".$this->QueueLen."<br>".
+        $this->attributeLabels()['Takt'].": ".date("H:i:s",$this->Takt)."<br>".
+        $this->attributeLabels()['Cycle'].": ".date("d \d\a\y\s H:i:s",$this->Cycle)."<br>".
+        $this->attributeLabels()['Finished'].": ".$this->Finished."<br>"
+        ;
+   }
+
     
     
 }

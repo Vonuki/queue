@@ -154,10 +154,10 @@ class ItemController extends Controller
     public function actionCancel($id){
         $model = $this->findAvailableModel($id);
         if($model->CancelSave()){
-          Yii::$app->session->setFlash('success', 'Item Status changed');
+          Yii::$app->session->setFlash('success', Yii::t('lg_common', 'Item Status changed'));
         }
         else{
-          Yii::$app->session->setFlash('error', 'Action not performed');
+          Yii::$app->session->setFlash('error', Yii::t('lg_common', 'Action not performed'));
         }
         return $this->actionIndex();
     }
@@ -175,7 +175,7 @@ class ItemController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException(Yii::t('lg_common', 'The requested page does not exist.'));
     }
   
     /**
@@ -189,6 +189,6 @@ class ItemController extends Controller
             return $model;
         }
       
-        throw new NotFoundHttpException('The requested page does permited.');
+        throw new NotFoundHttpException(Yii::t('lg_common', 'The requested page does permited.'));
     }
 }

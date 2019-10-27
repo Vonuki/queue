@@ -123,7 +123,7 @@ class Item extends \yii\db\ActiveRecord
         return $this->save();
       }
       else{
-         throw new NotFoundHttpException('Item already Canceled');
+         throw new NotFoundHttpException(Yii::t('lg_common', 'Item already Canceled'));
       }
     }
   
@@ -140,7 +140,7 @@ class Item extends \yii\db\ActiveRecord
         return $this->save();
       }
       else{
-         throw new NotFoundHttpException('Item already Finished');
+         throw new NotFoundHttpException(Yii::t('lg_common', 'Item already Finished'));
       }
     }
   
@@ -169,7 +169,7 @@ class Item extends \yii\db\ActiveRecord
         return $this->save();
       }
       else{
-         throw new NotFoundHttpException('Item already Handled');
+         throw new NotFoundHttpException(Yii::t('lg_common', 'Item already Handled'));
       }
     }
   
@@ -188,24 +188,30 @@ class Item extends \yii\db\ActiveRecord
     }
   
     public function sendMailUpdate($event){
-     
       $email = $this->getClient()->one()->getPerson()->one()->email;
       
       Yii::$app->mailer->compose()
         ->setFrom('robot@easymatic.su')
         ->setTo($email)
         ->setSubject( Yii::t('lg_common', 'Item Updated'))
-        ->setTextBody(Yii::t('lg_common', 'Item Updated'))
+        ->setTextBody($this->ItemPrint())
         ->setHtmlBody($this->ItemPrint())      
         ->send();
     }
   
-   public function ItemPrint(){
-     return 
-       "Item Status: ".$this->getStatusText()."<br>".
-       "Position: ".$this->Position
-       ;
-     //return \Util::print_var($this->_attributes);
+    /** 
+    * @Print Item status information
+    */
+    public function ItemPrint(){
+      return 
+        $this->attributeLabels()['StatusDate'].": ".$this->StatusDate."<br>".
+        $this->attributeLabels()['idItem'].": ".$this->idItem."<br>".
+        $this->attributeLabels()['idQueue'].": ".$this->getQueue()->one()->Description."<br>".
+        $this->attributeLabels()['Status'].": ".$this->getStatusText()."<br>".
+        $this->attributeLabels()['RestTime'].": ".date("d \d\a\y\s H:i:s",$this->RestTime)."<br>".
+        $this->attributeLabels()['Position'].": ".$this->Position."<br>".
+        $this->attributeLabels()['Comment'].": ".$this->Comment."<br>"
+        ;
    }
   
 }

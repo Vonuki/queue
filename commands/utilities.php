@@ -8,9 +8,15 @@ class Util {
   /*
   * Print var in normilized view
   */    
-  static function print_var($var)
+  static function echo_var($var)
   {
       echo "<pre>" . print_r($var, true) . "</pre>";
+ 
+  }
+  
+  static function print_var($var)
+  {
+      return "<pre>" . print_r($var, true) . "</pre>";
  
   }
   
