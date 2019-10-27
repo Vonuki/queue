@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'CreateDate',
             'StatusDate',
             'Comment',
-            ['attribute' => 'RestTime', 'value' => function ($model, $key, $index, $column) { return date("H:i:s",$model->RestTime);}, ],
+            ['attribute' => 'RestTime', 'value' => function ($model, $key, $index, $column) { return date("d \d\a\y\s H:i:s",$model->RestTime);}, ],
             [ 'attribute' => 'Status', 'format' => 'raw',
               'filter' => [
                     0 => 'No',

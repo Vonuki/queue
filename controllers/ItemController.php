@@ -63,7 +63,7 @@ class ItemController extends Controller
         }
         else{
             $owner = Owner::getUserOwner();   
-            $dataProvider = new ActiveDataProvider(['query' => $owner->getItems(),]);
+            $dataProvider = new ActiveDataProvider(['query' => $owner->getItems(),'pagination' => ['pageSize' => 20,],]);
         }
       
         return $this->render('index', [

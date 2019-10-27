@@ -116,10 +116,10 @@ class QueueController extends Controller
         
         //Items for list
         if($all){
-           $ItemsProvider = new ActiveDataProvider(['query' => $model->getVItems(),]);
+           $ItemsProvider = new ActiveDataProvider(['query' => $model->getVItems(),'pagination' => ['pageSize' => 4,],]);
         }
         else {
-           $ItemsProvider = new ActiveDataProvider(['query' => $model->getVItems()->where(['Status' => [0,1] ]),]);
+           $ItemsProvider = new ActiveDataProvider(['query' => $model->getVItems()->where(['Status' => [0,1] ]),'pagination' => ['pageSize' => 4,],]);
         }
         $model = $this->findVModel($id);
         return $this->render('view', ['model' => $model,'ItemsProvider' => $ItemsProvider,]);        
