@@ -28,7 +28,7 @@ class Item extends \yii\db\ActiveRecord
    * @return array Kye=>Value for Status options
    */
     public static function getStatusTexts(){
-      return array(0 => "In Queue", 1 =>"In work",  2 => "Finished | Archived", 3 => "Canceled by User");  
+      return array(0 => Yii::t('lg_common', 'In Queue'), 1 => Yii::t('lg_common', 'In work'),  2 => Yii::t('lg_common', 'Finished | Archived'), 3 => Yii::t('lg_common', 'Canceled'));  
     }
     public static function getStatusLabels(){
       return array(0 => "label label-success", 1 => "label label-danger", 2 => "label label-default", 3 => "label label-default");  

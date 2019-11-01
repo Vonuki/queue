@@ -171,7 +171,7 @@ class QueueController extends Controller
       
         $model = $this->findModel($id);
         if(Yii::$app->user->can('manageQueue', ['queue' => $model])){
-          $model->Status = $Status;
+          $model->StatusChangeSave($Status);
           if($model->save()){
             Yii::$app->session->setFlash('success', Yii::t('lg_common', 'Queue Status changed'));
           }

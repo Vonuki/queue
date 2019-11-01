@@ -90,6 +90,8 @@ $config = [
                 'reconfirmationSubject' => 'Email changed',
                 'recoverySubject'       => 'Recovery request',
           ],
+         
+          //replacing or adding part of User functionality
            'modelMap' => [
                   'User' => 'app\models\UserDefault',
 

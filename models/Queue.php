@@ -314,7 +314,36 @@ class Queue extends \yii\db\ActiveRecord
         $this->attributeLabels()['Finished'].": ".$this->Finished."<br>"
         ;
    }
+  
+   /**
+     * @Statuses chenging
+     */
+    public function StatusChangeSave($status)
+    {
+        $transaction = Queue::getDb()->beginTransaction(); 
+        try {
+          //Archiving queueu
+          if($status == 1){
+            $items = $this->getItems()->where(['Status' => [0,1] ])->all();
 
+            foreach ($items as $item) {
+              $item->CancelSave();
+            }
+          }
+          
+          $this->Status = $status;
+          $this->save();
+          
+          $transaction->commit();
+        } catch(\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        } catch(\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }  
+        return true;
+    }
     
     
 }

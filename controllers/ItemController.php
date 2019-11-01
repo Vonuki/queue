@@ -80,7 +80,7 @@ class ItemController extends Controller
     public function actionView($id)
     {
         $model = $this->findAvailableModel($id);
-        echo "<br> <br> <br>". $model->ItemPrint();
+        //echo "<br> <br> <br>". $model->ItemPrint();
         return $this->render('view', ['model' => $model,]);
         
     }
@@ -95,15 +95,10 @@ class ItemController extends Controller
         $model = new Item();
         $queues = Queue::findPublic();
         $queuesMap = ArrayHelper::map($queues, 'idQueue', 'Description');
+        
+        $owner = Owner::getUserOwner();
+        $model->FillEmptyItem($owner->idOwner);
 
-        //Fill for user or empty for Admin
-        if(Yii::$app->user->identity->isAdmin){}
-        else{
-          $owner = Owner::getUserOwner();
-          $model->FillEmptyItem($owner->idOwner);
-
-        }   
-      
         //Save on response
         if ($model->load(Yii::$app->request->post()) ) {
           
