@@ -228,7 +228,7 @@ class QueueController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('lg_common', 'The rquested model does not exist'));
+        throw new NotFoundHttpException(Yii::t('lg_common', 'The requested model does not exist'));
     }
   
     /**
@@ -244,7 +244,7 @@ class QueueController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('lg_common', 'The rquested model does not exist'));
+        throw new NotFoundHttpException(Yii::t('lg_common', 'The requested model does not exist'));
     }
   
 }

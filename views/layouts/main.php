@@ -51,7 +51,7 @@ AppAsset::register($this);
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
-                ['label' => 'Login', 'url' => ['/user/security/login']],
+                ['label' => Yii::t('lg_common', 'Login'), 'url' => ['/user/security/login']],
             ],
         ]);
       }
@@ -59,13 +59,13 @@ AppAsset::register($this);
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
-                ['label' => 'User Menu',
+                ['label' => Yii::t('lg_common', 'User Menu'),
                   'options'=>['class'=>'dropdown'],
                   'items' => [
                     ['label' => Yii::t('lg_common', 'Profile'), 'url' => ['/user/settings/profile']],
                     '<li>'
                       . Html::beginForm(['/user/security/logout'], 'post')
-                      . Html::submitButton('Logout (' . Yii::$app->user->identity->username . ')',['class' => 'btn btn-default logout'])
+                      . Html::submitButton(Yii::t('lg_common', 'Logout').':'. Yii::$app->user->identity->username,['class' => 'btn btn-default logout'])
                       . Html::endForm()
                       . '</li>'
                     ]

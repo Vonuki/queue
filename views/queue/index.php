@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn',
              'template' => $actions_string,
              'buttons' => [
-                'archive' => function ($url,$model,$key) { return Html::a('Archive', $url); },
+                'archive' => function ($url,$model,$key) { return Html::a(Yii::t('lg_common', 'Archive'), $url); },
               ],
             ],
         ],

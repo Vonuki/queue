@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('lg_common', 'Archive'), ['archive', 'id' => $model->idQueue], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('lg_common', 'Are you sure you want to archive this item? - All active Items will be canceled'),
+                'confirm' => Yii::t('lg_common', 'Are you sure you want to archive this Queue? - All active Items will be canceled'),
                 'method' => 'post',
             ],
         ]) ?>
