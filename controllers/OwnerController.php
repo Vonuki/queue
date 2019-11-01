@@ -59,7 +59,7 @@ class OwnerController extends Controller
     public function actionIndex()
     {    
         if(Yii::$app->user->identity->isAdmin){
-            $dataProvider = new ActiveDataProvider(['query' => Owner::find(),]);
+            $dataProvider = new ActiveDataProvider(['query' => Owner::find(),'pagination' => ['pageSize' => 10,],]);
           
             $auth = Yii::$app->authManager;
 

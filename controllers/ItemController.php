@@ -59,11 +59,11 @@ class ItemController extends Controller
     public function actionIndex()
     {
         if(Yii::$app->user->identity->isAdmin){
-            $dataProvider = new ActiveDataProvider(['query' => VItem::find(),]);
+            $dataProvider = new ActiveDataProvider(['query' => VItem::find(),'pagination' => ['pageSize' => 10,],]);
         }
         else{
             $owner = Owner::getUserOwner();   
-            $dataProvider = new ActiveDataProvider(['query' => $owner->getItems(),'pagination' => ['pageSize' => 20,],]);
+            $dataProvider = new ActiveDataProvider(['query' => $owner->getItems(),'pagination' => ['pageSize' => 10,],]);
         }
       
         return $this->render('index', [
