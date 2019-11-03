@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 19, 2019 at 06:59 PM
+-- Generation Time: Nov 03, 2019 at 10:57 AM
 -- Server version: 5.7.23-0ubuntu0.16.04.1
 -- PHP Version: 7.2.11-2+ubuntu16.04.1+deb.sury.org+1
 
@@ -26,6 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `auth_assignment`
 --
 
+DROP TABLE IF EXISTS `auth_assignment`;
 CREATE TABLE `auth_assignment` (
   `item_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
@@ -38,7 +39,8 @@ CREATE TABLE `auth_assignment` (
 
 INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('admin', '1', 1571523010),
-('genuser', '2', 1571524493);
+('genuser', '2', 1571524493),
+('genuser', '5', 1571946516);
 
 -- --------------------------------------------------------
 
@@ -46,6 +48,7 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 -- Table structure for table `auth_item`
 --
 
+DROP TABLE IF EXISTS `auth_item`;
 CREATE TABLE `auth_item` (
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `type` smallint(6) NOT NULL,
@@ -61,10 +64,11 @@ CREATE TABLE `auth_item` (
 --
 
 INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
-('admin', 1, 'system admin', NULL, NULL, 1571521854, 1571522827),
+('admin', 1, 'system admin', NULL, NULL, 1571521854, 1571690775),
 ('genuser', 1, 'general user', NULL, NULL, 1571521661, 1571524447),
-('updateOwnQueue', 2, 'for owner of queue', 'QueueOwnerRule', NULL, 1571521821, 1571521821),
-('updateQueue', 2, 'update Queue access', NULL, NULL, 1571521614, 1571521614);
+('grantQueue', 2, 'Full access for Queue', NULL, NULL, 1571688682, 1571688682),
+('manageOwnQueue', 2, 'for owner of queue', 'QueueOwnerRule', NULL, 1571521821, 1571688642),
+('manageQueue', 2, 'manage Queue access', NULL, NULL, 1571521614, 1571688607);
 
 -- --------------------------------------------------------
 
@@ -72,6 +76,7 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 -- Table structure for table `auth_item_child`
 --
 
+DROP TABLE IF EXISTS `auth_item_child`;
 CREATE TABLE `auth_item_child` (
   `parent` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `child` varchar(64) COLLATE utf8_unicode_ci NOT NULL
@@ -82,9 +87,10 @@ CREATE TABLE `auth_item_child` (
 --
 
 INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
-('genuser', 'updateOwnQueue'),
-('admin', 'updateQueue'),
-('updateOwnQueue', 'updateQueue');
+('admin', 'grantQueue'),
+('genuser', 'manageOwnQueue'),
+('admin', 'manageQueue'),
+('manageOwnQueue', 'manageQueue');
 
 -- --------------------------------------------------------
 
@@ -92,6 +98,7 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 -- Table structure for table `auth_rule`
 --
 
+DROP TABLE IF EXISTS `auth_rule`;
 CREATE TABLE `auth_rule` (
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `data` blob,
@@ -112,6 +119,7 @@ INSERT INTO `auth_rule` (`name`, `data`, `created_at`, `updated_at`) VALUES
 -- Table structure for table `Item`
 --
 
+DROP TABLE IF EXISTS `Item`;
 CREATE TABLE `Item` (
   `idItem` int(11) NOT NULL,
   `idQueue` int(11) NOT NULL,
@@ -120,15 +128,29 @@ CREATE TABLE `Item` (
   `CreateDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `StatusDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `RestTime` int(11) DEFAULT NULL,
-  `Position` int(11) NOT NULL
+  `Position` int(11) NOT NULL,
+  `Comment` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `Item`
 --
 
-INSERT INTO `Item` (`idItem`, `idQueue`, `idClient`, `Status`, `CreateDate`, `StatusDate`, `RestTime`, `Position`) VALUES
-(1, 1, 1, 0, '2019-01-01 05:00:00', '2019-10-19 22:57:45', NULL, 1);
+INSERT INTO `Item` (`idItem`, `idQueue`, `idClient`, `Status`, `CreateDate`, `StatusDate`, `RestTime`, `Position`, `Comment`) VALUES
+(1, 1, 1, 2, '2019-01-01 05:00:00', '2019-11-02 00:05:48', 26337948, -1, NULL),
+(2, 3, 4, 2, '2019-10-21 01:10:02', '2019-10-21 01:18:10', 488, -1, 'First Item'),
+(3, 6, 4, 2, '2019-10-22 01:50:23', '2019-10-25 10:14:11', 289428, -1, 'One cake'),
+(4, 6, 4, 2, '2019-10-25 10:09:24', '2019-10-25 10:19:12', 588, -1, 'One more cake'),
+(5, 6, 4, 2, '2019-10-25 10:13:13', '2019-10-28 00:25:28', 223935, -1, 'One banan cake'),
+(6, 6, 4, 0, '2019-10-25 10:14:40', '2019-10-27 19:30:16', 29, 1, 'I need more coca cola'),
+(7, 6, 4, 0, '2019-10-28 00:55:29', '2019-10-28 00:55:29', 145244, 2, 'Vanila sirope'),
+(8, 6, 4, 0, '2019-10-28 01:01:51', '2019-10-28 01:01:51', 217866, 3, 'Хочу вафлю'),
+(9, 6, 4, 0, '2019-10-28 01:02:08', '2019-10-28 01:02:08', 290488, 4, 'где мои булочки'),
+(10, 6, 4, 0, '2019-10-28 01:02:42', '2019-10-28 01:02:42', 363110, 5, 'Мороженое с шоколадом'),
+(11, 6, 4, 0, '2019-10-28 01:03:21', '2019-10-28 01:03:21', 435732, 6, 'Послдений пончик'),
+(12, 1, 1, 3, '2019-11-02 00:02:45', '2019-11-02 00:06:53', 248, -1, 'Whanna'),
+(13, 1, 1, 3, '2019-11-02 00:03:02', '2019-11-02 00:06:57', 235, -1, 'The best'),
+(14, 1, 1, 3, '2019-11-02 00:03:17', '2019-11-02 00:15:58', 761, -1, 'Last one');
 
 -- --------------------------------------------------------
 
@@ -136,10 +158,19 @@ INSERT INTO `Item` (`idItem`, `idQueue`, `idClient`, `Status`, `CreateDate`, `St
 -- Table structure for table `migration`
 --
 
+DROP TABLE IF EXISTS `migration`;
 CREATE TABLE `migration` (
   `version` varchar(180) COLLATE utf8_unicode_ci NOT NULL,
   `apply_time` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `migration`
+--
+
+INSERT INTO `migration` (`version`, `apply_time`) VALUES
+('m000000_000000_base', 1561495920),
+('m140209_132017_init', 1561495940);
 
 -- --------------------------------------------------------
 
@@ -147,6 +178,7 @@ CREATE TABLE `migration` (
 -- Table structure for table `Owner`
 --
 
+DROP TABLE IF EXISTS `Owner`;
 CREATE TABLE `Owner` (
   `idOwner` int(11) NOT NULL,
   `Description` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -160,7 +192,8 @@ CREATE TABLE `Owner` (
 
 INSERT INTO `Owner` (`idOwner`, `Description`, `idPerson`, `Status`) VALUES
 (1, 'Admin Company', 1, 0),
-(4, 'vonukiy_queues', 2, 0);
+(4, 'vonukiy_queues', 2, 0),
+(5, 'Owner|client 5', 5, 0);
 
 -- --------------------------------------------------------
 
@@ -168,6 +201,7 @@ INSERT INTO `Owner` (`idOwner`, `Description`, `idPerson`, `Status`) VALUES
 -- Table structure for table `profile`
 --
 
+DROP TABLE IF EXISTS `profile`;
 CREATE TABLE `profile` (
   `user_id` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -186,7 +220,8 @@ CREATE TABLE `profile` (
 
 INSERT INTO `profile` (`user_id`, `name`, `public_email`, `gravatar_email`, `gravatar_id`, `location`, `website`, `bio`, `timezone`) VALUES
 (1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -194,6 +229,7 @@ INSERT INTO `profile` (`user_id`, `name`, `public_email`, `gravatar_email`, `gra
 -- Table structure for table `Queue`
 --
 
+DROP TABLE IF EXISTS `Queue`;
 CREATE TABLE `Queue` (
   `idQueue` int(11) NOT NULL,
   `Description` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -213,10 +249,11 @@ CREATE TABLE `Queue` (
 --
 
 INSERT INTO `Queue` (`idQueue`, `Description`, `QueueShare`, `idOwner`, `FirstItem`, `QueueLen`, `Takt`, `Cycle`, `AutoTake`, `Finished`, `Status`) VALUES
-(1, 'Admin  Queue 01', 0, 1, 0, 0, 0, NULL, NULL, NULL, 1),
-(3, 'Some Queue', 0, 4, 0, 0, 0, 0, 0, NULL, 2),
-(4, 'Queue 3', 0, 4, 0, 0, 2, 0, 1, NULL, 1),
-(5, 'Queue for Jit Tracks', 0, 4, 0, 0, 1, 0, 1, NULL, 1);
+(1, 'Admin  Queue 01', 1, 1, 0, 2, 107, 26337948, NULL, 1, 1),
+(3, 'Some Queue', 1, 4, 0, 0, 25, 488, 0, 1, 2),
+(5, 'Queue for Jit Tracks', 1, 4, 0, 0, 1, 0, 1, NULL, 1),
+(6, 'Pancake queue', 1, 4, 0, 6, 72622, 171317, 0, 3, 0),
+(7, 'Private Tree Queue', 0, 1, 0, 0, 0, 0, 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -224,6 +261,7 @@ INSERT INTO `Queue` (`idQueue`, `Description`, `QueueShare`, `idOwner`, `FirstIt
 -- Table structure for table `social_account`
 --
 
+DROP TABLE IF EXISTS `social_account`;
 CREATE TABLE `social_account` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
@@ -242,6 +280,7 @@ CREATE TABLE `social_account` (
 -- Table structure for table `token`
 --
 
+DROP TABLE IF EXISTS `token`;
 CREATE TABLE `token` (
   `user_id` int(11) NOT NULL,
   `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
@@ -255,6 +294,7 @@ CREATE TABLE `token` (
 -- Table structure for table `user`
 --
 
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -276,14 +316,16 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `email`, `password_hash`, `auth_key`, `confirmed_at`, `unconfirmed_email`, `blocked_at`, `registration_ip`, `created_at`, `updated_at`, `flags`, `last_login_at`) VALUES
-(1, 'admin', 'vonuki@gmail.com', '$2y$10$IqXVr2tNWdNi5dOHVW1YAeFvmY1FBaYs46z6Fgkmnw10DaZDt3oLG', '8iPrHS5L-Dh0Ve0sTf30u8DpDtP1ifPi', 1561662050, NULL, NULL, '194.246.46.15', 1561641238, 1561641238, 0, 1568224786),
-(2, 'vonukiy', 'vonuki@yandex.ru', '$2y$10$d2ka55Oabh0zt8UGdRlQdu5qFrKLVAbksYL82nIXEn3FDW16ut0qi', 'Cn0RgoQMi77shFtVubf96mRUeViJA6E7', 1562269978, NULL, NULL, '10.1.0.8', 1562269869, 1562269869, 0, 1571519623);
+(1, 'admin', 'vonuki@gmail.com', '$2y$10$IqXVr2tNWdNi5dOHVW1YAeFvmY1FBaYs46z6Fgkmnw10DaZDt3oLG', '8iPrHS5L-Dh0Ve0sTf30u8DpDtP1ifPi', 1561662050, NULL, NULL, '194.246.46.15', 1561641238, 1561641238, 0, 1572795458),
+(2, 'vonukiy', 'vonuki@yandex.ru', '$2y$10$d2ka55Oabh0zt8UGdRlQdu5qFrKLVAbksYL82nIXEn3FDW16ut0qi', 'Cn0RgoQMi77shFtVubf96mRUeViJA6E7', 1562269978, NULL, NULL, '10.1.0.8', 1562269869, 1562269869, 0, 1572643126),
+(5, 'DK123', 'dmitrii.k@easymatic.su', '$2y$10$EOSR87I.r8FCYUZpP7JuSO/7i9apF/CYtsZjB4uWmDDoYDQKHNMUq', 'aBGZW7yFami_lgrPrHPrOckTsSgb_WJU', 1571946516, NULL, NULL, '10.138.0.2', 1571946471, 1571946471, 0, NULL);
 
 -- --------------------------------------------------------
 
 --
 -- Stand-in structure for view `vItem`
 --
+DROP VIEW IF EXISTS `vItem`;
 CREATE TABLE `vItem` (
 `idItem` int(11)
 ,`idQueue` int(11)
@@ -293,6 +335,7 @@ CREATE TABLE `vItem` (
 ,`StatusDate` timestamp
 ,`RestTime` int(11)
 ,`Position` int(11)
+,`Comment` varchar(200)
 ,`QueueDescription` varchar(50)
 ,`OwnerDescription` varchar(50)
 );
@@ -302,6 +345,7 @@ CREATE TABLE `vItem` (
 --
 -- Stand-in structure for view `vQueue`
 --
+DROP VIEW IF EXISTS `vQueue`;
 CREATE TABLE `vQueue` (
 `idQueue` int(11)
 ,`Description` varchar(50)
@@ -324,7 +368,7 @@ CREATE TABLE `vQueue` (
 --
 DROP TABLE IF EXISTS `vItem`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vItem`  AS  select `Item`.`idItem` AS `idItem`,`Item`.`idQueue` AS `idQueue`,`Item`.`idClient` AS `idClient`,`Item`.`Status` AS `Status`,`Item`.`CreateDate` AS `CreateDate`,`Item`.`StatusDate` AS `StatusDate`,`Item`.`RestTime` AS `RestTime`,`Item`.`Position` AS `Position`,`Queue`.`Description` AS `QueueDescription`,`Owner`.`Description` AS `OwnerDescription` from ((`Item` left join `Owner` on((`Item`.`idClient` = `Owner`.`idOwner`))) left join `Queue` on((`Item`.`idQueue` = `Queue`.`idQueue`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vItem`  AS  select `Item`.`idItem` AS `idItem`,`Item`.`idQueue` AS `idQueue`,`Item`.`idClient` AS `idClient`,`Item`.`Status` AS `Status`,`Item`.`CreateDate` AS `CreateDate`,`Item`.`StatusDate` AS `StatusDate`,`Item`.`RestTime` AS `RestTime`,`Item`.`Position` AS `Position`,`Item`.`Comment` AS `Comment`,`Queue`.`Description` AS `QueueDescription`,`Owner`.`Description` AS `OwnerDescription` from ((`Item` left join `Owner` on((`Item`.`idClient` = `Owner`.`idOwner`))) left join `Queue` on((`Item`.`idQueue` = `Queue`.`idQueue`))) ;
 
 -- --------------------------------------------------------
 
@@ -432,17 +476,17 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `Item`
 --
 ALTER TABLE `Item`
-  MODIFY `idItem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idItem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `Owner`
 --
 ALTER TABLE `Owner`
-  MODIFY `idOwner` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idOwner` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `Queue`
 --
 ALTER TABLE `Queue`
-  MODIFY `idQueue` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idQueue` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `social_account`
 --
@@ -452,7 +496,7 @@ ALTER TABLE `social_account`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- Constraints for dumped tables
 --
