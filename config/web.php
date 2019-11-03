@@ -1,4 +1,4 @@
- <?php
+<?php
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
@@ -40,7 +40,7 @@ $config = [
             'enableDefaultLanguageUrlCode' => true,
             'rules' => [
                 'page/<view:[a-zA-Z0-9-]+>' => 'site/page',
-                ['class' => 'yii\rest\UrlRule', 'controller' => ['v1/owner', 'v1/queue'] ],
+                ['class' => 'yii\rest\UrlRule', 'controller' => ['v1/owner', 'v1/queue', 'v1/item'] ],
             ],
         ],
               
@@ -120,7 +120,7 @@ $config = [
       'admin' => [
         'basePath' => '@app/modules/admin',
         'class' => 'app\modules\admin\Module',
-        'on testEvent' => ['app\models\UserDefault', 'testHandler'],
+        'on testEvent' => ['app\models\user\UserDefault', 'testHandler'],
       ],
       
     ],
