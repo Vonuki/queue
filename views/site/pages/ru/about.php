@@ -6,15 +6,14 @@
 
 use yii\helpers\Html;
 
-$this->title = 'About';
+$this->title = Yii::t('lg_common', 'About');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        This is the About page на русском. You may modify the following file to customize its content:
+        Это тестовый сервис, который позволяет создать простую очередь и управлять ей. <br>
+        Клиенты имеют возможность встать в очередь и получать обновления об изменениях очереди.
     </p>
-
-    <code><?= __FILE__ ?></code>
 </div>

@@ -7,17 +7,32 @@ return [
   'Cancel' => 'Отменить',
   'Handle' => 'Взять в работу',
   'Finish' => 'Завершить',
+  'Submit' => 'Отправить',
+  
+  //Меню
   'Home' => 'На главную',
   'About' => 'О сервисе',
   'Contact' => 'Контакты',
   'Profile' => 'Пользователь',
   'Manage' => 'Управление',
+  'Common' => 'Общее',
   'Login' => 'Войти',
   'Logout' => 'Выйти',
   'User Menu' => 'Меню пользователя',
   'Let`s start queue..' => 'Организуй свою очередь...',
   
-  
+  //Contact Form
+  'Name' => 'Имя',
+  'Email' => 'Email',
+  'Subject' => 'Тема',
+  'Body' => 'Описание',
+  'Verification Code' => 'Проверочный код',
+  'Thank you for contacting us. We will respond to you as soon as possible.' => 'Спасибо за обратную связь. Ваше мнение важно для нас.',
+  'If you have business inquiries or other questions, please fill out the following form to contact us. Thank you.' => 'Если у вас есть вопросы или предложения, пожалуйста заполните форму. Спасибо.',
+
+  //About
+  'Clients have possibility to get in queue and have updates on items changes.' => 'Клиенты имеют возможность встать в очередь и получать обновления об изменениях очереди.',
+  'This is test service with allow you to generate simple queue and mange it.' => 'Это тестовый сервис, который позволяет создать простую очередь и управлять ей.',
   
   //General Fields
   'Description' => 'Описание',

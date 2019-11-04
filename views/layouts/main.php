@@ -41,9 +41,14 @@ AppAsset::register($this);
      echo Nav::widget([
           'options' => ['class' => 'navbar-nav navbar-right'],
           'items' => [
-              ['label' => Yii::t('lg_common', 'Home'), 'url' => ['/site/index']],
-              ['label' => Yii::t('lg_common', 'About'), 'url' => ['/site/about']],
-              ['label' => Yii::t('lg_common', 'Contact'), 'url' => ['/site/contact']],
+              ['label' => Yii::t('lg_common', 'Common'),
+                  'options'=>['class'=>'dropdown'],
+                  'items' => [
+                    ['label' => Yii::t('lg_common', 'Home'), 'url' => ['/site/index']],
+                    ['label' => Yii::t('lg_common', 'About'), 'url' => ['/page/about']],
+                    ['label' => Yii::t('lg_common', 'Contact'), 'url' => ['/site/contact']],
+                   ],
+              ],
           ],
       ]);
   

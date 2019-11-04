@@ -75,14 +75,15 @@ $config = [
             ],
         ],
         'db' => $db,
-        // For captaha
-        //'view' => [
-        //    'theme' => [
-        //        'pathMap' => [
-        //            //'@dektrium/user/views' => '@app/views/user'
-        //        ],
-        //    ],
-        //],
+        
+        //For captaha
+        'view' => [
+           'theme' => [
+               'pathMap' => [
+                   '@dektrium/user/views' => '@app/views/user'
+               ],
+           ],
+        ],
       
     ],
     'params' => $params,
@@ -104,7 +105,7 @@ $config = [
             'User' => 'app\models\user\UserDefault',
             //Captcha need dll instaled
             //Note that CaptchaAction requires either GD2 extension or ImageMagick PHP extension.
-            //'RegistrationForm' => 'app\models\user\RegistrationForm',
+            'RegistrationForm' => 'app\models\user\RegistrationForm',
 
           ],
        ],
@@ -112,10 +113,11 @@ $config = [
        'rbac' => 'dektrium\rbac\RbacWebModule',
   
         
-      'v1' => [
-        'basePath' => '@app/modules/api/v1',
-        'class' => 'app\modules\api\v1\Module',
-      ],
+      //Disable REST api
+      //'v1' => [
+      //  'basePath' => '@app/modules/api/v1',
+      //  'class' => 'app\modules\api\v1\Module',
+      //],
       
       'admin' => [
         'basePath' => '@app/modules/admin',
