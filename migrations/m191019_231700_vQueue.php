@@ -14,8 +14,8 @@ class m191019_231700_vQueue extends Migration
 
     public function safeUp()
     {
-      DB::statement("
-        CREATE VIEW vItem AS
+      $this->execute("
+        CREATE VIEW vQueue AS
         (
           SELECT 
             `Queue`.*, 

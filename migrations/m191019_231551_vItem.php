@@ -14,7 +14,7 @@ class m191019_231551_vItem extends Migration
 
     public function safeUp()
     {
-      DB::statement("
+      $this->execute("
         CREATE VIEW vItem AS
         (
           SELECT 

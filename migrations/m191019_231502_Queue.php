@@ -3,7 +3,7 @@
 use yii\db\Schema;
 use yii\db\Migration;
 
-class m191019_231337_Queue extends Migration
+class m191019_231502_Queue extends Migration
 {
 
     public function init()
