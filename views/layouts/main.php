@@ -31,10 +31,13 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => Html::img('@web/img/Logo 2.png', ['alt' => 'pic not found','height' =>'40']), 
+        // color #A7C520
+        //'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
+        'brandOptions' => ['style' => 'padding-top:7px',],
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-default navbar-fixed-top',
         ],
     ]);
       
@@ -56,8 +59,9 @@ AppAsset::register($this);
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
-                ['label' => Yii::t('lg_common', 'Login'), 'url' => ['/user/security/login']],
+                ['label' => '<span class="glyphicon glyphicon-log-in">  </span>   '. Yii::t('lg_common', 'Login'), 'url' => ['/user/security/login'], ],
             ],
+            'encodeLabels' => false,
         ]);
       }
       else{
@@ -122,8 +126,15 @@ AppAsset::register($this);
   
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; EasyQueue <?= date('Y') ?> | <?= $this->render('select-language') ?></p>
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-left" style="font-size:12px">
+            <?= $this->render('select-language') ?> <br>
+            &copy; EasyQueue <?= date('Y') ?> 
+        </p>
+<!--         <?=Html::img('@web/img/long_queue.png', ['alt' => 'pic not found','height' =>'40']) ?> -->
+        <p class="pull-right" style="font-size:10px">
+            <?= Yii::powered() ?> <br>
+            Icon made by <a href="https://www.freepik.com/home">Freepik</a> from <a href="http://www.flaticon.com/">www.flaticon.com</a>
+        </p>
     </div>
 </footer>
 
