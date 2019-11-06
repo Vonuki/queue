@@ -46,19 +46,31 @@ return [
 
 ### Migrations
 
-User migration
-~~~
-$ php yii migrate/up --migrationPath=@vendor/dektrium/yii2-user/migrations
-~~~
+All migrations by one transaction:
+```
+./yii migrate/up --migrationPath=@vendor/dektrium/yii2-user/migrations --interactive=0 && ./yii migrate/up --migrationPath=@yii/rbac/migrations --interactive=0 && ./yii migrate/up --migrationPath=migrations --interactive=0
+```
+Admin user will be created automatically.
 
-For dectrium/rbac apllay migration:
+| Name          | Value         |
+| ------------- | ------------- |
+| id:           | 1             |
+| UserName:     | admin         |
+| Password:     | 123456        |
 
-```php
-$ php yii migrate/up --migrationPath=@yii/rbac/migrations
+
+1. User migration:
+```
+$ ./yii migrate/up --migrationPath=@vendor/dektrium/yii2-user/migrations
 ```
 
-For Queue apllay project migration
-```php
-$ php yii migrate/up --migrationPath=migrations
+2. For dectrium/rbac apllay migration:
+
+```
+$ ./yii migrate/up --migrationPath=@yii/rbac/migrations
 ```
 
+3. For Queue apllay project migration:
+```
+$ ./yii migrate/up --migrationPath=migrations
+```
