@@ -44,7 +44,7 @@ AppAsset::register($this);
      echo Nav::widget([
           'options' => ['class' => 'navbar-nav navbar-right'],
           'items' => [
-              ['label' => '<span class="glyphicon glyphicon-info-sign">  </span>    '.Yii::t('lg_common', 'Abbout'),
+              ['label' => '<span class="glyphicon glyphicon-info-sign">  </span>    '.Yii::t('lg_common', 'About'),
                   'options'=>['class'=>'dropdown'],
                   'items' => [
                     //['label' => Yii::t('lg_common', 'Home'), 'url' => ['/site/index']],
