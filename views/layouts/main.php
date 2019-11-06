@@ -44,15 +44,16 @@ AppAsset::register($this);
      echo Nav::widget([
           'options' => ['class' => 'navbar-nav navbar-right'],
           'items' => [
-              ['label' => Yii::t('lg_common', 'Common'),
+              ['label' => '<span class="glyphicon glyphicon-info-sign">  </span>    '.Yii::t('lg_common', 'Abbout'),
                   'options'=>['class'=>'dropdown'],
                   'items' => [
-                    ['label' => Yii::t('lg_common', 'Home'), 'url' => ['/site/index']],
+                    //['label' => Yii::t('lg_common', 'Home'), 'url' => ['/site/index']],
                     ['label' => Yii::t('lg_common', 'About'), 'url' => ['/page/about']],
                     ['label' => Yii::t('lg_common', 'Contact'), 'url' => ['/site/contact']],
                    ],
               ],
           ],
+          'encodeLabels' => false,
       ]);
   
       if(Yii::$app->user->isGuest){
@@ -60,6 +61,7 @@ AppAsset::register($this);
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
                 ['label' => '<span class="glyphicon glyphicon-log-in">  </span>   '. Yii::t('lg_common', 'Login'), 'url' => ['/user/security/login'], ],
+                ['label' => '<span class="glyphicon glyphicon-user">  </span>   '. Yii::t('lg_common', 'Sign in'), 'url' => ['/user/register'], ],
             ],
             'encodeLabels' => false,
         ]);
@@ -67,8 +69,9 @@ AppAsset::register($this);
       else{
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
+            'encodeLabels' => false,
             'items' => [
-                ['label' => Yii::t('lg_common', 'User Menu'),
+                ['label' => '<span class="glyphicon glyphicon-user">  </span>   '.Yii::t('lg_common', 'User Menu'),
                   'options'=>['class'=>'dropdown'],
                   'items' => [
                     ['label' => Yii::t('lg_common', 'Profile'), 'url' => ['/user/settings/profile']],
@@ -83,8 +86,9 @@ AppAsset::register($this);
         ]);
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
+            'encodeLabels' => false,
             'items' => [
-                ['label' => Yii::t('lg_common', 'Manage'), 
+                ['label' => '<span class="glyphicon glyphicon-tasks">  </span>   '. Yii::t('lg_common', 'Manage'), 
                   'options'=>['class'=>'dropdown'],
                   'items' => [
                     ['label' => Yii::t('lg_common', 'Owner info'), 'url' => ['/owner/index']],
