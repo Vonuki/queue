@@ -3,6 +3,7 @@
     use yii\helpers\Html;
     use yii\widgets\ActiveForm;
     use yii\captcha\Captcha;
+    use dektrium\user\widgets\Connect;
 
     /**
      * @var yii\web\View $this
@@ -22,7 +23,9 @@
                     <?php $form = ActiveForm::begin([
                         'id' => 'registration-form',
                     ]); ?>
-
+                    <?= Connect::widget([
+                    'baseAuthUrl' => ['/user/security/auth']
+                     ]) ?>
                     <?= $form->field($model, 'username') ?>
 
                     <?= $form->field($model, 'email') ?>

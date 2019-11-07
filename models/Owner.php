@@ -78,7 +78,7 @@ class Owner extends \yii\db\ActiveRecord
         return $this->hasMany(VQueue::className(), ['idOwner' => 'idOwner']);
     }
   
-    public function findByUser($idUser)
+    public static function findByUser($idUser)
     {
         if (($model = self::findOne(['idPerson' => $idUser, 'Status' => 0])) !== null) {
             return $model;
@@ -95,7 +95,7 @@ class Owner extends \yii\db\ActiveRecord
     /** 
     * Return Owner Model for loged in user ( from session or from DB)
     */
-    public function getUserOwner()
+    public static function getUserOwner()
     {
         $session = Yii::$app->session;  
         if (isset($session['user_owner'])){

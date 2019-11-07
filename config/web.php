@@ -1,5 +1,5 @@
 <?php
-
+$clients = parse_ini_file('clients.ini', true);
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -63,6 +63,21 @@ $config = [
                 'password' => 'Pfxtnysq1',
                 'port' => '465',
                 'encryption' => 'ssl',
+            ],
+        ],
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => [
+                'google' => [
+                    'class' => 'yii\authclient\clients\Google',
+                    'clientId' => $clients['google_clientId'],
+                    'clientSecret' => $clients['google_clientSecret'],
+                ],
+                'yandex' => [
+                    'class' => 'yii\authclient\clients\Yandex',
+                    'clientId' => $clients['yandex_clientId'],
+                    'clientSecret' => $clients['yandex_clientSecret'],
+                ],
             ],
         ],
         'log' => [
