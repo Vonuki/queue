@@ -34,3 +34,4 @@ tests/_support/_generated
 
 #DB configuration
 /config/db.php
+/config/clients.ini
