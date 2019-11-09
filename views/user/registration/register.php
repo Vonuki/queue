@@ -23,9 +23,6 @@
                     <?php $form = ActiveForm::begin([
                         'id' => 'registration-form',
                     ]); ?>
-                    <?= Connect::widget([
-                    'baseAuthUrl' => ['/user/security/auth']
-                     ]) ?>
                     <?= $form->field($model, 'username') ?>
 
                     <?= $form->field($model, 'email') ?>
@@ -39,6 +36,14 @@
                     <?= Html::submitButton(Yii::t('user', 'Sign up'), ['class' => 'btn btn-success btn-block']) ?>
 
                     <?php ActiveForm::end(); ?>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><?= Yii::t('lg_common', 'Sign up with') ?></h3>
+                </div>
+                 <div class="panel-body" style="align:center">                  
+                  <?= Connect::widget(['baseAuthUrl' => ['/user/security/auth'] ]) ?>  
                 </div>
             </div>
             <p class="text-center">
