@@ -61,7 +61,7 @@ AppAsset::register($this);
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
                 ['label' => '<span class="glyphicon glyphicon-log-in">  </span>   '. Yii::t('lg_common', 'Login'), 'url' => ['/user/security/login'], ],
-                ['label' => '<span class="glyphicon glyphicon-user">  </span>   '. Yii::t('lg_common', 'Sign in'), 'url' => ['/user/register'], ],
+                ['label' => '<span class="glyphicon glyphicon-user">  </span>   '. Yii::t('lg_common', 'Sign up'), 'url' => ['/user/register'], ],
             ],
             'encodeLabels' => false,
         ]);
