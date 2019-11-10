@@ -78,6 +78,11 @@ $config = [
                     'clientId' => $clients['yandex_clientId'],
                     'clientSecret' => $clients['yandex_clientSecret'],
                 ],
+                'vkontakte' => [
+                    'class' => 'yii\authclient\clients\VKontakte',
+                    'clientId' => $clients['vk_clientId'],
+                    'clientSecret' => $clients['vk_clientSecret'],
+                ],
             ],
         ],
         'log' => [
