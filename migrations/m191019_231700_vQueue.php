@@ -28,6 +28,6 @@ class m191019_231700_vQueue extends Migration
   
     public function safeDown()
     {
-        $this->dropTable('{{%vQueue}}');
+      $this->dropView('{{%vQueue}}');
     }
 }

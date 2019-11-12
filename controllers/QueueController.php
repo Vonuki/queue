@@ -14,6 +14,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use dektrium\user\filters\AccessRule;
+
 /**
  * QueueController implements the CRUD actions for Queue model.
  */

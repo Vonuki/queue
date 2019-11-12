@@ -99,13 +99,28 @@ class ItemController extends Controller
         $owner = Owner::getUserOwner();
         $model->FillEmptyItem($owner->idOwner);
 
+        $request = Yii::$app->request;
+
         //Save on response
-        if ($model->load(Yii::$app->request->post()) ) {
+        if ($model->load($request->post()) ) {
           
             $queue = $model->getQueue()->One();
             $queue->addItemSave($model);
           
             return $this->redirect(['index']);
+        }
+
+        //Create item by token link
+        $token = $request->get('Token');
+    
+        if (isset($token)) {
+           $queueID = Queue::find()->where(['Token' => $token])->One();
+		   $model->idQueue = $queueID->idQueue;
+		   if($model->save()){
+			    $queue = $model->getQueue()->One();
+                $queue->addItemSave($model);
+		   }
+           return $this->redirect(['index']);
         }
 
         return $this->render('create', ['model' => $model, 'queues' => $queuesMap] );

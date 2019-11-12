@@ -6,6 +6,13 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
 
+// >> QR code
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\LabelAlignment;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Response\QrCodeResponse;
+// << QR code
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Queue */
 
@@ -13,6 +20,14 @@ $this->title = $model->Description;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('lg_common', 'Queues'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+// >> QR code Token for access to hidden queue 
+$TokenUrl = Url::to("@web/item/create?Token=$model->Token",true);
+$qrCode = new QrCode($TokenUrl);
+$qrCode->setSize(100);
+$qrCode->setWriterByName('svg');
+// << QR code
+
 ?>
 <div class="queue-view">
 
@@ -71,7 +86,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ['attribute' => 'Takt', 'value' => date("H:i:s",$model->Takt), ],
             ['attribute' => 'Cycle', 'value' => date("d \d\a\y\s H:i:s",$model->Cycle), ],
             'Finished',
-        ],
+            // Token for access to hidden queue
+            ['attribute' => 'Token', 'format' => 'raw',
+            'value' =>
+            Html::a($qrCode->writeString(),$TokenUrl).                      // QR
+            Html::a("VK", "http://vk.com/share.php?url=$TokenUrl")." / ".   // Vkontakte
+            Html::a("TG", "tg://msg?text=$TokenUrl")." / ".                 // Telegamm
+            Html::a("WhatsApp", "whatsapp://send?text=$TokenUrl")           // WhatsApp
+            , ],
+          ],
     ]) ?>
   
     <h3><?= Html::encode(Yii::t('lg_common', 'Items in queue')) ?></h3>

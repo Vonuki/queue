@@ -90,6 +90,7 @@ class Queue extends \yii\db\ActiveRecord
             'AutoTake' => Yii::t('lg_common', 'Auto handle next Item by finishing'),
             'Cycle' => Yii::t('lg_common', 'Average cycle in queue'),
             'Finished' => Yii::t('lg_common', 'Total finished items'),
+            'Token' => Yii::t('lg_common', 'Token for access to hidden queue'),
         ];
     }
   
@@ -178,6 +179,7 @@ class Queue extends \yii\db\ActiveRecord
         $this->AutoTake = 1; // if new item will take aotomaticaly
         $this->Cycle = 0;
         $this->Finished = 0;
+        $this->Token = base_convert(uniqid($this->idOwner), 10, 32);  // Generation token for access to hidden queue
         return $this;
     }
   

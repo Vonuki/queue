@@ -30,6 +30,6 @@ class m191019_231551_vItem extends Migration
 
     public function safeDown()
     {
-        $this->dropTable('{{%vItem}}');
+        $this->dropView('{{%vItem}}');
     }
 }
