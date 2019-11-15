@@ -21,7 +21,7 @@ return [
   'Sign up' => 'Подключиться',
   'User Menu' => 'Меню пользователя',
   'Let`s start queue..' => 'Организуй свою очередь...',
-  
+  'Your position in queue' => 'Ваша позиция в очереди',
   //Contact Form
   'Name' => 'Имя',
   'Email' => 'Email',
