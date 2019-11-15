@@ -10,6 +10,9 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\EntryForm;
+use app\models\Item;
+use app\models\Queue;
+
 
 class SiteController extends Controller
 {
@@ -66,7 +69,15 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $user_queues = [];
+        if (Yii::$app->user->id != null){
+             $items = Item::getUserItems();   
+             foreach($items as $item){
+                $queue_name = Queue::find()->where(['idQueue'=>$item->idQueue])->one()->Description;
+                $user_queues[]=['item'=>$item,'queue_name'=>$queue_name];  
+             }
+        }
+        return $this->render('index',['user_queues'=>$user_queues]);
     }
 
     /**

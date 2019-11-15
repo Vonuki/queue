@@ -171,7 +171,7 @@ class Item extends \yii\db\ActiveRecord
       else{
          throw new NotFoundHttpException(Yii::t('lg_common', 'Item already Handled'));
       }
-    }
+    }  
   
     /**
      * @Create Empty Item for create form
@@ -213,5 +213,13 @@ class Item extends \yii\db\ActiveRecord
         $this->attributeLabels()['Comment'].": ".$this->Comment."<br>"
         ;
    }
+   /**
+     * @return \yii\db\ActiveQuery
+     */
+    public static function getUserItems()
+    {
+        $owner = Owner::getUserOwner();
+        return self::find()->where(['idClient'=>$owner->idOwner,'Status'=>0])->all();
+    }
   
 }
