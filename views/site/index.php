@@ -30,21 +30,24 @@ $this->registerJs($script);
             <?= Html::a("Обновить", ['site/index'], ['class' => 'hidden', 'id' => 'refreshButton']) ?>
             <?php foreach ($user_queues as $queue): 
                 $position = $queue['item']->Position;
+                $id = $queue['item']->idItem;
+                $css_class ='btn btn-info';
             ?>
            
             <hr class="m-y-10">
-                <?=Yii::t('lg_common', 'Your position in queue')?>
+                 <?=Yii::t('lg_common', 'Your position in queue')?>
                     <b><?= $queue['queue_name']?></b>:
                     <p class="lead">
-                    <?php if ($position < 3) : ?>
-                        <h1 class="btn btn-warning"><?= $position?></h1>
-                    <?php else : ?>
-                        <h1 class="btn btn-info"><?= $position?></h1>  
-                    <?php endif ?> 
+                    <?php 
+                    if ($position < 3) :
+                        $css_class ='btn btn-warning'; 
+                    endif 
+                    ?> 
+                    <a class="<?=$css_class?>" href="<?=Url::to(['item/update','id' => $id])?>"><?="<b>$position</b>"?></a>
                     </p>
-                
-            </span>
-       
+                    <?php if ($queue['item']->Comment != ''):?>
+                        <?=Yii::t('lg_common', 'Comment')?>: <?=$queue['item']->Comment?>
+                    <?php endif ?>
             <?php endforeach;
             Pjax::end(); 
             ?>
