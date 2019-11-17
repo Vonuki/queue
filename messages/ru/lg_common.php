@@ -22,6 +22,7 @@ return [
   'User Menu' => 'Меню пользователя',
   'Let`s start queue..' => 'Организуй свою очередь...',
   'Your position in queue' => 'Ваша позиция в очереди',
+  'Estimate Rest Time' => 'Примерное время ожидания',
   //Contact Form
   'Name' => 'Имя',
   'Email' => 'Email',

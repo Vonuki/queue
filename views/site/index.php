@@ -34,20 +34,29 @@ $this->registerJs($script);
                 $css_class ='btn btn-info';
             ?>
            
-            <hr class="m-y-10">
-                 <?=Yii::t('lg_common', 'Your position in queue')?>
+            <!-- <hr class="m-y-10"> -->
+            <div class="panel panel-info" style="width:250px; margin:auto"  >
+                <div class="panel-heading">
+                    <?=Yii::t('lg_common', 'Your position in queue')?><br>
                     <b><?= $queue['queue_name']?></b>:
-                    <p class="lead">
-                    <?php 
-                    if ($position < 3) :
-                        $css_class ='btn btn-warning'; 
-                    endif 
-                    ?> 
-                    <a class="<?=$css_class?>" href="<?=Url::to(['item/update','id' => $id])?>"><?="<b>$position</b>"?></a>
-                    </p>
-                    <?php if ($queue['item']->Comment != ''):?>
-                        <?=Yii::t('lg_common', 'Comment')?>: <?=$queue['item']->Comment?>
-                    <?php endif ?>
+                </div>
+                    <div class="panel-body">
+                        <?php 
+                            if ($position < 3) :
+                            $css_class ='btn btn-warning'; 
+                            endif 
+                        ?> 
+                        <a class="<?=$css_class?>" href="<?=Url::to(['item/update','id' => $id])?>"><?="<b>$position</b>"?></a>    
+                    </div>
+                    <div class="panel-footer">
+                        <?php if ($queue['item']->Comment != ''):?>
+                            <?=Yii::t('lg_common', 'Comment')?>: <?=$queue['item']->Comment?><br>
+                        <?php endif ?>
+                        <?=Yii::t('lg_common', 'Estimate Rest Time')?>:<br> 
+                        <?=date("d \d\a\y\s H:i",$queue['item']->RestTime)?>
+                    </div>
+            </div>
+            <br>
             <?php endforeach;
             Pjax::end(); 
             ?>
