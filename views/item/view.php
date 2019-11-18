@@ -17,6 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->idItem], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Cancel', ['cancel', 'id' => $model->idItem], ['class' => 'btn btn-warning']) ?>
+        <?php if (Yii::$app->user->identity->isAdmin):?>
         <?= Html::a('Delete', ['delete', 'id' => $model->idItem], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -24,6 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?php endif ?>
+
     </p>
 
     <?php 

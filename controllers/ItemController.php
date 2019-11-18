@@ -40,7 +40,7 @@ class ItemController extends Controller
                 'rules' => [
                     [ 
                       'allow' => true, 
-                      'actions' => ['create','index', 'cancel', 'update', ], 
+                      'actions' => ['create','index', 'cancel', 'update', 'view'], 
                       'roles' => ['@']
                     ],
                     [
@@ -107,7 +107,7 @@ class ItemController extends Controller
             $queue = $model->getQueue()->One();
             $queue->addItemSave($model);
           
-            return $this->redirect(['index']);
+            return $this->redirect(['site/index']);
         }
 
         //Create item by token link
@@ -120,7 +120,7 @@ class ItemController extends Controller
 			    $queue = $model->getQueue()->One();
                 $queue->addItemSave($model);
 		   }
-           return $this->redirect(['index']);
+           return $this->redirect(['site/index']);
         }
 
         return $this->render('create', ['model' => $model, 'queues' => $queuesMap] );

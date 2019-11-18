@@ -46,7 +46,7 @@ $this->registerJs($script);
                             $css_class ='btn btn-warning'; 
                             endif 
                         ?> 
-                        <a class="<?=$css_class?>" href="<?=Url::to(['item/update','id' => $id])?>"><?="<b>$position</b>"?></a>    
+                        <a class="<?=$css_class?>" href="<?=Url::to(['item/view','id' => $id])?>"><?="<b>$position</b>"?></a>    
                     </div>
                     <div class="panel-footer">
                         <?php if ($queue['item']->Comment != ''):?>
