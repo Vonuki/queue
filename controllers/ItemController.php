@@ -80,8 +80,9 @@ class ItemController extends Controller
     public function actionView($id)
     {
         $model = $this->findAvailableModel($id);
+        $queue_name = Queue::find()->where(['idQueue'=>$model->idQueue])->one()->Description;
         //echo "<br> <br> <br>". $model->ItemPrint();
-        return $this->render('view', ['model' => $model,]);
+        return $this->render('view', ['model' => $model,'queue'=>$queue_name]);
         
     }
 

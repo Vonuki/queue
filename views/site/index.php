@@ -43,8 +43,12 @@ $this->registerJs($script);
                     <div class="panel-body">
                         <?php 
                             if ($position < 3) :
-                            $css_class ='btn btn-warning'; 
-                            endif 
+                                $css_class = 'btn btn-warning'; 
+                            endif ;
+                            if ($queue['item']->Status == 1):
+                                $css_class = 'btn btn-danger';
+                                $position = Yii::t('lg_common', 'In work');
+                            endif
                         ?> 
                         <a class="<?=$css_class?>" href="<?=Url::to(['item/view','id' => $id])?>"><?="<b>$position</b>"?></a>    
                     </div>

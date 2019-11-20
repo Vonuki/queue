@@ -219,7 +219,7 @@ class Item extends \yii\db\ActiveRecord
     public static function getUserItems()
     {
         $owner = Owner::getUserOwner();
-        return self::find()->where(['idClient'=>$owner->idOwner,'Status'=>0])->all();
+        return self::find()->where(['idClient'=>$owner->idOwner,'Status'=>[0,1]])->all();
     }
   
 }

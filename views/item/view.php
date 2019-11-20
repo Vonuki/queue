@@ -52,12 +52,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'model' => $model,
             'attributes' => [
                 'idItem',
-                'idQueue',
-                'idClient',
-                'Status',
+                [
+                    'label' => Yii::t('lg_common', 'Queue'),
+                    'attribute' => 'idQueue',
+                    'value' => $queue,
+                ],
+               // 'idClient',
+                [
+                    'attribute' => 'Status', 
+                    'format' => 'raw',
+                    'value' => function ($model) { 
+                        return \yii\helpers\Html::tag('span',$model->getStatusText(),['class' => $model->getStatusLabel()] );
+                        }, 
+                ],
                 'CreateDate',
                 'StatusDate',
-                'RestTime',
+                [
+                    'attribute' => 'RestTime', 
+                    'format' => 'time',
+                ],
                 'Position',
                 'Comment'
             ],

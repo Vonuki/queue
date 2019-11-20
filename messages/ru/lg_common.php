@@ -117,6 +117,7 @@ return [
   'Items in queue' => 'Элементы в очереди',
   'All Items' => 'Все элементы',
   'Active Items' => 'Активные элементы',
+  'Queue' => 'Очередь',
   
   //Login/Sign up
   'Login with'=>'Войти с помощью',

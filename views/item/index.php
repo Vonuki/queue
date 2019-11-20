@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
           $actions_string = '{view} {update} {cancel} {delete}'; 
       }
       else{ 
-          $actions_string = '{update} {cancel}'; 
+          $actions_string = '{view} {update} {cancel}'; 
       }
       
 
