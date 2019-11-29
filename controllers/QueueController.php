@@ -43,6 +43,11 @@ class QueueController extends Controller
                       'actions' => ['create','index', 'view', 'update', 'archive','activate', 'pause' ], 
                       'roles' => ['genuser'] //or using: '@' - for all users
                     ],
+                    [ 
+                      'allow' => true, 
+                      'actions' => ['qrprint' ], 
+                      'roles' => ['@']
+                    ],
                     [
                         'allow' => true,
                         'roles' => ['admin']
@@ -246,6 +251,18 @@ class QueueController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('lg_common', 'The requested model does not exist'));
+    }
+    /**
+     * Page with QR code for access to hided Queue
+     */
+
+    public function actionQrprint($Token)
+    {
+      if (($model = VQueue::findOne(['Token' => $Token])) !== null){
+        return $this->render('qrprint', ['model' => $model]);
+      }else{
+        return $this->redirect(['index']);
+      }
     }
   
 }

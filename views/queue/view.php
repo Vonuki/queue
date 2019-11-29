@@ -6,13 +6,6 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
 
-// >> QR code
-use Endroid\QrCode\ErrorCorrectionLevel;
-use Endroid\QrCode\LabelAlignment;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Response\QrCodeResponse;
-// << QR code
-
 /* @var $this yii\web\View */
 /* @var $model app\models\Queue */
 
@@ -21,13 +14,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('lg_common', 'Queues'), 'url
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 
-// >> QR code Token for access to hidden queue 
 $TokenUrl = Url::to("@web/item/create?Token=$model->Token",true);
-$qrCode = new QrCode($TokenUrl);
-$qrCode->setSize(100);
-$qrCode->setWriterByName('svg');
-// << QR code
-
 ?>
 <div class="queue-view">
 
@@ -89,10 +76,10 @@ $qrCode->setWriterByName('svg');
             // Token for access to hidden queue
             ['attribute' => 'Token', 'format' => 'raw',
             'value' =>
-            Html::a($qrCode->writeString(),$TokenUrl).                      // QR
-            Html::a("VK", "http://vk.com/share.php?url=$TokenUrl")." / ".   // Vkontakte
-            Html::a("TG", "tg://msg?text=$TokenUrl")." / ".                 // Telegamm
-            Html::a("WhatsApp", "whatsapp://send?text=$TokenUrl")           // WhatsApp
+            Html::a("QRcode",Url::to("@web/queue/qrprint?Token=$model->Token",true))." / ".   // QR
+            Html::a("VK", "http://vk.com/share.php?url=$TokenUrl")." / ".                     // Vkontakte
+            Html::a("TG", "tg://msg?text=$TokenUrl")." / ".                                   // Telegamm
+            Html::a("WhatsApp", "whatsapp://send?text=$TokenUrl")                             // WhatsApp
             , ],
           ],
     ]) ?>
