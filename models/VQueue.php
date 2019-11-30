@@ -34,9 +34,10 @@ class VQueue extends Queue
     public function rules()
     {
         return [
-            [['idQueue', 'QueueShare', 'idOwner', 'Firsttem', 'QueueLen', 'Status', 'AvgMin', 'AutoTake'], 'integer'],
+            [['idQueue', 'QueueShare', 'idOwner', 'Firsttem', 'QueueLen', 'Status', 'AvgMin', 'AutoTake', 'SendMail'], 'integer'],
             [['Description', 'QueueShare', 'idOwner', 'QueueLen'], 'required'],
             [['Description', 'OwnerDescription'], 'string', 'max' => 50],
+            [['Token'], 'string', 'max' => 10],
         ];
     }
 

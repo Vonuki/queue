@@ -1,6 +1,4 @@
 <?php
-
-use yii\db\Schema;
 use yii\db\Migration;
 
 class m191019_231551_vItem extends Migration
@@ -30,6 +28,6 @@ class m191019_231551_vItem extends Migration
 
     public function safeDown()
     {
-        $this->dropView('{{%vItem}}');
+        $this->execute("DROP VIEW vItem");
     }
 }

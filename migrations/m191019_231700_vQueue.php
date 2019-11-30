@@ -1,6 +1,4 @@
 <?php
-
-use yii\db\Schema;
 use yii\db\Migration;
 
 class m191019_231700_vQueue extends Migration
@@ -28,6 +26,6 @@ class m191019_231700_vQueue extends Migration
   
     public function safeDown()
     {
-      $this->dropView('{{%vQueue}}');
+      $this->execute("DROP VIEW vQueue");
     }
 }

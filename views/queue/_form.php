@@ -28,6 +28,7 @@ use yii\widgets\ActiveForm;
       } 
   
       echo $form->field($model, 'AutoTake')->dropDownList($model->getAutoTakeTexts());
+      echo $form->field($model, 'SendMail')->dropDownList($model->getSenMailTexts());
     ?>
 
     <div class="form-group">

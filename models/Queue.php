@@ -21,6 +21,8 @@ use yii\base\ErrorException;
  * @property int $AutoTake
  * @property int $Cycle
  * @property int $Finished
+ * @property string $Token
+ * @property int $SendMail
  *
  * @property Item[] $items
  * @property Owner $owner
@@ -51,6 +53,13 @@ class Queue extends \yii\db\ActiveRecord
     public static function getAutoTakeTexts(){
       return array(0 => Yii::t('lg_common', 'Manual handling'), 1 => Yii::t('lg_common', 'Auto handling'));  
     }
+
+     /**
+     * @return array Kye=>Value for SenMail options
+     */
+    public static function getSenMailTexts(){
+      return array(0 => Yii::t('lg_common', 'ignore'), 1 => Yii::t('lg_common', 'Inform'));  
+    }
  
     /**
      * {@inheritdoc}
@@ -67,8 +76,9 @@ class Queue extends \yii\db\ActiveRecord
     {
         return [
             [['Description', 'QueueShare', 'idOwner', 'FirstItem', 'QueueLen'], 'required'],
-            [['QueueShare', 'idOwner', 'FirstItem', 'QueueLen', 'Status', 'Takt', 'AutoTake', 'Cycle', 'Finished'], 'integer'],
+            [['QueueShare', 'idOwner', 'FirstItem', 'QueueLen', 'Status', 'Takt', 'AutoTake', 'Cycle', 'Finished', 'SendMail'], 'integer'],
             [['Description'], 'string', 'max' => 50],
+            [['Token'], 'string', 'max' => 10],
             [['idOwner'], 'exist', 'skipOnError' => true, 'targetClass' => Owner::className(), 'targetAttribute' => ['idOwner' => 'idOwner']],
         ];
     }
@@ -79,18 +89,19 @@ class Queue extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idQueue' => Yii::t('lg_common', 'ID Queue'),
+            'idQueue'     => Yii::t('lg_common', 'ID Queue'),
             'Description' => Yii::t('lg_common', 'Description'),
-            'QueueShare' => Yii::t('lg_common', 'Private | Public'),
-            'idOwner' => Yii::t('lg_common', 'Id Owner'),
-            'FirstItem' => Yii::t('lg_common', 'First Item'),
-            'QueueLen' => Yii::t('lg_common', 'Queue Lenght'),
-            'Status' => Yii::t('lg_common', 'Status'),
-            'Takt' => Yii::t('lg_common', 'Average handling time'),
-            'AutoTake' => Yii::t('lg_common', 'Auto handle next Item by finishing'),
-            'Cycle' => Yii::t('lg_common', 'Average cycle in queue'),
-            'Finished' => Yii::t('lg_common', 'Total finished items'),
-            'Token' => Yii::t('lg_common', 'Token for access to hidden queue'),
+            'QueueShare'  => Yii::t('lg_common', 'Private | Public'),
+            'idOwner'     => Yii::t('lg_common', 'Id Owner'),
+            'FirstItem'   => Yii::t('lg_common', 'First Item'),
+            'QueueLen'    => Yii::t('lg_common', 'Queue Lenght'),
+            'Status'      => Yii::t('lg_common', 'Status'),
+            'Takt'        => Yii::t('lg_common', 'Average handling time'),
+            'AutoTake'    => Yii::t('lg_common', 'Auto handle next Item by finishing'),
+            'Cycle'       => Yii::t('lg_common', 'Average cycle in queue'),
+            'Finished'    => Yii::t('lg_common', 'Total finished items'),
+            'Token'       => Yii::t('lg_common', 'Token for access to hidden queue'),
+            'SendMail'    => Yii::t('lg_common', 'Send notification to Owner'),
         ];
     }
   
@@ -152,6 +163,14 @@ class Queue extends \yii\db\ActiveRecord
     {
         return self::getAutoTakeTexts()[$this->QueueShare];
     }
+
+     /**
+     * @return Text value for SenMail of Queue
+     */
+    public function getSenMailTxt()
+    {
+        return self::getSenMailTexts()[$this->SenMail];
+    }   
     
     
     /**
@@ -170,16 +189,17 @@ class Queue extends \yii\db\ActiveRecord
     {
         if(is_null($owner)){ $owner = Owner::getUserOwner(); }
       
-        $this->idOwner = $owner->idOwner;
-        $this->FirstItem = 0; //first item number
+        $this->idOwner    = $owner->idOwner;
+        $this->FirstItem  = 0; //first item number
         $this->QueueShare = 0; //private queue
-        $this->QueueLen = 0; //curretn lentgh of queue
-        $this->Status = 0; //status 
-        $this->Takt = 0;//Average time in minutes
-        $this->AutoTake = 1; // if new item will take aotomaticaly
-        $this->Cycle = 0;
-        $this->Finished = 0;
-        $this->Token = base_convert(uniqid($this->idOwner), 10, 32);  // Generation token for access to hidden queue
+        $this->QueueLen   = 0; //curretn lentgh of queue
+        $this->Status     = 0; //status 
+        $this->Takt       = 0;//Average time in minutes
+        $this->AutoTake   = 1; // if new item will take aotomaticaly
+        $this->Cycle      = 0;
+        $this->Finished   = 0;
+        $this->Token      = base_convert(uniqid($this->idOwner), 10, 32);  // Generation token for access to hidden queue
+        $this->SendMail   = 1;
         return $this;
     }
   
@@ -291,15 +311,16 @@ class Queue extends \yii\db\ActiveRecord
     * @Send status update mail
     */
     public function sendMailUpdate($event){
-      $email = $this->getOwner()->one()->getPerson()->one()->email;
-      
-      Yii::$app->mailer->compose()
-        ->setFrom('robot@easymatic.su')
-        ->setTo($email)
-        ->setSubject( Yii::t('lg_common', 'Queue Updated'))
-        ->setTextBody($this->QueuePrint())
-        ->setHtmlBody($this->QueuePrint())      
-        ->send();
+      if($this->SendMail == 1){
+        $email = $this->getOwner()->one()->getPerson()->one()->email;
+        Yii::$app->mailer->compose()
+          ->setFrom('robot@easymatic.su')
+          ->setTo($email)
+          ->setSubject( Yii::t('lg_common', 'Queue Updated'))
+          ->setTextBody($this->QueuePrint())
+          ->setHtmlBody($this->QueuePrint())      
+          ->send();
+      }
     }
   
     /** 

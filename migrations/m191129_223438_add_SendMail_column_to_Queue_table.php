@@ -4,16 +4,22 @@ use yii\db\Migration;
 /**
  * Handles adding columns to table `{{%Queue}}`.
  */
-class m191111_184331_add_Token_column_to_Queue_table extends Migration
+class m191129_223438_add_SendMail_column_to_Queue_table extends Migration
 {
+	public function init()
+    {
+        $this->db = 'db';
+        parent::init();
+    }
     /**
      * {@inheritdoc}
      */
+	 
     public function safeUp()
     {
         $this->execute("DROP VIEW vQueue");
-        $this->addColumn('{{%Queue}}', 'Token', $this->string(10));
-        $this->execute("
+		$this->addColumn('{{%Queue}}', 'SendMail', $this->integer(1));
+		$this->execute("
         CREATE VIEW vQueue AS
         (
           SELECT 
@@ -30,9 +36,9 @@ class m191111_184331_add_Token_column_to_Queue_table extends Migration
      */
     public function safeDown()
     {
-        $this->execute("DROP VIEW vQueue");
-		$this->dropColumn('{{%Queue}}', 'Token');
-        $this->execute("
+		$this->execute("DROP VIEW vQueue");
+		$this->dropColumn('{{%Queue}}', 'SendMail');
+		$this->execute("
         CREATE VIEW vQueue AS
         (
           SELECT 

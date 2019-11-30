@@ -170,7 +170,7 @@ class ItemController extends Controller
         else{
           Yii::$app->session->setFlash('error', Yii::t('lg_common', 'Action not performed'));
         }
-        return $this->actionIndex();
+        return $this->redirect(['index']);
     }
 
     /**
