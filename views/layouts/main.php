@@ -40,7 +40,8 @@ AppAsset::register($this);
             'class' => 'navbar-default navbar-fixed-top',
         ],
     ]);
-      
+  
+     
      echo Nav::widget([
           'options' => ['class' => 'navbar-nav navbar-right'],
           'items' => [
@@ -114,6 +115,12 @@ AppAsset::register($this);
             ],
         ]);
       }
+  
+      ?>
+          <ul class="navbar-nav navbar-right nav"> <li>
+            <?= $this->render('select-language') ?>
+          </li> </ul>
+      <?php
      
     NavBar::end();
     ?>
@@ -131,7 +138,6 @@ AppAsset::register($this);
 <footer class="footer">
     <div class="container">
         <p class="pull-left" style="font-size:12px">
-            <?= $this->render('select-language') ?> <br>
             &copy; EasyQueue <?= date('Y') ?> 
         </p>
 <!--         <?=Html::img('@web/img/long_queue.png', ['alt' => 'pic not found','height' =>'40']) ?> -->

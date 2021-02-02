@@ -5,6 +5,8 @@
 */
 
 use yii\helpers\Html;
+use yii\helpers\Markdown;
+
 
 $this->title = Yii::t('lg_common', 'About');
 $this->params['breadcrumbs'][] = $this->title;
@@ -12,8 +14,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        Это тестовый сервис, который позволяет создать простую очередь и управлять ей. <br>
-        Клиенты имеют возможность встать в очередь и получать обновления об изменениях очереди.
-    </p>
+    <?php
+        $myText = file_get_contents(__DIR__ .'/about_ru.md', FILE_USE_INCLUDE_PATH);
+        echo $myHtml = Markdown::process($myText, 'gfm');
+     ?> 
+  
 </div>

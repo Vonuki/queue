@@ -23,6 +23,7 @@ $config = [
               'application/json' => 'yii\web\JsonParser',
             ],
         ],
+
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -39,7 +40,7 @@ $config = [
             'languages' => ['ru', 'en'],
             'enableDefaultLanguageUrlCode' => true,
             'rules' => [
-                'page/<view:[a-zA-Z0-9-]+>' => 'site/page',
+                'page/<view:[a-zA-Z0-9-]+>' => 'site/page', //For static pages navigation + need rule inside Controler in "actions" chapter
                 ['class' => 'yii\rest\UrlRule', 'controller' => ['v1/owner', 'v1/queue', 'v1/item'] ],
             ],
         ],
@@ -134,10 +135,10 @@ $config = [
   
         
       //Disable REST api
-      //'v1' => [
-      //  'basePath' => '@app/modules/api/v1',
-      //  'class' => 'app\modules\api\v1\Module',
-      //],
+      'v1' => [
+       'basePath' => '@app/modules/api/v1',
+       'class' => 'app\modules\api\v1\Module',
+      ],
       
       'admin' => [
         'basePath' => '@app/modules/admin',
